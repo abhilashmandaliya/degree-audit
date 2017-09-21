@@ -11,7 +11,7 @@ import util.HibernateSessionFactory;
 
 public class ProgramCRUD {
 	public static Integer insert(HttpServletRequest request) {
-		Session session = HibernateSessionFactory.getInstance().openSession();
+		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = null;
 		Integer id = null;
 		try {

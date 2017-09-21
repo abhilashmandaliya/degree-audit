@@ -46,12 +46,6 @@ public class Controller extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		Enumeration<String> it = request.getAttributeNames();
-//		System.out.println("before it");
-//		while (it.hasMoreElements()) {
-//			System.out.println(it.nextElement());
-//		}
-//		System.out.println("after it");
 		processRequest(request, response);		
 	}
 

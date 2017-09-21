@@ -1,14 +1,15 @@
 package util;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateSessionFactory {
 	private static SessionFactory factory = null;
-
-	public static SessionFactory getInstance() {
+	
+	public static Session getSession() {
 		if (factory == null)
 			factory = new Configuration().configure().buildSessionFactory();
-		return factory;
+		return factory.openSession();
 	}
 }
