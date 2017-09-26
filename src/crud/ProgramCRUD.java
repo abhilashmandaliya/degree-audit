@@ -7,10 +7,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pojo.ProgramPOJO;
+import util.CRUD;
 import util.HibernateSessionFactory;
 
-public class ProgramCRUD {
-	public static Integer insert(HttpServletRequest request) {
+public class ProgramCRUD implements CRUD {
+
+	@Override
+	public Integer create(HttpServletRequest request) {
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = null;
 		Integer id = null;
@@ -38,5 +41,23 @@ public class ProgramCRUD {
 			session.close();
 		}
 		return id;
+	}
+
+	@Override
+	public Object retrive(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer update(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer delete(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

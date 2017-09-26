@@ -10,7 +10,7 @@ public class AddProgram implements Action {
 
 	@Override
 	public String perform(HttpServletRequest request, HttpServletResponse response) {
-		Integer id = ProgramCRUD.insert(request);
+		Integer id = new ProgramCRUD().create(request);
 		return String.valueOf(id);
 	}
 
