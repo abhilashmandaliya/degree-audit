@@ -1,5 +1,7 @@
 package crud;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
@@ -7,10 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import pojo.ProgramPOJO;
-import util.CRUD;
+import util.GeneralUtility;
 import util.HibernateSessionFactory;
+import util.Response;
 
-public class ProgramCRUD implements CRUD {
+public class ProgramCRUD extends CRUDCore {
 
 	@Override
 	public Integer create(HttpServletRequest request) {
@@ -45,8 +48,17 @@ public class ProgramCRUD implements CRUD {
 
 	@Override
 	public Object retrive(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		Response response = null;
+		try {
+			List<ProgramPOJO> programs = session.createQuery("FROM ProgramPOJO").list();
+			response = GeneralUtility.generateSuccessResponse(null, programs);
+		} catch (HibernateException e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return response.toString();
 	}
 
 	@Override

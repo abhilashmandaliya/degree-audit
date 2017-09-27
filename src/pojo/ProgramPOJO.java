@@ -1,10 +1,52 @@
 package pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "program")
 public class ProgramPOJO {
-	private String name;
-	private int id, min_duration, max_duration, min_credits, max_credits, min_grade_points, min_foundation_course,
-			min_courses, max_courses;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+
+	@Column(name = "min_duration")
+	private int min_duration;
+
+	@Column(name = "max_duration")
+	private int max_duration;
+
+	@Column(name = "min_credits")
+	private int min_credits;
+
+	@Column(name = "max_credits")
+	private int max_credits;
+
+	@Column(name = "min_grade_points")
+	private int min_grade_points;
+
+	@Column(name = "min_foundation_course")
+	private int min_foundation_course;
+
+	@Column(name = "min_courses")
+	private int min_courses;
+
+	@Column(name = "max_courses")
+	private int max_courses;
+
+	@Column(name = "min_cpi")
 	private float min_cpi;
+
+	@Column(name = "name")
+	private String name;
+
+	public ProgramPOJO() {
+	}
 
 	public ProgramPOJO(String name, int min_duration, int max_duration, int min_credits, int max_credits,
 			int min_grade_points, float min_cpi, int min_foundation_course, int min_courses, int max_courses) {
@@ -59,7 +101,7 @@ public class ProgramPOJO {
 	public int getMin_grade_points() {
 		return min_grade_points;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

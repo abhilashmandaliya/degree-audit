@@ -21,11 +21,9 @@
 			jamfaadaudi
 		</property>
 
-		<!-- List of XML mapping files -->
-		<mapping resource="Program.hbm.xml" />
-		
 		<!-- entity classes -->
-		<mapping class="pojo.UserCategoryPOJO"/>
-		<mapping class="pojo.UserPOJO"/>		
+		<mapping class="pojo.UserCategoryPOJO" />
+		<mapping class="pojo.UserPOJO" />
+		<mapping class="pojo.ProgramPOJO" />
 	</session-factory>
 </hibernate-configuration>
