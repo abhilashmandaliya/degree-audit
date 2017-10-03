@@ -20,10 +20,12 @@
 		<property name="hibernate.connection.password">
 			jamfaadaudi
 		</property>
-
-		<!-- entity classes -->
+		
+		<!-- entity classes -->	
 		<mapping class="pojo.UserCategoryPOJO" />
 		<mapping class="pojo.UserPOJO" />
 		<mapping class="pojo.ProgramPOJO" />
+		<mapping class="pojo.CoursePOJO" />
 	</session-factory>
+	
 </hibernate-configuration>
