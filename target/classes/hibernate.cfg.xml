@@ -5,31 +5,12 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.dialect">
-            org.hibernate.dialect.MySQLDialect
+            org.hibernate.dialect.MySQL5InnoDBDialect
         </property>
         <property name="hibernate.connection.driver_class">
             com.mysql.jdbc.Driver
         </property>
 
-<<<<<<< HEAD
-		<property name="hibernate.connection.url">
-			jdbc:mysql://sen1.cedfeptfnkxz.ap-south-1.rds.amazonaws.com/sen1
-		</property>
-		<property name="hibernate.connection.username">
-			sen1
-		</property>
-		<property name="hibernate.connection.password">
-			jamfaadaudi
-		</property>
-		
-		<!-- entity classes -->	
-		<mapping class="pojo.UserCategoryPOJO" />
-		<mapping class="pojo.UserPOJO" />
-		<mapping class="pojo.ProgramPOJO" />
-		<mapping class="pojo.CoursePOJO" />
-	</session-factory>
-	
-=======
         <property name="hibernate.connection.url">
             jdbc:mysql://sen1.cedfeptfnkxz.ap-south-1.rds.amazonaws.com/sen1
         </property>
@@ -39,8 +20,8 @@
         <property name="hibernate.connection.password">
             jamfaadaudi
         </property>
-        <property name="hbm2ddl.auto">
-            create
+        <property name="hibernate.hbm2ddl.auto">
+            update
         </property>
         <!-- entity classes -->
         <mapping class="pojo.UserCategoryPOJO" />
@@ -49,5 +30,4 @@
         <mapping class="pojo.StudentPOJO" />
         <mapping class="pojo.GradeCard" />
     </session-factory>
->>>>>>> 887a26a4513aec3e2ddf88bcaf9f46495962bf78
 </hibernate-configuration>
