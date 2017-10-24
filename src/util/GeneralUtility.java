@@ -70,6 +70,7 @@ public final class GeneralUtility {
 			if (action != null) {
 				JsonParser parser = new JsonParser();
 				JsonArray roles = parser.parse(readAuthJSON()).getAsJsonArray();
+				System.out.println(roles.toString());
 				outer: for (JsonElement ele : roles) {
 					UserRole role = json.fromJson(ele, UserRole.class);
 					if (role.getRole().equalsIgnoreCase(category)) {
