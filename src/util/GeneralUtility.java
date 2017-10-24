@@ -3,6 +3,7 @@ package util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ public final class GeneralUtility {
 
 	private static GeneralUtility instance;
 	private static Gson json;
+	private final static String ACTION_REDIRECT = "controller/ActionRedirect.properties";
 
 	private GeneralUtility() {
 	}
@@ -83,5 +85,17 @@ public final class GeneralUtility {
 			}
 		}
 		return authenticated;
+	}
+
+	public static String getRedirect(HttpServletRequest request) throws IOException {
+		String mode = request.getParameter("mode");
+		if (mode == null || mode.equalsIgnoreCase("api")) {
+			return null;
+		}
+		String theAction = request.getParameter("action");
+		Properties map = new Properties();
+		map.load(instance.getClass().getClassLoader().getResourceAsStream(ACTION_REDIRECT));
+		String action_redirect = map.getProperty(theAction.toLowerCase());
+		return action_redirect;
 	}
 }

@@ -1,5 +1,7 @@
 package controller.action;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,9 +11,8 @@ import crud.UserCategoryCRUD;
 public class AddUserCategory implements Action {
 
 	@Override
-	public String perform(HttpServletRequest request, HttpServletResponse response) {
-		Integer id = new UserCategoryCRUD().create(request);
-		return String.valueOf(id);
+	public String perform(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		return new UserCategoryCRUD().create(request).toString();
 	}
 
 }

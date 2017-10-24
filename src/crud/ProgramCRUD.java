@@ -1,5 +1,6 @@
 package crud;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +17,9 @@ import util.Response;
 public class ProgramCRUD extends CRUDCore {
 
 	@Override
-	public Integer create(HttpServletRequest request) {		
+	public Response create(HttpServletRequest request) throws IOException {
 		Integer id = null;
 		try {
-//			tx = session.beginTransaction();
 			String name = request.getParameter("name");
 			Integer min_duration = Integer.parseInt(request.getParameter("min_duration"));
 			Integer max_duration = Integer.parseInt(request.getParameter("max_duration"));
@@ -34,6 +34,7 @@ public class ProgramCRUD extends CRUDCore {
 					min_grade_points, min_cpi, min_foundation_course, min_courses, max_courses);
 			id = (Integer) session.save(program);
 			tx.commit();
+			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -41,11 +42,11 @@ public class ProgramCRUD extends CRUDCore {
 		} finally {
 			session.close();
 		}
-		return id;
+		return response;
 	}
 
 	@Override
-	public Object retrive(HttpServletRequest request) {
+	public Object retrive(HttpServletRequest request) throws IOException {
 		Response response = null;
 		try {
 			List<ProgramPOJO> programs = session.createQuery("FROM ProgramPOJO").list();
@@ -60,13 +61,13 @@ public class ProgramCRUD extends CRUDCore {
 	}
 
 	@Override
-	public Integer update(HttpServletRequest request) {
+	public Response update(HttpServletRequest request) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Integer delete(HttpServletRequest request) {
+	public Response delete(HttpServletRequest request) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

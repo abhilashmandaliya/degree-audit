@@ -1,5 +1,7 @@
 package controller.action;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,9 +11,8 @@ import crud.UserCRUD;
 public class AddUser implements Action {
 
 	@Override
-	public String perform(HttpServletRequest request, HttpServletResponse response) {
-		Integer id = new UserCRUD().create(request);
-		return String.valueOf(id);
+	public String perform(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		return new UserCRUD().create(request).toString();
 	}
 
 }

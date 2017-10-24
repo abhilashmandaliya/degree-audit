@@ -1,5 +1,7 @@
 package crud;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
@@ -8,12 +10,14 @@ import org.hibernate.Transaction;
 
 import pojo.UserCategoryPOJO;
 import util.CRUD;
+import util.GeneralUtility;
 import util.HibernateSessionFactory;
+import util.Response;
 
-public class UserCategoryCRUD implements CRUD {
+public class UserCategoryCRUD extends CRUDCore {
 
 	@Override
-	public Integer create(HttpServletRequest request) {
+	public Response create(HttpServletRequest request) throws IOException {
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = null;
 		Integer id = null;
@@ -23,6 +27,7 @@ public class UserCategoryCRUD implements CRUD {
 			UserCategoryPOJO userCategory = new UserCategoryPOJO(category);
 			id = (Integer) session.save(userCategory);
 			tx.commit();
+			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 		} catch (HibernateException e) {
 			if (tx != null) {
 				tx.rollback();
@@ -31,7 +36,7 @@ public class UserCategoryCRUD implements CRUD {
 		} finally {
 			session.close();
 		}
-		return id;
+		return response;
 	}
 
 	@Override
@@ -40,13 +45,13 @@ public class UserCategoryCRUD implements CRUD {
 	}
 
 	@Override
-	public Integer update(HttpServletRequest request) {
+	public Response update(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Integer delete(HttpServletRequest request) {
+	public Response delete(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}

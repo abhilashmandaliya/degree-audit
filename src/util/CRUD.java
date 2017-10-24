@@ -1,13 +1,15 @@
 package util;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 public interface CRUD {
-	public Integer create(HttpServletRequest request);
+	public Response create(HttpServletRequest request) throws IOException;
 
-	public Object retrive(HttpServletRequest request);
+	public Object retrive(HttpServletRequest request) throws IOException;
 
-	public Integer update(HttpServletRequest request);
+	public Response update(HttpServletRequest request) throws IOException;
 
-	public Integer delete(HttpServletRequest request);
+	public Response delete(HttpServletRequest request) throws IOException;
 }

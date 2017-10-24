@@ -1,5 +1,6 @@
 package crud;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,16 +20,13 @@ import pojo.UserCategoryPOJO;
 import pojo.UserPOJO;
 
 import util.GeneralUtility;
+import util.Response;
 import util.UserRole;
 
 public class UserCRUD extends CRUDCore {
 
-	public UserCRUD() {
-		response = GeneralUtility.generateUnauthorizedResponse();
-	}
-
 	@Override
-	public Integer create(HttpServletRequest request) {
+	public Response create(HttpServletRequest request) throws IOException {
 		Integer id = null;
 		try {
 			String username = request.getParameter("username");
@@ -39,6 +37,7 @@ public class UserCRUD extends CRUDCore {
 			UserPOJO user = new UserPOJO(username, password, category, is_active);
 			id = (Integer) session.save(user);
 			tx.commit();
+			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -46,7 +45,7 @@ public class UserCRUD extends CRUDCore {
 		} finally {
 			session.close();
 		}
-		return id;
+		return response;
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class UserCRUD extends CRUDCore {
 			criteria.select(userPOJORoot);
 			criteria.where(builder.equal(userPOJORoot.get("username"), username));
 			List<UserPOJO> users = session.createQuery(criteria).getResultList();
-			if (!users.isEmpty()) {
+			if (!users.isEmpty()) {				
 				UserPOJO userPOJO = users.get(0);
 				String hashed = userPOJO.getPassword();
 				if (BCrypt.checkpw(password, hashed)) {
@@ -72,14 +71,13 @@ public class UserCRUD extends CRUDCore {
 					for (JsonElement element : data) {
 						UserRole role = json.fromJson(element, UserRole.class);
 						if (role.getRole().equalsIgnoreCase(category)) {
-							System.out.println("hello");
 							response = GeneralUtility.generateSuccessResponse(role.getHome(), null);
 							break;
 						}
 					}
 					HttpSession session = request.getSession();
 					session.setAttribute("userCategory", category);
-				}				
+				}
 			}
 		} catch (HibernateException e) {
 			if (tx != null) {
@@ -93,13 +91,13 @@ public class UserCRUD extends CRUDCore {
 	}
 
 	@Override
-	public Integer update(HttpServletRequest request) {
+	public Response update(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Integer delete(HttpServletRequest request) {
+	public Response delete(HttpServletRequest request) {
 		// TODO Auto-generated method stub
 		return null;
 	}
