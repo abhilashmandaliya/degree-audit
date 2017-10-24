@@ -72,6 +72,7 @@ public class UserCRUD extends CRUDCore {
 					for (JsonElement element : data) {
 						UserRole role = json.fromJson(element, UserRole.class);
 						if (role.getRole().equalsIgnoreCase(category)) {
+							System.out.println("hello");
 							response = GeneralUtility.generateSuccessResponse(role.getHome(), null);
 							break;
 						}

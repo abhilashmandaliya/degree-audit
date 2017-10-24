@@ -16,12 +16,10 @@ import util.Response;
 public class ProgramCRUD extends CRUDCore {
 
 	@Override
-	public Integer create(HttpServletRequest request) {
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = null;
+	public Integer create(HttpServletRequest request) {		
 		Integer id = null;
 		try {
-			tx = session.beginTransaction();
+//			tx = session.beginTransaction();
 			String name = request.getParameter("name");
 			Integer min_duration = Integer.parseInt(request.getParameter("min_duration"));
 			Integer max_duration = Integer.parseInt(request.getParameter("max_duration"));
