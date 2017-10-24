@@ -1,5 +1,6 @@
 package crud;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ import util.Response;
 public class CourseCRUD extends CRUDCore {
 
 	@Override
-	public Integer create(HttpServletRequest request) {
+	public Response create(HttpServletRequest request) throws IOException {
 		
 		Integer id = null;
 		
@@ -30,6 +31,7 @@ public class CourseCRUD extends CRUDCore {
 			id = (Integer) session.save(course_obj);
 			System.out.println(id);
 			tx.commit();
+			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -37,7 +39,7 @@ public class CourseCRUD extends CRUDCore {
 		} finally {
 			session.close();
 		}
-		return id;
+		return response;
 	}
 
 	@Override
@@ -53,6 +55,18 @@ public class CourseCRUD extends CRUDCore {
 			session.close();
 		}
 		return response.toString();
+	}
+
+	@Override
+	public Response update(HttpServletRequest request) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response delete(HttpServletRequest request) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
