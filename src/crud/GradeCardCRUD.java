@@ -1,5 +1,6 @@
 package crud;
 
+import java.io.IOException;
 import pojo.GradeCard;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import util.Response;
 public class GradeCardCRUD extends CRUDCore {
 
     @Override
-    public Integer delete(HttpServletRequest request) {
+    public Response delete(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
@@ -28,6 +29,7 @@ public class GradeCardCRUD extends CRUDCore {
             double total_credit = Double.valueOf(request.getParameter("total_credit"));
             double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
             GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
             try {
                 session.delete(gc);
                 id = 1;
@@ -43,11 +45,11 @@ public class GradeCardCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 
     @Override
-    public Integer update(HttpServletRequest request) {
+    public Response update(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
@@ -60,6 +62,7 @@ public class GradeCardCRUD extends CRUDCore {
             double total_credit = Double.valueOf(request.getParameter("total_credit"));
             double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
             GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
             try {
                 session.update(gc);
                 id = 1;
@@ -75,11 +78,11 @@ public class GradeCardCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 
     @Override
-    public Object retrive(HttpServletRequest request) {
+    public Object retrive(HttpServletRequest request)throws IOException {
         Response response = null;
         try {
             long student_id = Long.valueOf(request.getParameter("student_id"));
@@ -118,7 +121,7 @@ public class GradeCardCRUD extends CRUDCore {
     }
 
     @Override
-    public Integer create(HttpServletRequest request) {
+    public Response create(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
@@ -131,6 +134,7 @@ public class GradeCardCRUD extends CRUDCore {
             double total_credit = Double.valueOf(request.getParameter("total_credit"));
             double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
             GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
             try {
                 id = (Integer) session.save(gc);
             } catch (Exception e) {
@@ -145,7 +149,7 @@ public class GradeCardCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 
 }

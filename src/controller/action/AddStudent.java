@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.Action;
 import crud.StudentCRUD;
+import java.io.IOException;
 
 public class AddStudent implements Action {
 
     @Override
-    public String perform(HttpServletRequest request, HttpServletResponse response) {
+    public String perform(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("in aaaaaaaaaa final");
-        Integer id = new StudentCRUD().create(request);
-        return String.valueOf(id);
+        return new StudentCRUD().create(request).toString();
     }
 }
