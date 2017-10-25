@@ -27,6 +27,7 @@
         <mapping class="pojo.UserCategoryPOJO" />
         <mapping class="pojo.UserPOJO" />
         <mapping class="pojo.ProgramPOJO" />
+        <mapping class="pojo.CoursePOJO" />
         <mapping class="pojo.StudentPOJO" />
         <mapping class="pojo.GradeCard" />
     </session-factory>
