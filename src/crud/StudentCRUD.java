@@ -1,5 +1,6 @@
 package crud;
 
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,11 +17,14 @@ import util.Response;
 public class StudentCRUD extends CRUDCore {
 
     @Override
-    public Integer create(HttpServletRequest request) {
+    public Response create(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
+            if (session == null) {
+                session = HibernateSessionFactory.getSession();
+            }
             tx = session.beginTransaction();
             String s_name = request.getParameter("student_name");
             System.err.println("nannanananannnnne,ee " + s_name);
@@ -34,6 +38,7 @@ public class StudentCRUD extends CRUDCore {
                 id = 1;
             }
             tx.commit();
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -42,7 +47,7 @@ public class StudentCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 
     @Override
@@ -81,7 +86,7 @@ public class StudentCRUD extends CRUDCore {
     }
 
     @Override
-    public Integer update(HttpServletRequest request) {
+    public Response update(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
@@ -95,11 +100,12 @@ public class StudentCRUD extends CRUDCore {
             StudentPOJO student = new StudentPOJO(s_id, s_name, p_id, year_of_enrolment);
             try {
                 session.update(student);
+                id = 1;
             } catch (Exception e) {
                 id = -1;
             }
             tx.commit();
-            id = 1;
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -109,11 +115,11 @@ public class StudentCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 
     @Override
-    public Integer delete(HttpServletRequest request) {
+    public Response delete(HttpServletRequest request) throws IOException {
         Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
@@ -128,11 +134,12 @@ public class StudentCRUD extends CRUDCore {
                 Integer year_of_enrolment = Integer.parseInt(request.getParameter("year_of_enrolment"));
                 StudentPOJO student = new StudentPOJO(s_id, s_name, p_id, year_of_enrolment);
                 session.delete(student);
+                id = 1;
+                response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
             } catch (Exception e) {
                 id = -1;
             }
             tx.commit();
-            id = 1;
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -142,6 +149,6 @@ public class StudentCRUD extends CRUDCore {
         } finally {
             session.close();
         }
-        return id;
+        return response;
     }
 }

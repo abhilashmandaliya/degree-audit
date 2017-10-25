@@ -24,9 +24,9 @@ public class Controller extends HttpServlet {
 		String data = action.perform(request, response);
 		Gson json = new Gson();
 		Response next = json.fromJson(data, Response.class);
-		response.addHeader("Access-Control-Allow-Origin","*");
-	    response.addHeader("Access-Control-Allow-Methods","GET,POST");
-	    response.addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Methods", "GET,POST");
+		response.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		if (next.getRedirect() != null) {
 			RequestDispatcher rd = request.getRequestDispatcher(next.getRedirect());
 			rd.forward(request, response);
