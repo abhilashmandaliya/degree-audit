@@ -7,6 +7,7 @@ package controller.action;
 
 import controller.Action;
 import crud.StudentCRUD;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,9 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteStudent implements Action {
 
     @Override
-    public String perform(HttpServletRequest request, HttpServletResponse response) {
-        Integer id = new StudentCRUD().delete(request);
-        return String.valueOf(id);
+    public String perform(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return new StudentCRUD().delete(request).toString();
     }
 
 }
