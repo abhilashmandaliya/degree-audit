@@ -16,46 +16,48 @@ import util.ObjectCreator;
 import util.Response;
 
 public class Controller extends HttpServlet {
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 
-		String theAction = request.getParameter("action");
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		if (theAction == null)
-			theAction = "viewcat";
-		System.out.println(theAction);
-		Action action = getActionFromConfig(theAction);
-		String data = action.perform(request, response);
-		Gson json = new Gson();
-		Response next = json.fromJson(data, Response.class);
-		if (next.getRedirect() != null) {
-			RequestDispatcher rd = request.getRequestDispatcher(next.getRedirect());
-			rd.forward(request, response);
-		} else {
-			response.getWriter().write(data);
-		}
-	}
+        String theAction = request.getParameter("action");
 
-	private Action getActionFromConfig(String theAction) throws ServletException, IOException {
-		Properties map = new Properties();
-		map.load(this.getClass().getClassLoader().getResourceAsStream(ACTION_MAPPING));
+        if (theAction == null) {
+            theAction = "viewcat";
+        }
+        System.out.println(theAction);
+        Action action = getActionFromConfig(theAction);
+        String data = action.perform(request, response);
+        Gson json = new Gson();
+        Response next = json.fromJson(data, Response.class);
+        if (next.getRedirect() != null) {
+            RequestDispatcher rd = request.getRequestDispatcher(next.getRedirect());
+            rd.forward(request, response);
+        } else {
+            response.getWriter().write(data);
+        }
+    }
 
-		String action_class = map.getProperty(theAction.toLowerCase());
-		Action action = (Action) ObjectCreator.createObject(action_class);
-		return action;
-	}
+    private Action getActionFromConfig(String theAction) throws ServletException, IOException {
+        Properties map = new Properties();
+        map.load(this.getClass().getClassLoader().getResourceAsStream(ACTION_MAPPING));
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
-	}
+        String action_class = map.getProperty(theAction.toLowerCase());
+        Action action = (Action) ObjectCreator.createObject(action_class);
+        return action;
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
 
-	private final static String ACTION_MAPPING = "controller/ActionMapping.properties";
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    private final static String ACTION_MAPPING = "controller/ActionMapping.properties";
 }

@@ -22,6 +22,9 @@ public class StudentCRUD extends CRUDCore {
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
+            if (session == null) {
+                session = HibernateSessionFactory.getSession();
+            }
             tx = session.beginTransaction();
             String s_name = request.getParameter("student_name");
             System.err.println("nannanananannnnne,ee " + s_name);
