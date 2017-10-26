@@ -3,31 +3,32 @@
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">
-            org.hibernate.dialect.MySQL5InnoDBDialect
-        </property>
-        <property name="hibernate.connection.driver_class">
-            com.mysql.jdbc.Driver
-        </property>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.MySQL5InnoDBDialect
+		</property>
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
 
-        <property name="hibernate.connection.url">
-            jdbc:mysql://localhost:3306/sen
-        </property>
-        <property name="hibernate.connection.username">
-            dipak
-        </property>
-        <property name="hibernate.connection.password">
-            deepak
-        </property>
-        <property name="hibernate.hbm2ddl.auto">
-            update
-        </property>
-        <!-- entity classes -->
-        <mapping class="pojo.UserCategoryPOJO" />
-        <mapping class="pojo.UserPOJO" />
-        <mapping class="pojo.ProgramPOJO" />
-        <mapping class="pojo.StudentPOJO" />
-        <mapping class="pojo.GradeCard" />
-    </session-factory>
+		<property name="hibernate.connection.url">
+			jdbc:mysql://sen1.cedfeptfnkxz.ap-south-1.rds.amazonaws.com/sen1
+		</property>
+		<property name="hibernate.connection.username">
+			sen1
+		</property>
+		<property name="hibernate.connection.password">
+			jamfaadaudi
+		</property>
+		<property name="hibernate.hbm2ddl.auto">
+			update
+		</property>
+		<!-- entity classes -->
+		<mapping class="pojo.UserCategoryPOJO" />
+		<mapping class="pojo.UserPOJO" />
+		<mapping class="pojo.ProgramPOJO" />
+		<mapping class="pojo.CoursePOJO" />
+		<mapping class="pojo.StudentPOJO" />
+		<mapping class="pojo.GradeCard" />
+	</session-factory>
 </hibernate-configuration>

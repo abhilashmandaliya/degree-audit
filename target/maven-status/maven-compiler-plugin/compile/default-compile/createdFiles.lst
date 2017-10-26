@@ -1,3 +1,4 @@
+util/NewClass.class
 crud/StudentCRUD.class
 crud/UserCRUD.class
 controller/action/AllStudent.class
@@ -6,6 +7,7 @@ pojo/StudentPOJO.class
 util/GeneralUtility.class
 controller/action/DeleteStudent.class
 pojo/GradeCard.class
+util/HibernateSessionFactory.class
 controller/action/GetProgram.class
 controller/action/LoginUser.class
 util/CRUD.class
@@ -26,10 +28,12 @@ controller/action/AddUser.class
 pojo/ProgramPOJO.class
 controller/action/AddUserCategory.class
 controller/action/AddGradeCard.class
+crud/CourseCRUD.class
 controller/action/AddStudent.class
 controller/action/DeleteGradeCard.class
 util/Response.class
 crud/GradeCardUtility.class
+controller/action/AddCourse.class
 controller/Action.class
 controller/action/getStudentGradeCard.class
 util/ObjectCreator.class
