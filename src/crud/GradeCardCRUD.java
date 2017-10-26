@@ -146,7 +146,6 @@ public class GradeCardCRUD extends CRUDCore {
             } catch (Exception e) {
                 id = -1;
             }
-            tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -154,6 +153,7 @@ public class GradeCardCRUD extends CRUDCore {
             e.printStackTrace();
         } finally {
             if (session.isOpen()) {
+                tx.commit();
                 session.close();
             };
         }
