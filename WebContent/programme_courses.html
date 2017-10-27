@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand col-3" href="dashboard.html"><img class="logo" src="img/logo1.png"/><b> DEGREE AUDIT</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse col-9" id="navbarNavDropdown">
+    <ul class="navbar-nav col-1"></ul>
+    <ul class="navbar-nav col-5">
+      <li><a class="nav-link" href="programme_courses.html">Courses</a></li>
+      <li><a class="nav-link" href="#" name="prgstr">Program Structure</a></li>
+      <li><a class="nav-link" href="student_detail.html">Student Details</a></li>
+    </ul>
+    <ul class="navbar-nav col-4"></ul>
+    <ul class="navbar-nav col-2 align-items-end">
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br>
+<br>
+    <div class="container-fluid">
+      <div class="row-10">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <table class="table table-hover" id="semesterTable">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Course Id</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-danger" type="button">Remove</button></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-danger" type="button">Remove</button>
+                  </tr>
+                </tbody>
+              </table>
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#">Previous</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">4</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="col-sm-6">
+              <table class="table table-hover" id="masterList">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Course Id</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-primary" type="button">Add</button>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-primary" type="button">Add</button>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-primary" type="button">Add</button> </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>ab 123</td>
+                    <td>xyzabc</td>
+                    <td>0-0-4</td>
+                    <td><button class=" btn btn-primary" type="button">Add</button> </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Scripts -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="js/programme.js"></script>
+  </body>
+</html>
