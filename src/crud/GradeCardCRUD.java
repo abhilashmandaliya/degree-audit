@@ -17,11 +17,11 @@ public class GradeCardCRUD extends CRUDCore {
 
     @Override
     public Response delete(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             long student_id = Long.valueOf(request.getParameter("student_id"));
             int course_id = Integer.valueOf(request.getParameter("course_id"));
             short semester = Short.valueOf(request.getParameter("semester"));
@@ -43,18 +43,20 @@ public class GradeCardCRUD extends CRUDCore {
             }
             e.printStackTrace();
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return response;
     }
 
     @Override
     public Response update(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             long student_id = Long.valueOf(request.getParameter("student_id"));
             int course_id = Integer.valueOf(request.getParameter("course_id"));
             short semester = Short.valueOf(request.getParameter("semester"));
@@ -62,27 +64,31 @@ public class GradeCardCRUD extends CRUDCore {
             double total_credit = Double.valueOf(request.getParameter("total_credit"));
             double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
             GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
-            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
+
             try {
                 session.update(gc);
                 id = 1;
             } catch (Exception e) {
                 id = -1;
             }
-            tx.commit();
+            response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
+            //tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                tx.commit();
+                session.close();
+            }
         }
         return response;
     }
 
     @Override
-    public Object retrive(HttpServletRequest request)throws IOException {
+    public Object retrive(HttpServletRequest request) throws IOException {
         Response response = null;
         try {
             long student_id = Long.valueOf(request.getParameter("student_id"));
@@ -122,11 +128,11 @@ public class GradeCardCRUD extends CRUDCore {
 
     @Override
     public Response create(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             long student_id = Long.valueOf(request.getParameter("student_id"));
             int course_id = Integer.valueOf(request.getParameter("course_id"));
             short semester = Short.valueOf(request.getParameter("semester"));
@@ -140,14 +146,16 @@ public class GradeCardCRUD extends CRUDCore {
             } catch (Exception e) {
                 id = -1;
             }
-            tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                tx.commit();
+                session.close();
+            };
         }
         return response;
     }

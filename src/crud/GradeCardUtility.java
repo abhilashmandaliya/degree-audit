@@ -30,11 +30,11 @@ public class GradeCardUtility {
     }
 
     public Object getStudentGradeCard(HttpServletRequest request) {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         response = null;
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             String student_id = request.getParameter("student_id");
             //String course_id = request.getParameter("course_id");
             String semester = request.getParameter("semester");
