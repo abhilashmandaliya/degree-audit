@@ -18,14 +18,11 @@ public class StudentCRUD extends CRUDCore {
 
     @Override
     public Response create(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            if (session == null) {
-                session = HibernateSessionFactory.getSession();
-            }
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             String s_name = request.getParameter("student_name");
             System.err.println("nannanananannnnne,ee " + s_name);
             Long s_id = Long.parseLong(request.getParameter("student_id"));
@@ -37,7 +34,6 @@ public class StudentCRUD extends CRUDCore {
             } catch (Exception e) {
                 id = 1;
             }
-            tx.commit();
             response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
         } catch (HibernateException e) {
             if (tx != null) {
@@ -45,7 +41,10 @@ public class StudentCRUD extends CRUDCore {
             }
             e.printStackTrace();
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                tx.commit();
+                session.close();
+            }
         }
         return response;
     }
@@ -87,11 +86,11 @@ public class StudentCRUD extends CRUDCore {
 
     @Override
     public Response update(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             String s_name = request.getParameter("student_name");
             System.err.println("nannanananannnnne,ee " + s_name);
             Long s_id = Long.parseLong(request.getParameter("student_id"));
@@ -113,18 +112,20 @@ public class StudentCRUD extends CRUDCore {
             e.printStackTrace();
             id = -1;
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return response;
     }
 
     @Override
     public Response delete(HttpServletRequest request) throws IOException {
-        Transaction tx = null;
+        //Transaction tx = null;
         Integer id = null;
         System.out.println("in crud man -----------");
         try {
-            tx = session.beginTransaction();
+            //tx = session.beginTransaction();
             Long s_id = Long.parseLong(request.getParameter("student_id"));
 
             try {
@@ -147,7 +148,9 @@ public class StudentCRUD extends CRUDCore {
             e.printStackTrace();
             id = -1;
         } finally {
-            session.close();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return response;
     }
