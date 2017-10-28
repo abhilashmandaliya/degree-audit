@@ -55,9 +55,13 @@ public class StudentCRUD extends CRUDCore {
         try {
             long s_id = Integer.valueOf(request.getParameter("student_id"));
             try {
-                String hql = "FROM StudentPOJO s WHERE s.student_id = " + s_id;
+                String hql = "FROM StudentPOJO s WHERE s.student_id =" + s_id;
                 Query query = session.createQuery(hql);
                 List<StudentPOJO> programs = query.list();
+                
+                StudentPOJO s1 = programs.get(0);
+                System.out.println(s1.getStudent_name() + " ***********************");
+                
                 response = GeneralUtility.generateSuccessResponse(null, programs);
             } catch (HibernateException e) {
                 tx.rollback();
@@ -68,6 +72,8 @@ public class StudentCRUD extends CRUDCore {
                 }
             }
         } catch (Exception e1) {
+            System.err.println(e1);
+            System.err.println("unexpected error encounter.");
             try {
                 List<StudentPOJO> programs = session.createQuery("FROM StudentPOJO").list();
                 System.err.println("List size " + programs.size());
