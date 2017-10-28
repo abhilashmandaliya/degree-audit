@@ -32,10 +32,13 @@ public class UserCRUD extends CRUDCore {
 		try {
 			String username = request.getParameter("username");
 			String password = BCrypt.hashpw(request.getParameter("password"), BCrypt.gensalt(12));
+			String first_name = request.getParameter("first_name");
+			String last_name = request.getParameter("last_name");
+			String email = request.getParameter("email");
 			UserCategoryPOJO category = session.get(UserCategoryPOJO.class,
 					Integer.parseInt(request.getParameter("category")));
 			short is_active = 1;
-			UserPOJO user = new UserPOJO(username, password, category, is_active);
+			UserPOJO user = new UserPOJO(username, password, category, is_active, first_name, last_name, email);
 			id = (Integer) session.save(user);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
