@@ -17,7 +17,7 @@ public class GradeCard {
 
     @Id
     @Column(name = "course_id")
-    private int course_id;
+    private String course_id;
 
     @Id
     @Column(name = "semester")
@@ -35,7 +35,7 @@ public class GradeCard {
     public GradeCard() {
     }
 
-    public GradeCard(long student_id, int course_id, short semester, boolean status, double total_grade, double obtain_grade) {
+    public GradeCard(long student_id, String course_id, short semester, boolean status, double total_grade, double obtain_grade) {
         this.student_id = student_id;
         this.course_id = course_id;
         this.semester = semester;
@@ -52,11 +52,11 @@ public class GradeCard {
         this.student_id = student_id;
     }
 
-    public int getCourse_id() {
+    public String getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(int course_id) {
+    public void setCourse_id(String course_id) {
         this.course_id = course_id;
     }
 

@@ -7,11 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 
 public class getStudentGradeCard implements Action {
 
-    @Override
-    public String perform(HttpServletRequest request, HttpServletResponse response) {
-        String data = (String) new GradeCardUtility().getStudentGradeCard(request);
-        System.err.println("data " + data);
-        return data;
-    }
+	@Override
+	public String perform(HttpServletRequest request, HttpServletResponse response) {
+
+		// String data = (String) new
+		// GradeCardUtility().getStudentGradeCardBySemester(request);
+		// System.err.println("data " + data); return data;
+
+		return new GradeCardUtility().getStudentGradeCardBySemester(request).toString();
+	}
 
 }
