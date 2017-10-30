@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 
   <body>
@@ -54,25 +54,8 @@
             <th>Credits</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>ab 123</td>
-            <td>xyzabc</td>
-            <td>0-0-4</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>ab 123</td>
-            <td>xyzabc</td>
-            <td>0-0-4</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>ab 123</td>
-            <td>xyzabc</td>
-            <td>0-0-4</td>
-          </tr>
+        <tbody class="courseTableData">
+          
         </tbody>
       </table>
     </div>
@@ -82,7 +65,12 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <!-- Custom Scripts -->
-    <script type="text/javascript" src="js/navbar.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			getCourseTableData();
+		});
+	</script>
   </body>
 
 </html>
