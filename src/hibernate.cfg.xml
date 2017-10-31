@@ -30,6 +30,7 @@
 		<mapping class="pojo.CoursePOJO" />
 		<mapping class="pojo.StudentPOJO" />
 		<mapping class="pojo.GradeCard" />
+		<mapping class="pojo.Audit_Report"/>
 		<mapping class="pojo.CourseProgramPOJO" />
 		<mapping class="pojo.ProgramCoordinatorPOJO" />
 		<mapping class="pojo.CourseCategoryPOJO" />
