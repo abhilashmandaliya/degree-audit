@@ -6,32 +6,23 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import pojo.CourseCategoryPOJO;
-import pojo.CoursePOJO;
 import pojo.ProgramPOJO;
 import util.GeneralUtility;
-import util.HibernateSessionFactory;
 import util.Response;
 
-public class CourseCRUD extends CRUDCore {
+public class CourseCategoryCRUD extends CRUDCore {
 
 	@Override
 	public Response create(HttpServletRequest request) throws IOException {
-		
 		Integer id = null;
-		
+
 		try {
-//			tx = session.beginTransaction();
-			String course_name = request.getParameter("course_name");
-			String course_id = request.getParameter("course_id");
-			Integer course_credits = Integer.parseInt(request.getParameter("course_credits"));
-			CourseCategoryPOJO course_cat_pojo = session.get(CourseCategoryPOJO.class,Integer.parseInt(request.getParameter("course_category")));
-			CoursePOJO course_obj = new CoursePOJO(course_name, course_id, course_credits, course_cat_pojo);
-			id = (Integer) session.save(course_obj);
-			System.out.println(id);
+			String course_cat_name = request.getParameter("course_cat_name");
+			String course_cat_code = request.getParameter("course_cat_code");
+			CourseCategoryPOJO courseCat = new CourseCategoryPOJO(course_cat_name, course_cat_code);
+			id = (Integer) session.save(courseCat);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 		} catch (HibernateException e) {
@@ -45,11 +36,11 @@ public class CourseCRUD extends CRUDCore {
 	}
 
 	@Override
-	public Object retrive(HttpServletRequest request) {
+	public Object retrive(HttpServletRequest request) throws IOException {
 		Response response = null;
 		try {
-			List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO").list();
-			response = GeneralUtility.generateSuccessResponse(null, courses);
+			List<CourseCategoryPOJO> course_cats = session.createQuery("FROM CourseCategoryPOJO").list();
+			response = GeneralUtility.generateSuccessResponse(null, course_cats);
 		} catch (HibernateException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -61,16 +52,14 @@ public class CourseCRUD extends CRUDCore {
 
 	@Override
 	public Response update(HttpServletRequest request) throws IOException {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public Response delete(HttpServletRequest request) throws IOException {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
-	
-	
 
 }

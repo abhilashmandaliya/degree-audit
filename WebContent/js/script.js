@@ -54,13 +54,13 @@ function login(){
         success: function(result){
         	console.log(result);
         	if(result.statusCode==200){
-        		if(result.data.category=="admin"){
+        		if(result.data.userCategory.category=="admin"){
         			$(location).attr("href","programme_list.html");
         		}
-        		else if(result.data.category=="coordinator"){
+        		else if(result.data.userCategory.category=="coordinator"){
         			$(location).attr("href","programme_courses.html");
             	}
-        		else if(result.data.category=="student"){
+        		else if(result.data.userCategory.category=="student"){
         			$(location).attr("href","student_profile.html");
             	}
         	}
@@ -91,27 +91,3 @@ function getCourseTableData() {
 	    }
 	  });
 	}
-
-//$("#courses").click(function(e){
-//  e.preventDefault();
-//  window.location.href='course_list.html';
-//});
-//
-//
-//function getPage(a){
-//  if(a=='prgstr'){
-//    $.ajax({
-//      url:'programme_str.html',
-//      success:function(data){
-//        $("#dataarea").html(data);
-//      }
-//    });
-//  }else if (a=='programme') {
-//    $.ajax({
-//      url:'programme.html',
-//      success:function(data){
-//        $("#dataarea").html(data);
-//      }
-//    });
-//  }
-//}
