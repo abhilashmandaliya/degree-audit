@@ -53,7 +53,7 @@ public class Controller extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+		    processRequest(request, response);
 	}
 
 	private final static String ACTION_MAPPING = "controller/ActionMapping.properties";
