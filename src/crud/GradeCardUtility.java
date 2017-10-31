@@ -1,8 +1,17 @@
 package crud;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import pojo.GradeCard;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.HibernateException;
@@ -17,74 +26,164 @@ import util.Response;
 
 public class GradeCardUtility {
 
-    protected Session session;
-    protected Transaction tx;
-    protected Response response;
-    protected Gson json;
+	protected Session session;
+	protected Transaction tx;
+	protected Response response;
+	protected Gson json;
 
-    public GradeCardUtility() {
-        session = HibernateSessionFactory.getSession();
-        tx = session.beginTransaction();
-        response = new Response();
-        json = new Gson();
-    }
+	public GradeCardUtility() {
+		session = HibernateSessionFactory.getSession();
+		tx = session.beginTransaction();
+		response = new Response();
+		json = new Gson();
+	}
 
-    public Object getStudentGradeCard(HttpServletRequest request) {
-        //Transaction tx = null;
-        Integer id = null;
-        response = null;
-        try {
-            //tx = session.beginTransaction();
-            String student_id = request.getParameter("student_id");
-            //String course_id = request.getParameter("course_id");
-            String semester = request.getParameter("semester");
-            String hql = null;
-            List resuList = null;
+	// public Object getStudentGradeCard(HttpServletRequest request) {
+	// // Transaction tx = null;
+	// Integer id = null;
+	// response = null;
+	// try {
+	// // tx = session.beginTransaction();
+	// String student_id = request.getParameter("student_id");
+	// // String course_id = request.getParameter("course_id");
+	// String semester = request.getParameter("semester");
+	// String hql = null;
+	// List resuList = null;
+	//
+	// if (semester == null) {
+	// /*
+	// * hql =
+	// * "select student_id, semester, sum(obtain_grade) as obtain_total,
+	// sum(total_grade) as total_grade from grade_card "
+	// * + "where student_id = " + Long.valueOf(student_id) +
+	// * " group by semester,student_id;";
+	// */
+	// resuList = session.createCriteria(GradeCard.class)
+	// .add(Restrictions.eq("student_id", Long.valueOf(student_id)))
+	// .setProjection(Projections.projectionList().add(Projections.groupProperty("student_id"))
+	// .add(Projections.groupProperty("semester")).add(Projections.sum("obtain_grade"))
+	// .add(Projections.sum("total_grade")))
+	// .list();
+	// } else {
+	// /*
+	// * hql =
+	// * "select student_id, semester, sum(obtain_grade) as obtain_total,
+	// sum(total_grade) as total_grade from grade_card "
+	// * + "where student_id = " + Long.valueOf(student_id) + " and semester = " +
+	// * Short.valueOf(semester) + " group by semester,student_id;";
+	// */
+	// resuList = session.createCriteria(GradeCard.class)
+	// .add(Restrictions.eq("student_id", Long.valueOf(student_id)))
+	// .add(Restrictions.eq("semester", Short.valueOf(semester)))
+	// .setProjection(Projections.projectionList().add(Projections.groupProperty("student_id"))
+	// .add(Projections.groupProperty("semester")).add(Projections.sum("obtain_grade"))
+	// .add(Projections.sum("total_grade")))
+	// .list();
+	// }
+	//
+	// /*
+	// * Query query = session.createSQLQuery(hql); List<Object[]> list =
+	// * query.list(); for (Object[] arr : list) {
+	// * System.out.println(Arrays.toString(arr)); }
+	// */
+	// response = GeneralUtility.generateSuccessResponse(null, resuList);
+	// tx.commit();
+	// } catch (NumberFormatException | HibernateException e1) {
+	// tx.rollback();
+	// } finally {
+	// if (session.isOpen()) {
+	// session.close();
+	// }
+	// }
+	// return response.toString();
+	// }
 
-            if (semester == null) {
-                /*hql = "select student_id, semester, sum(obtain_grade) as obtain_total, sum(total_grade) as total_grade from grade_card "
-                        + "where student_id = " + Long.valueOf(student_id) + " group by semester,student_id;"; */
-                resuList = session.createCriteria(GradeCard.class)
-                        .add(Restrictions.eq("student_id", Long.valueOf(student_id)))
-                        .setProjection(
-                                Projections.projectionList()
-                                        .add(Projections.groupProperty("student_id"))
-                                        .add(Projections.groupProperty("semester"))
-                                        .add(Projections.sum("obtain_grade"))
-                                        .add(Projections.sum("total_grade"))
-                        )
-                        .list();
-            } else {
-                /* hql = "select student_id, semester, sum(obtain_grade) as obtain_total, sum(total_grade) as total_grade from grade_card "
-                        + "where student_id = " + Long.valueOf(student_id) + " and semester = " + Short.valueOf(semester)
-                        + " group by semester,student_id;";*/
-                resuList = session.createCriteria(GradeCard.class)
-                        .add(Restrictions.eq("student_id", Long.valueOf(student_id)))
-                        .add(Restrictions.eq("semester", Short.valueOf(semester)))
-                        .setProjection(
-                                Projections.projectionList()
-                                        .add(Projections.groupProperty("student_id"))
-                                        .add(Projections.groupProperty("semester"))
-                                        .add(Projections.sum("obtain_grade"))
-                                        .add(Projections.sum("total_grade"))
-                        )
-                        .list();
-            }
+	public Object getStudentGradeCardBySemester(HttpServletRequest request) {
+		// Transaction tx = null;
+		Integer id = null;
+		response = null;
+		try {
+			// tx = session.beginTransaction();
+			String student_id = request.getParameter("student_id");
+			// String course_id = request.getParameter("course_id");
+			String semester = request.getParameter("semester");
+			String hql = null;
+			List resuList = null;
 
-            /*Query query = session.createSQLQuery(hql);
-            List<Object[]> list = query.list();
-            for (Object[] arr : list) {
-                System.out.println(Arrays.toString(arr));
-            }*/
-            response = GeneralUtility.generateSuccessResponse(null, resuList);
-            tx.commit();
-        } catch (NumberFormatException | HibernateException e1) {
-            tx.rollback();
-        } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
-        }
-        return response.toString();
-    }
+			if (semester == null) {
+				/*
+				 * hql =
+				 * "select student_id, semester, sum(obtain_grade) as obtain_total, sum(total_grade) as total_grade from grade_card "
+				 * + "where student_id = " + Long.valueOf(student_id) +
+				 * " group by semester,student_id;";
+				 */
+				resuList = session.createCriteria(GradeCard.class)
+						.add(Restrictions.eq("student_id", Long.valueOf(student_id)))
+						.setProjection(Projections.projectionList().add(Projections.groupProperty("student_id"))
+								.add(Projections.groupProperty("semester"))
+								.add(Projections.groupProperty("obtain_grade"))
+								.add(Projections.groupProperty("total_grade")))
+						.list();
+			} else {
+				/*
+				 * hql =
+				 * "select student_id, semester, sum(obtain_grade) as obtain_total, sum(total_grade) as total_grade from grade_card "
+				 * + "where student_id = " + Long.valueOf(student_id) + " and semester = " +
+				 * Short.valueOf(semester) + " group by semester,student_id;";
+				 */
+				resuList = session.createCriteria(GradeCard.class)
+						.add(Restrictions.eq("student_id", Long.valueOf(student_id)))
+						.add(Restrictions.eq("semester", Short.valueOf(semester)))
+						.setProjection(Projections.projectionList().add(Projections.groupProperty("student_id"))
+								.add(Projections.groupProperty("semester")).add(Projections.groupProperty("course_id"))
+								.add(Projections.groupProperty("obtain_grade"))
+								.add(Projections.groupProperty("total_grade")))
+						.list();
+			}
+
+			/*
+			 * Query query = session.createSQLQuery(hql); List<Object[]> list =
+			 * query.list(); for (Object[] arr : list) {
+			 * System.out.println(Arrays.toString(arr)); }
+			 */
+
+			GsonBuilder builder = new GsonBuilder();
+			builder.setPrettyPrinting();
+			Gson gson = builder.create();
+			String sendResponse = gson.toJson(resuList);
+
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("student_id", request.getParameter("student_id"));
+			map.put("semester", request.getParameter("semester"));
+
+			JsonElement jelement = new JsonParser().parse(sendResponse);
+			JsonArray courses = jelement.getAsJsonArray();
+
+			HashSet<Object> coursesSet = new HashSet<>();
+			for (int i = 0; i < courses.size(); i++) {
+				JsonArray course = (JsonArray) courses.get(i);
+				HashMap<String, String> cours = new HashMap<>();
+				cours.put("course_id", course.get(2).toString());
+				cours.put("obtain_grade", course.get(3).toString());
+				cours.put("total_grade", course.get(4).toString());
+				coursesSet.add(cours);
+			}
+
+			map.put("courses", coursesSet);
+			String manualResponse = gson.toJson(map);
+
+			System.out.println(
+					"Response in my CRUD \n" + manualResponse + "\n----------------------------------------------");
+
+			response = GeneralUtility.generateSuccessResponse(null, map);
+			tx.commit();
+		} catch (NumberFormatException | HibernateException e1) {
+			tx.rollback();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		return response.toString();
+	}
 }
