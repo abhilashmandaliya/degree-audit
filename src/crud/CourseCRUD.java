@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import pojo.CourseCategoryPOJO;
 import pojo.CoursePOJO;
 import pojo.ProgramPOJO;
 import util.GeneralUtility;
@@ -27,7 +28,8 @@ public class CourseCRUD extends CRUDCore {
 			String course_name = request.getParameter("course_name");
 			String course_id = request.getParameter("course_id");
 			Integer course_credits = Integer.parseInt(request.getParameter("course_credits"));
-			CoursePOJO course_obj = new CoursePOJO(course_name, course_id, course_credits);
+			CourseCategoryPOJO course_cat_pojo = session.get(CourseCategoryPOJO.class,Integer.parseInt(request.getParameter("course_category")));
+			CoursePOJO course_obj = new CoursePOJO(course_name, course_id, course_credits, course_cat_pojo);
 			id = (Integer) session.save(course_obj);
 			System.out.println(id);
 			tx.commit();
