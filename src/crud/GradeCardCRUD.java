@@ -1,6 +1,8 @@
 package crud;
 
 import java.io.IOException;
+
+import pojo.CoursePOJO;
 import pojo.GradeCard;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +25,12 @@ public class GradeCardCRUD extends CRUDCore {
 		try {
 			// tx = session.beginTransaction();
 			long student_id = Long.valueOf(request.getParameter("student_id"));
-			String course_id = String.valueOf(request.getParameter("course_id"));
+			Integer course_id = Integer.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
 			boolean status = Boolean.valueOf(request.getParameter("status"));
-			double total_credit = Double.valueOf(request.getParameter("total_credit"));
-			double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
-			GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+			double earn_grade = Double.valueOf(request.getParameter("earn_grade"));
+			CoursePOJO course = session.get(CoursePOJO.class, course_id);
+			GradeCard gc = new GradeCard(student_id, course, semester, status, earn_grade);
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 			try {
 				session.delete(gc);
@@ -61,9 +63,9 @@ public class GradeCardCRUD extends CRUDCore {
 			String course_id = String.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
 			boolean status = Boolean.valueOf(request.getParameter("status"));
-			double total_credit = Double.valueOf(request.getParameter("total_credit"));
-			double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
-			GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+			double earn_grade = Double.valueOf(request.getParameter("earn_grade"));
+			CoursePOJO course = session.get(CoursePOJO.class, Integer.parseInt(request.getParameter("course_id")));
+			GradeCard gc = new GradeCard(student_id, course, semester, status, earn_grade);
 
 			try {
 				session.update(gc);
@@ -92,7 +94,7 @@ public class GradeCardCRUD extends CRUDCore {
 		Response response = null;
 		try {
 			long student_id = Long.valueOf(request.getParameter("student_id"));
-			String course_id = String.valueOf(request.getParameter("course_id"));
+			int course_id = Integer.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
 			try {
 				Criteria criteria = session.createCriteria(GradeCard.class);
@@ -134,12 +136,15 @@ public class GradeCardCRUD extends CRUDCore {
 		try {
 			// tx = session.beginTransaction();
 			long student_id = Long.valueOf(request.getParameter("student_id"));
-			String course_id = String.valueOf(request.getParameter("course_id"));
+			Integer course_id = Integer.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
 			boolean status = Boolean.valueOf(request.getParameter("status"));
-			double total_credit = Double.valueOf(request.getParameter("total_credit"));
-			double obtain_credit = Double.valueOf(request.getParameter("obtain_credit"));
-			GradeCard gc = new GradeCard(student_id, course_id, semester, status, total_credit, obtain_credit);
+			double earn_grade = Double.valueOf(request.getParameter("earn_grade"));
+			CoursePOJO course = session.get(CoursePOJO.class, course_id);
+
+			//System.out.println("boom ---------" + course_id + " -------- " + course.getCourse_name());
+
+			GradeCard gc = new GradeCard(student_id, course, semester, status, earn_grade);
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 			try {
 				id = (Integer) session.save(gc);

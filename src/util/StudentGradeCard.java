@@ -66,10 +66,12 @@ public class StudentGradeCard {
 			 */
 			resuList = session.createCriteria(GradeCard.class)
 					.add(Restrictions.eq("student_id", Long.valueOf(student_id)))
-					.setProjection(Projections.projectionList().add(Projections.groupProperty("student_id"))
-							.add(Projections.groupProperty("semester")).add(Projections.groupProperty("course_id"))
-							.add(Projections.groupProperty("obtain_grade"))
-							.add(Projections.groupProperty("total_grade")))
+					/*
+					 * .setProjection(Projections.projectionList().add(Projections.groupProperty(
+					 * "student_id"))
+					 * .add(Projections.groupProperty("semester")).add(Projections.groupProperty(
+					 * "course_id")) .add(Projections.groupProperty("earn_grade")))
+					 */
 					.list();
 
 			/*
@@ -85,25 +87,40 @@ public class StudentGradeCard {
 			Gson gson = builder.create();
 			String sendResponse = gson.toJson(resuList);
 
+			// System.out.println("Response get ***************\n" + sendResponse);
+
 			JsonElement jelement = new JsonParser().parse(sendResponse);
 			JsonArray courses = jelement.getAsJsonArray();
-			for (int i = 0; i < courses.size(); i++) {
-				JsonArray course = (JsonArray) courses.get(i);
-				HashMap<String, String> cours = new HashMap<>();
-				cours.put("course_id", course.get(2).toString());
-				cours.put("obtain_grade", course.get(3).toString());
-				cours.put("total_grade", course.get(4).toString());
 
-				String sem = course.get(1).toString();
+			// System.out.println("Response get ***************\n" + courses);
+			for (int i = 0; i < courses.size(); i++) {
+				JsonObject course = (JsonObject) courses.get(i);
+				String sem = course.get("semester").toString();
+				JsonObject courseID = course.getAsJsonObject("course_id");
+				courseID.add("earn_grade", course.get("earn_grade"));
+
 				if (semesters.containsKey(sem)) {
 					HashSet<Object> set = (HashSet<Object>) semesters.get(sem);
-					set.add(cours);
+					set.add(courseID);
 					semesters.put(sem, set);
 				} else {
 					HashSet<Object> set = new HashSet<>();
-					set.add(cours);
+					set.add(courseID);
 					semesters.put(sem, set);
 				}
+
+				System.out.println("Response get ***************\n" + course);
+				HashMap<String, String> cours = new HashMap<>();
+				/*
+				 * cours.put("course_id", course.get(2).toString()); cours.put("obtain_grade",
+				 * course.get(3).toString()); cours.put("total_grade",
+				 * course.get(4).toString());
+				 * 
+				 * String sem = course.get(1).toString(); if (semesters.containsKey(sem)) {
+				 * HashSet<Object> set = (HashSet<Object>) semesters.get(sem); set.add(cours);
+				 * semesters.put(sem, set); } else { HashSet<Object> set = new HashSet<>();
+				 * set.add(cours); semesters.put(sem, set); }
+				 */
 			}
 
 			student_details.put("semester", semesters);
