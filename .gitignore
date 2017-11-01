@@ -2,3 +2,4 @@
 /target/*
 /target/m2e-wtp/web-resources/META-INF/maven/DegreeAudit/DegreeAudit/
 /target/classes/
+/target/
