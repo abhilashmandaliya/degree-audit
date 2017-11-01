@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class GradeCardKey implements Serializable {
 
     private long student_id;
-    private String course_id;
+    private CoursePOJO course_id;
     private short semester;
 
     @Override
@@ -21,7 +21,7 @@ public class GradeCardKey implements Serializable {
     public GradeCardKey() {
     }
 
-    public GradeCardKey(long student_id, String course_id, short semester) {
+    public GradeCardKey(long student_id, CoursePOJO course_id, short semester) {
         this.student_id = student_id;
         this.course_id = course_id;
         this.semester = semester;
@@ -35,11 +35,11 @@ public class GradeCardKey implements Serializable {
         this.student_id = student_id;
     }
 
-    public String getCourse_id() {
+    public CoursePOJO getCourse_id() {
         return course_id;
     }
 
-    public void setCourse_id(String course_id) {
+    public void setCourse_id(CoursePOJO course_id) {
         this.course_id = course_id;
     }
 

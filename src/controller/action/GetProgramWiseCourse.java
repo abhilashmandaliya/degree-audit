@@ -7,14 +7,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import controller.Action;
 import crud.CourseProgramCRUD;
+import util.GeneralUtility;
 
-public class AddCourseProgram implements Action {
+public class GetProgramWiseCourse implements Action {
 
 	@Override
 	public String perform(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		return new CourseProgramCRUD().create(request).toString();
+		if (!GeneralUtility.isAutheticatedUser(request)) {
+			return GeneralUtility.generateUnauthorizedResponse().toString();
+		}
+		return (String) new CourseProgramCRUD().retrive(request);
 	}
-
-
 
 }
