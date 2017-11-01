@@ -1,0 +1,120 @@
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand col-3" href="dashboard.html"><img class="logo" src="img/logo1.png"/><b> DEGREE AUDIT</b></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse col-9" id="navbarNavDropdown">
+    <ul class="navbar-nav col-1"></ul>
+    <ul class="navbar-nav col-5">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;">
+          Courses
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="" name="programme">Add</a>
+          <a class="dropdown-item" href="programme_list.html">View</a>
+        </div>
+      </li>
+      <li> <a class="nav-link" href="course_list.html" id="courses">Courses</a></li>
+    </ul>
+    <ul class="navbar-nav col-4"></ul>
+    <ul class="navbar-nav col-2 align-items-end">
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <font size="5"><em>Programme Structure</em> </font>
+      </div>
+
+          <div class="col-2"></div>
+          <form class="col-8">
+            <div class="form-group row">
+              <label for="courseName" class="col-4 col-form-label">Course Name</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="courseName">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="minDuration" class="col-4 col-form-label">Minimum Duration</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="minDuration">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="maxDuration" class="col-4 col-form-label">Maximum Duration</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="maxDuration">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="minCredits" class="col-4 col-form-label">Credits (Min)</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="minCredits">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="maxCredits" class="col-4 col-form-label">Credits (Max)</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="maxCredits">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="minGradePts" class="col-4 col-form-label">Required Grade Points (Min)</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="minGradePts">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="minCPI" class="col-4 col-form-label">Minimum CPI</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="minCPI">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="foundationCount" class="col-4 col-form-label">Number Of Foundation Courses</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="foundationCount">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="minCourse" class="col-4 col-form-label">Minimum Number Of Courses</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="minCourse">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="maxCourse" class="col-4 col-form-label">Maximum Number Of Courses</label>
+              <div class="col-5">
+                <input type="text" required class="form-control" id="maxCourse">
+              </div>
+            </div>
+            <button onclick="addProgramme()" type="button" class="btn btn-primary col-3">Submit Details</button>
+          </form>
+    </div>
+  </div>
+  <!-- Scripts -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="js/script.js"></script>
+</body>
