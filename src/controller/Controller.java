@@ -21,6 +21,7 @@ public class Controller extends HttpServlet {
 		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 		String theAction = request.getParameter("action");
 		Action action = getActionFromConfig(theAction);
+		System.out.println(theAction);
 		String data = action.perform(request, response);
 		Gson json = new Gson();
 		Response next = json.fromJson(data, Response.class);
@@ -38,9 +39,9 @@ public class Controller extends HttpServlet {
 	private Action getActionFromConfig(String theAction) throws ServletException, IOException {
 		Properties map = new Properties();
 		map.load(this.getClass().getClassLoader().getResourceAsStream(ACTION_MAPPING));
-
 		String action_class = map.getProperty(theAction.toLowerCase());
 		Action action = (Action) ObjectCreator.createObject(action_class);
+		System.out.println(action);
 		return action;
 	}
 

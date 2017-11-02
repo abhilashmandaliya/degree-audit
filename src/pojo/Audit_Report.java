@@ -5,45 +5,66 @@
  */
 package pojo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "Audit_report")
 
 public class Audit_Report {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
-    
-    private int date_generated;
-    private double percentage_of_degree_finish;
-    private double obtained_credit; 
-    private double require__credit;
-    private double present_CPI;
-    private double require_CPI;
-    private double present_cource;
-    private double require_courcce;
-    private double time_left_finish_degree;
-    
-    //private int CPI;
-    
-    //private int no_of_cource;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
 
-    public Audit_Report() {
-    }
-    
+	private String date_generated;
+	private double percentage_of_degree_finish;
+	private double obtained_credit;
+	private double require__credit;
+	private double present_CPI;
+	private double require_CPI;
+	private double present_cource;
+	private double require_courcce;
+	private double time_left_finish_degree;
+	
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private UserPOJO user;
+	// private int CPI;
 
-	public Audit_Report(int date_generated, double percentage_of_degree_finish, double obtained_credit,
+	// private int no_of_cource;
+
+	public Audit_Report() {
+	}
+
+	public UserPOJO getUser() {
+		return user;
+	}
+
+	public void setUser(UserPOJO user) {
+		this.user = user;
+	}
+
+	public Audit_Report(double percentage_of_degree_finish, double obtained_credit,
 			double require__credit, double present_CPI, double require_CPI, double present_cource,
-			double require_courcce, double time_left_finish_degree) {
+			double require_courcce, double time_left_finish_degree, UserPOJO user) {
 		super();
-		this.date_generated = date_generated;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Date date = new Date();
+		this.date_generated = dateFormat.format(date).toString();
 		this.percentage_of_degree_finish = percentage_of_degree_finish;
 		this.obtained_credit = obtained_credit;
 		this.require__credit = require__credit;
@@ -52,6 +73,7 @@ public class Audit_Report {
 		this.present_cource = present_cource;
 		this.require_courcce = require_courcce;
 		this.time_left_finish_degree = time_left_finish_degree;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -62,11 +84,13 @@ public class Audit_Report {
 		this.id = id;
 	}
 
-	public int getDate_generated() {
+	
+
+	public String getDate_generated() {
 		return date_generated;
 	}
 
-	public void setDate_generated(int date_generated) {
+	public void setDate_generated(String date_generated) {
 		this.date_generated = date_generated;
 	}
 
@@ -134,7 +158,4 @@ public class Audit_Report {
 		this.time_left_finish_degree = time_left_finish_degree;
 	}
 
-
-
-    
 }
