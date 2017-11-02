@@ -7,23 +7,35 @@ package crud;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.mindrot.jbcrypt.BCrypt;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import pojo.Audit_Report;
 import pojo.CourseCategoryPOJO;
 import pojo.ProgramPOJO;
+import pojo.UserCategoryPOJO;
 import pojo.UserPOJO;
 import util.GeneralUtility;
 import util.HibernateSessionFactory;
 import util.Response;
+import util.UserRole;
 /**
  *
  * @author Ankit
  */
-public class audi_crud  extends CRUDCore
+public class audi_crud2  extends CRUDCore
 {
     @Override
 	public Response create(HttpServletRequest request) throws IOException {
@@ -59,21 +71,59 @@ public class audi_crud  extends CRUDCore
 	}
    
 	@Override
-	public Object retrive(HttpServletRequest request) {
+	public Object retrive(HttpServletRequest request) throws IOException {
 		Response response = null;
-		try {
+		System.out.println("uhkj");
+		try{
 			int id = Integer.parseInt(request.getParameter("id"));
-			List<Audit_Report> report = session.createQuery("select date_generated,id FROM Audit_Report where user="+id).list();//("FROM Audit_Report where  id="+id).list();
-			response = GeneralUtility.generateSuccessResponse(null, report);
-		} catch (HibernateException e) {
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<Audit_Report> criteria = builder.createQuery(Audit_Report.class);
+			Root<Audit_Report> Audit_ReportRoot = criteria.from(Audit_Report.class);
+			criteria.select(Audit_ReportRoot);
+			criteria.where(builder.equal(Audit_ReportRoot.get("id"), id));
+			//System.out.println("ankit");
+			List<Audit_Report> audit = session.createQuery(criteria).getResultList();
+			System.out.println(audit.size());
+			response=GeneralUtility.generateSuccessResponse(null, audit);
+			tx.commit();
+			session.close();
+			/*if (!audit.isEmpty()) {
+				Audit_Report Audit_report = audit.get(0);
+				//String hashed = userPOJO.getPassword();
+					UserPOJO userPOJO = Audit_report.getUser();
+					String userdata = userPOJO.getUsername();
+					System.out.println(userdata);
+					String authJSON = GeneralUtility.readAuthJSON();
+					JsonParser parser = new JsonParser();
+					JsonArray data = parser.parse(authJSON).getAsJsonArray();
+					for (JsonElement element : data) {
+						UserRole role = json.fromJson(element, UserRole.class);
+						if (role.getRole().equalsIgnoreCase(userdata)) {
+							//userPOJO.setPassword("");
+							response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
+									Audit_report);
+							break;
+						}
+					}
+					HttpSession session = request.getSession();
+					session.setAttribute("userdata", userdata);
+					System.out.println(session.getAttribute(userdata));
+				}*/
+			}
+		
+		 catch (HibernateException e) {
 			tx.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		return response.toString();
+		   return response.toString();
 	}
-
+	/*try {
+	int id = Integer.parseInt(request.getParameter("id"));
+	List<Audit_Report> report = session.createQuery("select a.id,a.date_generated,a.obtained_credit,a.percentage_of_degree_finish,b.id FROM Audit_Report a,UserPOJO b  where a.id="+id).list();//("FROM Audit_Report where  id="+id).list();
+	response = GeneralUtility.generateSuccessResponse(null, report);
+}*/
 	@Override
 	public Response update(HttpServletRequest request) {
 		// TODO Auto-generated method stub
