@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class GradeCardKey implements Serializable {
 
-    private long student_id;
+    private StudentPOJO student_id;
     private CoursePOJO course_id;
     private short semester;
 
@@ -21,17 +21,17 @@ public class GradeCardKey implements Serializable {
     public GradeCardKey() {
     }
 
-    public GradeCardKey(long student_id, CoursePOJO course_id, short semester) {
+    public GradeCardKey(StudentPOJO student_id, CoursePOJO course_id, short semester) {
         this.student_id = student_id;
         this.course_id = course_id;
         this.semester = semester;
     }
 
-    public long getStudent_id() {
+    public StudentPOJO getStudent_id() {
         return student_id;
     }
 
-    public void setStudent_id(long student_id) {
+    public void setStudent_id(StudentPOJO student_id) {
         this.student_id = student_id;
     }
 
