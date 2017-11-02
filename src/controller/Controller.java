@@ -18,7 +18,7 @@ import util.Response;
 public class Controller extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 		String theAction = request.getParameter("action");
 		Action action = getActionFromConfig(theAction);
 		String data = action.perform(request, response);
