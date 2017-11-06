@@ -20,8 +20,8 @@ public class Controller extends HttpServlet {
 			throws ServletException, IOException {
 		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 		String theAction = request.getParameter("action");
-		Action action = getActionFromConfig(theAction);
 		System.out.println(theAction);
+		Action action = getActionFromConfig(theAction);		
 		String data = action.perform(request, response);
 		Gson json = new Gson();
 		Response next = json.fromJson(data, Response.class);
