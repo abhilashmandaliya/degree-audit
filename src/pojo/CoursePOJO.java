@@ -27,7 +27,7 @@ public class CoursePOJO {
 	
 	@Column(name = "course_credits")
 	private int course_credits;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "course_category")
 	private CourseCategoryPOJO course_category;
