@@ -24,5 +24,14 @@ public abstract class CRUDCore implements CRUD {
         response = new Response();
         json = new Gson();
     }
-
+    
+    @Override
+    protected void finalize() throws Throwable {
+    	// TODO Auto-generated method stub
+    	super.finalize();
+    	if(session.isOpen()) {
+    		session.close();
+    	}
+    }
+    
 }
