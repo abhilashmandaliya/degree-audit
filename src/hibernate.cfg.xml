@@ -36,5 +36,7 @@
 		<mapping class="pojo.CourseCategoryPOJO" />
 		<mapping class="pojo.CourseGroupPOJO" />
 		<mapping class="pojo.CourseGroupCoursePOJO" />
+		<mapping class="pojo.SemesterPOJO" />
+		<mapping class="pojo.SemesterCoursePOJO" />
 	</session-factory>
 </hibernate-configuration>
