@@ -125,7 +125,7 @@ public class GradeCardCRUD extends CRUDCore {
                 }
             }
         }
-        return response.toString();
+        return response;
     }
     
     @Override

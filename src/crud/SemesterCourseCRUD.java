@@ -1,6 +1,7 @@
 package crud;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,8 +43,23 @@ public class SemesterCourseCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		String search = request.getParameter("search").toLowerCase();
+		if (search.equals("all_semester_courses")) {
+			try {
+				Integer semester_id = Integer.parseInt(request.getParameter("semester_id"));
+				Integer program_id = Integer.parseInt(request.getParameter("program_id"));
+				List<SemesterCoursePOJO> semesterCourses = session.createQuery(
+						"FROM SemesterCoursePOJO WHERE semester = " + semester_id + " AND program = " + program_id)
+						.list();
+				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), semesterCourses);
+			} catch (HibernateException e) {
+				tx.rollback();
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+		}
+		return response;
 	}
 
 	@Override

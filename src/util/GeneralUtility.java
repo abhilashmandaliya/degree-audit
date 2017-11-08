@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -109,50 +110,72 @@ public final class GeneralUtility {
 	}
 
 	public static float getCourseEligibility(HttpServletRequest request) throws IOException {
-		Integer course_id = Integer.parseInt(request.getParameter("course_id"));
+		final Float NOT_RECOMMENDED = -1f;
+		final Float NOTHING_CAN_BE_SAID = 0f;
+		final Float HIGHLY_RECOMMENDED = 1f;
+		Integer course_id = (Integer) request.getAttribute("course_id");
+		request.setAttribute("search", "all_prerequisites");
 		List<PrerequisitePOJO> prerequisites = (List<PrerequisitePOJO>) ((Response) new PrerequisiteCRUD()
 				.retrive(request)).getData();
 		float average = 0.0f;
 		int cnt = 0;
-		if (prerequisites.size() > 0) {
+		if (prerequisites != null) {
 			for (PrerequisitePOJO prerequisite : prerequisites) {
 				CoursePOJO required_course = prerequisite.getRequired_course();
 				request.setAttribute("course_id", required_course.getCourse_id());
-				List<GradeCard> gradeCards = (List<GradeCard>) new GradeCardCRUD().retrive(request);
+				List<GradeCard> gradeCards = (List<GradeCard>) ((Response) new GradeCardCRUD().retrive(request)).getData();
 				if (gradeCards == null) {
-					return 0.0f;
+					return NOT_RECOMMENDED;
 				}
 				for (GradeCard gradeCard : gradeCards) {
 					if (!gradeCard.isStatus()) {
-						return 0.0f;
+						return NOT_RECOMMENDED;
 					}
 					average += gradeCard.getEarn_grade();
 					cnt++;
 				}
-				request.removeAttribute("course_id");
 			}
 		}
 		Integer student_id = Integer.parseInt(request.getParameter("student_id"));
 		request.setAttribute("course_id", course_id);
 		List<CourseGroupCoursePOJO> courseGroupCourses = (List<CourseGroupCoursePOJO>) ((Response) new CourseGroupCourseCRUD()
 				.retrive(request)).getData();
-		for (CourseGroupCoursePOJO courseGroupCourse : courseGroupCourses) {
-			List<CoursePOJO> courses = (List<CoursePOJO>) ((Response) (new CourseGroupCourseCRUD().retrive(request)))
-					.getData();
-			float temp_average = 0;
-			int temp_cnt = 0;
-			GradeCardCRUD gradeCardCRUD = new GradeCardCRUD();
-			for (CoursePOJO course : courses) {
-				request.setAttribute("course_id", course.getId());
-				List<GradeCard> gradeCards = (List<GradeCard>) ((Response) gradeCardCRUD.retrive(request)).getData();
-				if (gradeCards.size() > 0) {
-					for (GradeCard gradeCard : gradeCards) {
-						temp_cnt++;
-						temp_average += gradeCard.getEarn_grade();
+		if (courseGroupCourses != null) {
+			request.setAttribute("search", "all_course_group_course_course_group_wise");
+			for (CourseGroupCoursePOJO courseGroupCourse : courseGroupCourses) {
+				request.setAttribute("course_group_course_id", courseGroupCourse.getId());
+				List<CoursePOJO> courses = (List<CoursePOJO>) ((Response) (new CourseGroupCourseCRUD()
+						.retrive(request))).getData();
+				float temp_average = 0.0f;
+				int temp_cnt = 0;
+				GradeCardCRUD gradeCardCRUD = new GradeCardCRUD();
+				for (CoursePOJO course : courses) {
+					request.setAttribute("course_id", course.getId());
+					List<GradeCard> gradeCards = (List<GradeCard>) ((Response) gradeCardCRUD.retrive(request))
+							.getData();
+					if (gradeCards.size() > 0) {
+						for (GradeCard gradeCard : gradeCards) {
+							temp_cnt++;
+							temp_average += gradeCard.getEarn_grade();
+						}
+					}
+				}
+				if (temp_cnt > 0) {
+					temp_average /= temp_cnt;
+					if (temp_average < courseGroupCourse.getCourse_group().getMin_avg()) {
+						return NOT_RECOMMENDED;
 					}
 				}
 			}
 		}
-		return cnt == 0 ? Float.MAX_VALUE : average / cnt;
+		return cnt == 0 ? NOTHING_CAN_BE_SAID : HIGHLY_RECOMMENDED;
+	}
+
+	public static void copyParamsToAttributes(HttpServletRequest request) {
+		Iterator<String> params = request.getParameterNames().asIterator();
+		while (params.hasNext()) {
+			String param = params.next();
+			request.setAttribute(param, request.getParameter(param));
+		}
 	}
 }

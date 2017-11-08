@@ -57,9 +57,9 @@ public class PrerequisiteCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 		try {
-			String search = request.getParameter("search").toLowerCase();
+			String search = ((String) request.getAttribute("search")).toLowerCase();
 			if (search.equals("all_prerequisites")) {
-				Integer for_course = Integer.parseInt(request.getParameter("for_course"));
+				Integer for_course = (Integer) request.getAttribute("course_id");
 				CriteriaBuilder builder = session.getCriteriaBuilder();
 				CriteriaQuery<PrerequisitePOJO> criteria = builder.createQuery(PrerequisitePOJO.class);
 				Root<PrerequisitePOJO> prerequisitePOJORoot = criteria.from(PrerequisitePOJO.class);

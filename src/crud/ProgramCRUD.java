@@ -46,8 +46,7 @@ public class ProgramCRUD extends CRUDCore {
 	}
 	
 	@Override
-	public Object retrive(HttpServletRequest request) throws IOException {
-		Response response = null;
+	public Object retrive(HttpServletRequest request) throws IOException {		
 		try {
 			List<ProgramPOJO> programs = session.createQuery("FROM ProgramPOJO").list();
 			response = GeneralUtility.generateSuccessResponse(null, programs);

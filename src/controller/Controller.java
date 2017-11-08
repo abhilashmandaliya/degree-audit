@@ -12,16 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import util.GeneralUtility;
 import util.ObjectCreator;
 import util.Response;
 
 public class Controller extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		GeneralUtility.copyParamsToAttributes(request);
 		System.setProperty("javax.xml.bind.JAXBContextFactory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
 		String theAction = request.getParameter("action");
 		System.out.println(theAction);
-		Action action = getActionFromConfig(theAction);		
+		Action action = getActionFromConfig(theAction);
 		String data = action.perform(request, response);
 		Gson json = new Gson();
 		Response next = json.fromJson(data, Response.class);
@@ -54,7 +56,7 @@ public class Controller extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		    processRequest(request, response);
+		processRequest(request, response);
 	}
 
 	private final static String ACTION_MAPPING = "controller/ActionMapping.properties";
