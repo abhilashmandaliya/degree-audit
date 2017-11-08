@@ -32,7 +32,7 @@ public class SemesterCoursePOJO {
 
 	@Column(name = "is_active")
 	private boolean is_active;
-
+	
 	public SemesterCoursePOJO() {
 		// TODO Auto-generated constructor stub
 	}

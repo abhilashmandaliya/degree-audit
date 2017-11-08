@@ -39,5 +39,8 @@
 		<mapping class="pojo.SemesterPOJO" />
 		<mapping class="pojo.SemesterCoursePOJO" />
 		<mapping class="pojo.CourseRecommendationLabelPOJO" />
+		<mapping class="pojo.ProgramSemesterDetailPOJO" />
+		<mapping class="pojo.SlotPOJO" />
+		<mapping class="pojo.PrerequisitePOJO" />
 	</session-factory>
 </hibernate-configuration>

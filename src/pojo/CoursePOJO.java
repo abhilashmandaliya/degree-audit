@@ -12,31 +12,43 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "course")
 public class CoursePOJO {
-	
+
 	// Columns of course table
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
-	
+
 	@Column(name = "course_name")
 	private String course_name;
-	
+
 	@Column(name = "course_id")
 	private String course_id;
-	
+
 	@Column(name = "course_credits")
 	private int course_credits;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "course_category")
 	private CourseCategoryPOJO course_category;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "slot_id")
+	private SlotPOJO slot;
+
+	public SlotPOJO getSlot() {
+		return slot;
+	}
+
+	public void setSlot(SlotPOJO slot) {
+		this.slot = slot;
+	}
+
 	// constructors
 	public CoursePOJO() {
-		
+
 	}
-	
+
 	public CoursePOJO(String course_name, String course_id, int course_credits, CourseCategoryPOJO course_category) {
 		super();
 		this.course_name = course_name;
@@ -44,7 +56,13 @@ public class CoursePOJO {
 		this.course_credits = course_credits;
 		this.course_category = course_category;
 	}
-	
+
+	public CoursePOJO(String course_name, String course_id, int course_credits, CourseCategoryPOJO course_category,
+			SlotPOJO slot) {
+		this(course_name, course_id, course_credits, course_category);
+		this.slot = slot;
+	}
+
 	// accessor and mutator methods
 	public int getId() {
 		return id;
@@ -85,5 +103,5 @@ public class CoursePOJO {
 	public void setCourse_category(CourseCategoryPOJO course_category) {
 		this.course_category = course_category;
 	}
-	
+
 }
