@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -12,6 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import crud.CourseGroupCourseCRUD;
+import crud.GradeCardCRUD;
+import crud.PrerequisiteCRUD;
+import pojo.CourseGroupCoursePOJO;
+import pojo.CoursePOJO;
+import pojo.GradeCard;
+import pojo.PrerequisitePOJO;
 
 public final class GeneralUtility {
 
@@ -97,5 +106,53 @@ public final class GeneralUtility {
 		map.load(instance.getClass().getClassLoader().getResourceAsStream(ACTION_REDIRECT));
 		String action_redirect = map.getProperty(theAction.toLowerCase());
 		return action_redirect;
+	}
+
+	public static float getCourseEligibility(HttpServletRequest request) throws IOException {
+		Integer course_id = Integer.parseInt(request.getParameter("course_id"));
+		List<PrerequisitePOJO> prerequisites = (List<PrerequisitePOJO>) ((Response) new PrerequisiteCRUD()
+				.retrive(request)).getData();
+		float average = 0.0f;
+		int cnt = 0;
+		if (prerequisites.size() > 0) {
+			for (PrerequisitePOJO prerequisite : prerequisites) {
+				CoursePOJO required_course = prerequisite.getRequired_course();
+				request.setAttribute("course_id", required_course.getCourse_id());
+				List<GradeCard> gradeCards = (List<GradeCard>) new GradeCardCRUD().retrive(request);
+				if (gradeCards == null) {
+					return 0.0f;
+				}
+				for (GradeCard gradeCard : gradeCards) {
+					if (!gradeCard.isStatus()) {
+						return 0.0f;
+					}
+					average += gradeCard.getEarn_grade();
+					cnt++;
+				}
+				request.removeAttribute("course_id");
+			}
+		}
+		Integer student_id = Integer.parseInt(request.getParameter("student_id"));
+		request.setAttribute("course_id", course_id);
+		List<CourseGroupCoursePOJO> courseGroupCourses = (List<CourseGroupCoursePOJO>) ((Response) new CourseGroupCourseCRUD()
+				.retrive(request)).getData();
+		for (CourseGroupCoursePOJO courseGroupCourse : courseGroupCourses) {
+			List<CoursePOJO> courses = (List<CoursePOJO>) ((Response) (new CourseGroupCourseCRUD().retrive(request)))
+					.getData();
+			float temp_average = 0;
+			int temp_cnt = 0;
+			GradeCardCRUD gradeCardCRUD = new GradeCardCRUD();
+			for (CoursePOJO course : courses) {
+				request.setAttribute("course_id", course.getId());
+				List<GradeCard> gradeCards = (List<GradeCard>) ((Response) gradeCardCRUD.retrive(request)).getData();
+				if (gradeCards.size() > 0) {
+					for (GradeCard gradeCard : gradeCards) {
+						temp_cnt++;
+						temp_average += gradeCard.getEarn_grade();
+					}
+				}
+			}
+		}
+		return cnt == 0 ? Float.MAX_VALUE : average / cnt;
 	}
 }

@@ -95,7 +95,6 @@ public class GradeCardCRUD extends CRUDCore {
     
     @Override
     public Object retrive(HttpServletRequest request) throws IOException {
-        Response response = null;
         try {
             int course_id = Integer.valueOf(request.getParameter("course_id"));
             CoursePOJO course = session.get(CoursePOJO.class, course_id);
