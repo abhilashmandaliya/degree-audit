@@ -1,25 +1,76 @@
+<!doctype html>
 <html>
+
 <head>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+<title>Line Chart</title>
+<script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
+<script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+<style>
+canvas {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+</style>
 </head>
+
 <body>
-	<div style="height: 50px">
-		<canvas id="pieChart" height="50px" />
+	<div style="width: 75%;">
+		<canvas id="canvas"></canvas>
 	</div>
-	<script type="text/javascript">
-		var data = {
-			labels : [ "Completed", "Remaining" ],
-			datasets : [ {
-				data : [ 100, 0 ],
-				backgroundColor : [ "#FF8153", "#FFEA88" ]
-			} ]
+	<script>
+		var MONTHS = [ "January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November",
+				"December" ];
+		var config = {
+			type : 'line',
+			data : {
+				xLabels : [ "SEN", "Cloud Computing", "Java", "CN", "OS", "SPM" ],
+				yLabels : [ 'Core', 'Can not be said', 'Recommended',
+						'Moderate', 'Not Recommended' ],
+				datasets : [ {
+					label : "My First dataset",
+					data : [ 'Core', 'Not Recommended', 'Recommended',
+							'Can not be said', 'Core', 'Moderate' ],
+					fill : false,
+					borderColor : window.chartColors.yellow,
+					backgroundColor : window.chartColors.green
+				} ]
+			},
+			options : {
+				responsive : true,
+				title : {
+					display : true,
+					text : 'Chart with Non Numeric Y Axis'
+				},
+				scales : {
+					xAxes : [ {
+						display : true,
+						scaleLabel : {
+							display : true,
+							labelString : 'Month'
+						}
+					} ],
+					yAxes : [ {
+						type : 'category',
+						position : 'left',
+						display : true,
+						scaleLabel : {
+							display : true,
+							labelString : 'Request State'
+						},
+						ticks : {
+							reverse : true
+						}
+					} ]
+				}
+			}
 		};
-		var ctx = document.getElementById("pieChart").getContext('2d');
-		var myPieChart = new Chart(ctx, {
-			type : 'pie',
-			data : data
-		});
+		window.onload = function() {
+			var ctx = document.getElementById("canvas").getContext("2d");
+			window.myLine = new Chart(ctx, config);
+		};
 	</script>
 </body>
+
 </html>

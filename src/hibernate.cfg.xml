@@ -38,5 +38,6 @@
 		<mapping class="pojo.CourseGroupCoursePOJO" />
 		<mapping class="pojo.SemesterPOJO" />
 		<mapping class="pojo.SemesterCoursePOJO" />
+		<mapping class="pojo.CourseRecommendationLabelPOJO" />
 	</session-factory>
 </hibernate-configuration>

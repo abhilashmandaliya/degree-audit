@@ -26,6 +26,10 @@ public class SemesterCoursePOJO {
 	@JoinColumn(name = "semester")
 	private SemesterPOJO semester;
 
+	@ManyToOne
+	@JoinColumn(name = "program_id")
+	private ProgramPOJO program;
+
 	@Column(name = "is_active")
 	private boolean is_active;
 
@@ -33,9 +37,10 @@ public class SemesterCoursePOJO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SemesterCoursePOJO(CoursePOJO course, SemesterPOJO semester) {
+	public SemesterCoursePOJO(CoursePOJO course, SemesterPOJO semester, ProgramPOJO program) {
 		this.course = course;
 		this.semester = semester;
+		this.program = program;
 		this.is_active = true;
 	}
 
@@ -71,4 +76,12 @@ public class SemesterCoursePOJO {
 		this.is_active = is_active;
 	}
 
+	public ProgramPOJO getProgram() {
+		return program;
+	}
+
+	public void setProgram(ProgramPOJO program) {
+		this.program = program;
+	}
+	
 }
