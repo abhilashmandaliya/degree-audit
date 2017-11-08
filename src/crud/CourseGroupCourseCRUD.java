@@ -56,9 +56,9 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 		try {
-			String search = request.getParameter("search").toLowerCase();
+			String search = ((String) request.getAttribute("search")).toLowerCase();
 			if (search.equals("all_course_group_course")) {
-				Integer course_id = Integer.parseInt(request.getParameter("course_id"));
+				Integer course_id = (Integer) request.getAttribute("course_id");
 				CriteriaBuilder builder = session.getCriteriaBuilder();
 				CriteriaQuery<CourseGroupCoursePOJO> criteria = builder.createQuery(CourseGroupCoursePOJO.class);
 				Root<CourseGroupCoursePOJO> courseGroupCoursePOJORoot = criteria.from(CourseGroupCoursePOJO.class);
@@ -68,7 +68,7 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
 						courseGroupCourses);
 			} else if (search.equals("all_course_group_course_course_group_wise")) {
-				Integer course_group_course_id = Integer.parseInt(request.getParameter("course_group_course_id"));
+				Integer course_group_course_id = (Integer) request.getAttribute("course_group_course_id");
 				CriteriaBuilder builder = session.getCriteriaBuilder();
 				CriteriaQuery<CourseGroupCoursePOJO> criteria = builder.createQuery(CourseGroupCoursePOJO.class);
 				Root<CourseGroupCoursePOJO> courseGroupCoursePOJORoot = criteria.from(CourseGroupCoursePOJO.class);

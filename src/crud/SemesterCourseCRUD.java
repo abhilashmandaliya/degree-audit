@@ -49,7 +49,7 @@ public class SemesterCourseCRUD extends CRUDCore {
 				Integer semester_id = Integer.parseInt(request.getParameter("semester_id"));
 				Integer program_id = Integer.parseInt(request.getParameter("program_id"));
 				List<SemesterCoursePOJO> semesterCourses = session.createQuery(
-						"FROM SemesterCoursePOJO WHERE semester = " + semester_id + " AND program = " + program_id)
+						"FROM SemesterCoursePOJO WHERE semester = " + semester_id + " AND program_id = " + program_id)
 						.list();
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), semesterCourses);
 			} catch (HibernateException e) {

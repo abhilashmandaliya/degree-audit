@@ -122,9 +122,10 @@ public final class GeneralUtility {
 		if (prerequisites != null) {
 			for (PrerequisitePOJO prerequisite : prerequisites) {
 				CoursePOJO required_course = prerequisite.getRequired_course();
-				request.setAttribute("course_id", required_course.getCourse_id());
-				List<GradeCard> gradeCards = (List<GradeCard>) ((Response) new GradeCardCRUD().retrive(request)).getData();
-				if (gradeCards == null) {
+				request.setAttribute("course_id", required_course.getId());
+				List<GradeCard> gradeCards = (List<GradeCard>) ((Response) new GradeCardCRUD().retrive(request))
+						.getData();
+				if (gradeCards == null || gradeCards.size() == 0) {
 					return NOT_RECOMMENDED;
 				}
 				for (GradeCard gradeCard : gradeCards) {
