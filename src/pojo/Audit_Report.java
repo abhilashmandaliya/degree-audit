@@ -43,11 +43,21 @@ public class Audit_Report {
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private UserPOJO user;
-	// private int CPI;
-
+	//private int CPI;
+	@OneToOne
+	@JoinColumn(name="id")
+	private SemesterPOJO sem;
 	// private int no_of_cource;
 
 	public Audit_Report() {
+	}
+
+	public SemesterPOJO getSem() {
+		return sem;
+	}
+
+	public void setSem(SemesterPOJO sem) {
+		this.sem = sem;
 	}
 
 	public UserPOJO getUser() {
@@ -60,7 +70,8 @@ public class Audit_Report {
 
 	public Audit_Report(double percentage_of_degree_finish, double obtained_credit,
 			double require__credit, double present_CPI, double require_CPI, double present_cource,
-			double require_courcce, double time_left_finish_degree, UserPOJO user) {
+			double require_courcce, double time_left_finish_degree, UserPOJO user,SemesterPOJO sem) 
+	{
 		super();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = new Date();
@@ -74,6 +85,7 @@ public class Audit_Report {
 		this.require_courcce = require_courcce;
 		this.time_left_finish_degree = time_left_finish_degree;
 		this.user = user;
+		//this.sem=sem;
 	}
 
 	public int getId() {
