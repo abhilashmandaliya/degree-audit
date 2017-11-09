@@ -20,9 +20,12 @@
 		<property name="hibernate.connection.password">
 			jamfaadaudi
 		</property>
+		
+		<!--  
 		<property name="hibernate.hbm2ddl.auto">
 			update
 		</property>
+		-->
 		<!-- entity classes -->
 		<mapping class="pojo.UserCategoryPOJO" />
 		<mapping class="pojo.UserPOJO" />

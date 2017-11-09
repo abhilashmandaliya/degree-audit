@@ -2,6 +2,7 @@ package util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -173,9 +174,8 @@ public final class GeneralUtility {
 	}
 
 	public static void copyParamsToAttributes(HttpServletRequest request) {
-		Iterator<String> params = request.getParameterNames().asIterator();
-		while (params.hasNext()) {
-			String param = params.next();
+		Map<String, String[]> params = request.getParameterMap();
+		for(String param : params.keySet()) {
 			request.setAttribute(param, request.getParameter(param));
 		}
 	}
