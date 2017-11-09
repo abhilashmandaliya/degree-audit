@@ -15,6 +15,7 @@ import org.hibernate.Transaction;
 import pojo.Audit_Report;
 import pojo.CourseCategoryPOJO;
 import pojo.ProgramPOJO;
+import pojo.SemesterPOJO;
 import pojo.UserPOJO;
 import util.GeneralUtility;
 import util.HibernateSessionFactory;
@@ -44,7 +45,9 @@ public class audi_crud  extends CRUDCore
 			double require_courcce = Double.parseDouble(request.getParameter("require_courcce"));
 			double time_left_finish_degree = Double.parseDouble(request.getParameter("time_left_finish_degree"));
 	        UserPOJO user_pojo = session.get(UserPOJO.class,Integer.parseInt(request.getParameter("user")));
-			Audit_Report report = new Audit_Report(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo);
+	        SemesterPOJO sem=session.get(SemesterPOJO.class,Integer.parseInt(request.getParameter("sem")));
+	        System.out.println(sem.getId() + " just check");
+			Audit_Report report = new Audit_Report(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo,sem);
 			id = (Integer) session.save(report);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);

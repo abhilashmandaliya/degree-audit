@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.gson.JsonArray;
@@ -25,6 +26,7 @@ import com.google.gson.JsonParser;
 import pojo.Audit_Report;
 import pojo.CourseCategoryPOJO;
 import pojo.ProgramPOJO;
+import pojo.SemesterPOJO;
 import pojo.UserCategoryPOJO;
 import pojo.UserPOJO;
 import util.GeneralUtility;
@@ -56,7 +58,8 @@ public class audi_crud2  extends CRUDCore
 			double require_courcce = Double.parseDouble(request.getParameter("require_courcce"));
 			double time_left_finish_degree = Double.parseDouble(request.getParameter("time_left_finish_degree"));
 	        UserPOJO user_pojo = session.get(UserPOJO.class,Integer.parseInt(request.getParameter("user")));
-			Audit_Report report = new Audit_Report(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo);
+	       SemesterPOJO sem=session.get(SemesterPOJO.class,Integer.parseInt(request.getParameter("sem")));
+			Audit_Report report = new Audit_Report(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo,sem);
 			id = (Integer) session.save(report);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
@@ -76,7 +79,12 @@ public class audi_crud2  extends CRUDCore
 		System.out.println("uhkj");
 		try{
 			int id = Integer.parseInt(request.getParameter("id"));
-			CriteriaBuilder builder = session.getCriteriaBuilder();
+			UserPOJO user=session.get(UserPOJO.class, id);
+			String hql="from Audit_Report where user_id="+id;
+			Query query=session.createQuery(hql);
+			List<Audit_Report> audit=query.list();
+			response=GeneralUtility.generateSuccessResponse(null, audit.get(0));
+			/*CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<Audit_Report> criteria = builder.createQuery(Audit_Report.class);
 			Root<Audit_Report> Audit_ReportRoot = criteria.from(Audit_Report.class);
 			criteria.select(Audit_ReportRoot);
@@ -84,7 +92,7 @@ public class audi_crud2  extends CRUDCore
 			//System.out.println("ankit");
 			List<Audit_Report> audit = session.createQuery(criteria).getResultList();
 			System.out.println(audit.size());
-			response=GeneralUtility.generateSuccessResponse(null, audit);
+			response=GeneralUtility.generateSuccessResponse(null, audit);*/
 			tx.commit();
 			session.close();
 			/*if (!audit.isEmpty()) {
