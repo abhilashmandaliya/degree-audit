@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import crud.StudentCRUD;
+import crud.audi_crud2;
 import pojo.GradeCard;
 import pojo.StudentPOJO;
 
@@ -52,6 +53,7 @@ public class StudentGradeCard {
 			String student_id = request.getParameter("student_id");
 
 			Integer _id = new StudentCRUD().getUserId(request);
+			request.setAttribute("id", _id);
 			/*
 			 * try { Integer _id = new StudentCRUD().getUserId(request);
 			 * System.out.println("ID found  " + _id); } catch (Exception e) {
@@ -107,9 +109,9 @@ public class StudentGradeCard {
 				HashMap<String, String> cours = new HashMap<>();
 			}
 
-			JsonParser parser = new JsonParser();
-			JsonObject o = parser.parse(getDataFromAuditReport(request)).getAsJsonObject();
-			student_details.put("Audit", o);
+			//JsonParser parser = new JsonParser();
+			//JsonObject o = parser.parse(getDataFromAuditReport(request)).getAsJsonObject();
+			student_details.put("Audit", getDataFromAuditReport(request));
 			student_details.put("semester", semesters);
 			String manualResponse = gson.toJson(student_details);
 
@@ -130,7 +132,8 @@ public class StudentGradeCard {
 	}
 
 	public String getDataFromAuditReport(HttpServletRequest req) {
-
-		return "{'key': 'value', 'key2': 'value2' }";
+		String object = new audi_crud2().getUserAudit(req);
+		//return "{'key': 'value', 'key2': 'value2' }";
+		return object;
 	}
 }
