@@ -131,9 +131,8 @@ public class StudentGradeCard {
 		return response.toString();
 	}
 
-	public String getDataFromAuditReport(HttpServletRequest req) {
-		String object = new audi_crud2().getUserAudit(req);
+	public JsonArray getDataFromAuditReport(HttpServletRequest req) {
+		return new audi_crud2().getUserAudit(req);
 		//return "{'key': 'value', 'key2': 'value2' }";
-		return object;
 	}
 }

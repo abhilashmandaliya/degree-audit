@@ -148,7 +148,7 @@ public class audi_crud2 extends CRUDCore {
 		return null;
 	}
 
-	public String getUserAudit(HttpServletRequest request) {
+	public JsonArray getUserAudit(HttpServletRequest request) {
 		System.out.println(request.getAttribute("id"));
 		System.out.println("LOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 		int id = (int) request.getAttribute("id");
@@ -156,11 +156,17 @@ public class audi_crud2 extends CRUDCore {
 		String hql = "from Audit_Report where user_id=" + id;
 		Query query = session.createQuery(hql);
 		List<Audit_Report> audit = query.list();
-		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.setPrettyPrinting();
-		Gson gson = gsonBuilder.create();
-		String obj = gson.toJson(audit);
-		return obj;
 		
+		JsonArray array = new JsonArray();
+		for(Audit_Report report : audit) {
+			JsonObject obj= new JsonObject();
+			obj.addProperty("id", report.getId());
+			UserPOJO user1 = report.getUser();
+			obj.addProperty("user_id", user1.getId());
+			obj.addProperty("audit_date", report.getDate_generated());
+			array.add(obj);
+		}
+		
+		return array;
 	}
 }
