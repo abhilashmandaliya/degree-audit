@@ -52,7 +52,8 @@ function login(){
         url: "http://localhost:8080/DegreeAudit/controller?action=login&username="+$("#username").val()+"&password="+$("#password").val(),
         dataType: 'json',
         success: function(result){
-        	console.log(result);
+//        	console.log(result);
+        	localStorage.setItem("loginUser", JSON.stringify(result.data));
         	if(result.statusCode==200){
         		if(result.data.userCategory.category=="admin"){
         			$(location).attr("href","programme_list.html");
@@ -133,3 +134,40 @@ function searchCourseNameID() {
 	    }
 	  }
 	}
+
+function edit_details() {
+	
+	var str="";
+	var userData = JSON.parse(localStorage.getItem("loginUser"));
+	str+='<div id="editprofile" class="col-md-8">';
+	str+='<table>';
+	str+='<tr>';
+	str+='<td>First Name: </td>';
+	str+='<td width="25%"></td>';
+	str+='<td><input type="text" class="form-control" id="usr" value="'+userData.first_name+'"></td>';
+	str+='</tr>';
+	str+='</table>';
+
+	
+    str+='</div>';
+    console.log(str);
+    $(".pageContent").html(str);
+}
+
+
+/* Program Course */
+
+$("tr").on("click", "#remove", function(){
+    $(this).text('Add');
+    $(this).addClass('btn-primary').removeClass('btn-danger').attr('id','add-btn');
+    var tr = $(this).parent().parent();
+    $('#masterList').append(tr);
+});
+
+$("tr").on("click", "#add-btn", function(){
+  console.log('aaa');
+    $(this).text('Remove');
+    $(this).removeClass('btn-primary').addClass('btn-danger').attr('id','remove');
+    var tr = $(this).parent().parent();
+    $('#semesterTable').append(tr);
+});
