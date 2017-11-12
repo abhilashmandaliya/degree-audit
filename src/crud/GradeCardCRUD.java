@@ -49,7 +49,7 @@ public class GradeCardCRUD extends CRUDCore {
 			e.printStackTrace();
 		} finally {
 			if (session.isOpen()) {
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -87,7 +87,7 @@ public class GradeCardCRUD extends CRUDCore {
 		} finally {
 			if (session.isOpen()) {
 				tx.commit();
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -95,7 +95,26 @@ public class GradeCardCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
+		System.out.println("came in function");
 		try {
+			System.out.println("hello");
+			Integer student_id = (Integer) request.getAttribute("student_id");
+			System.out.println("hello" + student_id);
+			if (student_id != null) {
+				try {
+					System.out.println("came in if");
+					String sql = "SELECT MAX(semester) FROM GradeCard WHERE student_id = " + student_id + ")";
+					Query query = session.createQuery(sql);
+					Short sum = (Short) query.list().get(0);
+					response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), sum);
+				} catch (HibernateException e) {
+					e.printStackTrace();
+				} finally {
+					// session.close();
+				}
+				return response;
+			}
+			System.out.println("did not came in if" + student_id);
 			Integer course_id = (Integer) request.getAttribute("course_id");
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
 			try {
@@ -108,11 +127,10 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		} catch (Exception e1) {
-			System.out.println("exception");
 			e1.printStackTrace();
 			try {
 				List<GradeCard> programs = session.createQuery("FROM GradeCard").list();
@@ -122,7 +140,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		}
@@ -164,7 +182,7 @@ public class GradeCardCRUD extends CRUDCore {
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 			if (session.isOpen()) {
 				tx.commit();
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -187,7 +205,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		} catch (Exception e1) {
@@ -199,7 +217,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		}

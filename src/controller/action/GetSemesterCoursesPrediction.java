@@ -1,7 +1,9 @@
 package controller.action;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.print.DocFlavor.READER;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +52,9 @@ public class GetSemesterCoursesPrediction implements Action {
 			data[3][index] = (eligibility == HIGHLY_RECOMMENDED) ? eligibility : 0;
 			index++;
 		}
-		Object[] _response = { labels, data };
+		Map<String, Object> _response = new HashMap<>();
+		_response.put("labels", labels);
+		_response.put("data", data);
 		return new Response(GeneralUtility.getRedirect(request), _response).toString();
 	}
 
