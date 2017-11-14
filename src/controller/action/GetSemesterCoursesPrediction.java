@@ -29,29 +29,30 @@ public class GetSemesterCoursesPrediction implements Action {
 		final int CAN_NOT_SAY = 50;
 		final int NOT_RECOMMENDED = 25;
 
-		for (SemesterCoursePOJO semesterCourse : semesterCourses) {
-			labels[index] = semesterCourse.getCourse().getCourse_name();
-			if (semesterCourse.getCourse().getCourse_category().getCourse_cat_name().toLowerCase().startsWith("core")) {
-				eligibility = CORE;
-			} else {
-				request.setAttribute("course_id", semesterCourse.getCourse().getId());
-				eligibility = (int) GeneralUtility.getCourseEligibility(request);
-				if (eligibility == -1) {
-					eligibility = NOT_RECOMMENDED;
-				} else if (eligibility == 0) {
-					eligibility = CAN_NOT_SAY;
-				} else if (eligibility == 1) {
-					eligibility = HIGHLY_RECOMMENDED;
-				}
-			}
-			data[0][index] = (eligibility == CORE) ? eligibility : 0;
-			data[1][index] = (eligibility == CAN_NOT_SAY) ? eligibility : 0;
-			data[2][index] = (eligibility == NOT_RECOMMENDED) ? eligibility : 0;
-			data[3][index] = (eligibility == HIGHLY_RECOMMENDED) ? eligibility : 0;
-			index++;
-		}
-		Object[] _response = { labels, data };
-		return new Response(GeneralUtility.getRedirect(request), _response).toString();
+//		for (SemesterCoursePOJO semesterCourse : semesterCourses) {
+//			labels[index] = semesterCourse.getCourse().getCourse_name();
+//			if (semesterCourse.getCourse().getCourse_category().getCourse_cat_name().toLowerCase().startsWith("core")) {
+//				eligibility = CORE;
+//			} else {
+//				request.setAttribute("course_id", semesterCourse.getCourse().getId());
+//				eligibility = (int) GeneralUtility.getCourseEligibility(request);
+//				if (eligibility == -1) {
+//					eligibility = NOT_RECOMMENDED;
+//				} else if (eligibility == 0) {
+//					eligibility = CAN_NOT_SAY;
+//				} else if (eligibility == 1) {
+//					eligibility = HIGHLY_RECOMMENDED;
+//				}
+//			}
+//			data[0][index] = (eligibility == CORE) ? eligibility : 0;
+//			data[1][index] = (eligibility == CAN_NOT_SAY) ? eligibility : 0;
+//			data[2][index] = (eligibility == NOT_RECOMMENDED) ? eligibility : 0;
+//			data[3][index] = (eligibility == HIGHLY_RECOMMENDED) ? eligibility : 0;
+//			index++;
+//		}
+//		Object[] _response = { labels, data };
+//		return new Response(GeneralUtility.getRedirect(request), _response).toString();
+		return null;
 	}
 
 }
