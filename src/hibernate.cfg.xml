@@ -20,9 +20,12 @@
 		<property name="hibernate.connection.password">
 			jamfaadaudi
 		</property>
+		
+		<!--  
 		<property name="hibernate.hbm2ddl.auto">
 			update
 		</property>
+		-->
 		<!-- entity classes -->
 		<mapping class="pojo.UserCategoryPOJO" />
 		<mapping class="pojo.UserPOJO" />
@@ -30,9 +33,17 @@
 		<mapping class="pojo.CoursePOJO" />
 		<mapping class="pojo.StudentPOJO" />
 		<mapping class="pojo.GradeCard" />
-		<mapping class="pojo.Audit_Report"/>
+		<mapping class="pojo.Audit_Report" />
 		<mapping class="pojo.CourseProgramPOJO" />
 		<mapping class="pojo.ProgramCoordinatorPOJO" />
 		<mapping class="pojo.CourseCategoryPOJO" />
+		<mapping class="pojo.CourseGroupPOJO" />
+		<mapping class="pojo.CourseGroupCoursePOJO" />
+		<mapping class="pojo.SemesterPOJO" />
+		<mapping class="pojo.SemesterCoursePOJO" />
+		<mapping class="pojo.CourseRecommendationLabelPOJO" />
+		<mapping class="pojo.ProgramSemesterDetailPOJO" />
+		<mapping class="pojo.SlotPOJO" />
+		<mapping class="pojo.PrerequisitePOJO" />
 	</session-factory>
 </hibernate-configuration>

@@ -1,6 +1,7 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-
 <head>
 <title>Bar Chart</title>
 <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
@@ -20,6 +21,13 @@ canvas {
 	</div>
 	<button id="randomizeData">Randomize Data</button>
 	<script>
+		$(document).ready(function () {
+			$.ajax({
+				url : '',
+				type : 'post',
+				data : {}
+			});
+		});
 		var barChartData = {
 			labels : [ "SEN", "CC", "HCI", "POM" ],
 			datasets : [ {
@@ -66,15 +74,6 @@ canvas {
 				}
 			});
 		};
-		document.getElementById('randomizeData').addEventListener('click',
-				function() {
-					barChartData.datasets.forEach(function(dataset, i) {
-						dataset.data = dataset.data.map(function() {
-							return randomScalingFactor();
-						});
-					});
-					window.myBar.update();
-				});
 	</script>
 </body>
 

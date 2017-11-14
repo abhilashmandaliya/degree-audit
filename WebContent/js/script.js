@@ -258,8 +258,6 @@ function getGradeCard(sem) {
 	client.send();
 }
 
-
-
 /* Program Course */
 
 $("tr").on("click", "#remove", function(){

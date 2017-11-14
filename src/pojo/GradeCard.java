@@ -43,7 +43,7 @@ public class GradeCard {
         this.status = status;
         this.earn_grade = earn_grade;
     }
-
+    
     public StudentPOJO getStudent_id() {
         return student_id;
     }
