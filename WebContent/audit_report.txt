@@ -1,0 +1,43 @@
+<table class="table">
+          <thead>
+            <tr>
+              <th scope="col"><h2>Audit Report</h2></th>
+              <th scope="col"><h4>{date}</h4></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Grades Obtained</th>
+              <td>{grade_obtain}</td>
+            </tr>
+            <tr>
+              <th scope="row">Degree Completed</th>
+              <td>{degree_completed}</td>
+            </tr>
+            <tr>
+              <th scope="row">Present CPI</th>
+              <td>{present_cpi}</td>
+            </tr>
+            <tr>
+              <th scope="row">Present Course no</th>
+              <td>{course_completed}</td>
+            </tr>
+            <tr>
+              <th scope="row">CPI Required</th>
+              <td>{cpi_required}</td>
+            </tr>
+            <tr>
+              <th scope="row">Credits Required</th>
+              <td>{credits_required}</td>
+            </tr>
+            <tr>
+              <th scope="row">No. of Courses Required</th>
+              <td>{no_courses_required}</td>
+            </tr>
+            <tr>
+              <th scope="row">Time Left For Graduation</th>
+              <td>{time_left_to_graduate}</td>
+            </tr>
+            
+          </tbody>
+        </table>
