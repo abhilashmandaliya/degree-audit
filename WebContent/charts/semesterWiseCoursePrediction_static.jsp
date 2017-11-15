@@ -104,7 +104,7 @@ canvas {
 		request.setAttribute("program_id", program_id);
 		request.setAttribute("semester_id", semester_id);
 		String data = new GetSemesterCoursesPrediction().perform(request, response);
-		//data = "{\"data\":{\"data\":[[100, 0, 0, 0, 0, 0, 0, 0],[0,0,0,50,50,0,50,0],[0,25,0,0,0,25,0,0],[0,0,75,0,0,0,0,75]],\"labels\":[\"SEN\", \"CC\", \"HCI\", \"MIS\", \"POM\", \"SPM\", \"ISS\", \"CTE\"]}}";
+		data = "{\"data\":{\"data\":[[100, 0, 0, 0, 0, 0, 0, 0],[0,0,0,50,50,0,50,0],[0,25,0,0,0,25,0,0],[0,0,75,0,0,0,0,75]],\"labels\":[\"SEN\", \"CC\", \"HCI\", \"MIS\", \"POM\", \"SPM\", \"ISS\", \"CTE\"]}}";
 		out.write("<input id='data' type='hidden' name='data' value='" + data + "'/>");
 	%>
 </body>

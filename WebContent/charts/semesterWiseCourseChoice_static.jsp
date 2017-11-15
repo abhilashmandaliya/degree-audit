@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<%@page import="controller.action.GetSemesterWiseCourseChoice"%>
-<%@page import="crud.GradeCardCRUD"%>
-<%@page import="crud.StudentCRUD"%>
-<%@page import="util.Response"%>
-<%@page import="java.util.List"%>
-<%@page import="pojo.StudentPOJO"%>
-<%@page import="pojo.UserPOJO"%>
 <html lang="en">
 <head>
 <title>Bootstrap Example</title>
@@ -161,31 +154,7 @@ canvas {
 			}
 		});
 	</script>
-	<%
-		String action = "getsemesterwisecoursechoice";
-		String mode = "api";
-		String search = "all_semester_courses";
-		int student_id = ((UserPOJO) session.getAttribute("user")).getId();
-		request.setAttribute("student_id", student_id);
-		int program_id = ((List<StudentPOJO>) ((Response) new StudentCRUD().retrive(request)).getData()).get(0)
-				.getProgram_id().getId();
-		short semester_id = 1;
-		Object semester = ((Response) new GradeCardCRUD().retrive(request)).getData();
-		if (semester != null) {
-			semester_id = ((Short) semester);
-			semester_id++;
-		}
-		request.setAttribute("action", action);
-		request.setAttribute("mode", mode);
-		request.setAttribute("search", search);
-		request.setAttribute("program_id", program_id);
-		request.setAttribute("semester_id", semester_id);
-		String data = new GetSemesterWiseCourseChoice().perform(request, response);
-		//data = "{\"data\":{\"data\":[[100, 0, 0, 0, 0, 0, 0, 0],[0,0,0,50,50,0,50,0],[0,25,0,0,0,25,0,0],[0,0,75,0,0,0,0,75]],\"labels\":[\"SEN\", \"CC\", \"HCI\", \"MIS\", \"POM\", \"SPM\", \"ISS\", \"CTE\"]}}";
-		out.write("<input id='data' type='hidden' name='data' value='" + data + "'/>");
-	%>
-	<!-- <input id='data' type='hidden' name='data'
+	<input id='data' type='hidden' name='data'
 		value='{"data":{"data":[[0,0],[50,50],[0,0],[0,0]],"labels":["Combinatorial Algorithms","Remote Sensing and GIS"]}}' />
-		-->
 </body>
 </html>

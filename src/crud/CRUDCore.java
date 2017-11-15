@@ -27,10 +27,10 @@ public abstract class CRUDCore implements CRUD {
 
 	@Override
 	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
 		if (session.isOpen()) {
 			session.close();
+			if (session.isConnected())
+				session.disconnect();
 		}
 	}
 }

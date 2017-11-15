@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import controller.Action;
+import crud.CourseProgramCRUD;
 import crud.SemesterCourseCRUD;
+import pojo.CourseCategoryPOJO;
+import pojo.CourseProgramPOJO;
 import pojo.SemesterCoursePOJO;
 import util.GeneralUtility;
 import util.Response;
@@ -33,10 +36,14 @@ public class GetSemesterCoursesPrediction implements Action {
 
 		for (SemesterCoursePOJO semesterCourse : semesterCourses) {
 			labels[index] = semesterCourse.getCourse().getCourse_name();
-			if (semesterCourse.getCourse().getCourse_category().getCourse_cat_name().toLowerCase().startsWith("core")) {
+			String search = "program_course_wise_course_category";
+			request.setAttribute("search", search);
+			request.setAttribute("course_id", semesterCourse.getCourse().getId());
+			String course_category = ((CourseCategoryPOJO) ((List<CourseProgramPOJO>) ((Response) new CourseProgramCRUD()
+					.retrive(request)).getData()).get(0).getCourse_category()).getCourse_cat_name();
+			if (course_category.toLowerCase().startsWith("core")) {
 				eligibility = CORE;
 			} else {
-				request.setAttribute("course_id", semesterCourse.getCourse().getId());
 				eligibility = (int) GeneralUtility.getCourseEligibility(request);
 				if (eligibility == -1) {
 					eligibility = NOT_RECOMMENDED;
