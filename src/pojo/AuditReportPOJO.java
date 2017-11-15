@@ -23,7 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Audit_report")
 
-public class Audit_Report {
+public class AuditReportPOJO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class Audit_Report {
 	private SemesterPOJO sem;
 	// private int no_of_cource;
 
-	public Audit_Report() {
+	public AuditReportPOJO() {
 	}
 
 	public SemesterPOJO getSem() {
@@ -68,7 +68,7 @@ public class Audit_Report {
 		this.user = user;
 	}
 
-	public Audit_Report(double percentage_of_degree_finish, double obtained_credit,
+	public AuditReportPOJO(double percentage_of_degree_finish, double obtained_credit,
 			double require__credit, double present_CPI, double require_CPI, double present_cource,
 			double require_courcce, double time_left_finish_degree, UserPOJO user,SemesterPOJO sem) 
 	{

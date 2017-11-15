@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import pojo.Audit_Report;
+import pojo.AuditReportPOJO;
 import pojo.CourseCategoryPOJO;
 import pojo.ProgramPOJO;
 import pojo.SemesterPOJO;
@@ -47,7 +47,7 @@ public class audi_crud  extends CRUDCore
 	        UserPOJO user_pojo = session.get(UserPOJO.class,Integer.parseInt(request.getParameter("user")));
 	        SemesterPOJO sem=session.get(SemesterPOJO.class,Integer.parseInt(request.getParameter("sem")));
 	        System.out.println(sem.getId() + " just check");
-			Audit_Report report = new Audit_Report(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo,sem);
+			AuditReportPOJO report = new AuditReportPOJO(percentage_of_degree_finish,obtained_credit,require__credit,present_CPI,require_CPI,present_cource,require_courcce,time_left_finish_degree, user_pojo,sem);
 			id = (Integer) session.save(report);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
@@ -66,7 +66,7 @@ public class audi_crud  extends CRUDCore
 		Response response = null;
 		try {
 			int id = Integer.parseInt(request.getParameter("id"));
-			List<Audit_Report> report = session.createQuery("select date_generated,id FROM Audit_Report where user="+id).list();//("FROM Audit_Report where  id="+id).list();
+			List<AuditReportPOJO> report = session.createQuery("select date_generated,id FROM AuditReportPOJO where user="+id).list();//("FROM AuditReportPOJO where  id="+id).list();
 			response = GeneralUtility.generateSuccessResponse(null, report);
 		} catch (HibernateException e) {
 			tx.rollback();

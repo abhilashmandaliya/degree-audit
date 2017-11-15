@@ -27,7 +27,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import pojo.Audit_Report;
+import pojo.AuditReportPOJO;
 import pojo.CourseCategoryPOJO;
 import pojo.ProgramPOJO;
 import pojo.SemesterPOJO;
@@ -65,7 +65,7 @@ public class audi_crud2 extends CRUDCore {
 			double time_left_finish_degree = Double.parseDouble(request.getParameter("time_left_finish_degree"));
 			UserPOJO user_pojo = session.get(UserPOJO.class, Integer.parseInt(request.getParameter("user")));
 			SemesterPOJO sem = session.get(SemesterPOJO.class, Integer.parseInt(request.getParameter("sem")));
-			Audit_Report report = new Audit_Report(percentage_of_degree_finish, obtained_credit, require__credit,
+			AuditReportPOJO report = new AuditReportPOJO(percentage_of_degree_finish, obtained_credit, require__credit,
 					present_CPI, require_CPI, present_cource, require_courcce, time_left_finish_degree, user_pojo, sem);
 			id = (Integer) session.save(report);
 			tx.commit();
@@ -87,17 +87,17 @@ public class audi_crud2 extends CRUDCore {
 		try {
 			int id = Integer.parseInt(request.getParameter("id"));
 			UserPOJO user = session.get(UserPOJO.class, id);
-			String hql = "from Audit_Report where user_id=" + id;
+			String hql = "from AuditReportPOJO where user_id=" + id;
 			Query query = session.createQuery(hql);
-			List<Audit_Report> audit = query.list();
+			List<AuditReportPOJO> audit = query.list();
 			response = GeneralUtility.generateSuccessResponse(null, audit.get(0));
 			/*
 			 * CriteriaBuilder builder = session.getCriteriaBuilder();
-			 * CriteriaQuery<Audit_Report> criteria =
-			 * builder.createQuery(Audit_Report.class); Root<Audit_Report> Audit_ReportRoot
-			 * = criteria.from(Audit_Report.class); criteria.select(Audit_ReportRoot);
+			 * CriteriaQuery<AuditReportPOJO> criteria =
+			 * builder.createQuery(AuditReportPOJO.class); Root<AuditReportPOJO> Audit_ReportRoot
+			 * = criteria.from(AuditReportPOJO.class); criteria.select(Audit_ReportRoot);
 			 * criteria.where(builder.equal(Audit_ReportRoot.get("id"), id));
-			 * //System.out.println("ankit"); List<Audit_Report> audit =
+			 * //System.out.println("ankit"); List<AuditReportPOJO> audit =
 			 * session.createQuery(criteria).getResultList();
 			 * System.out.println(audit.size());
 			 * response=GeneralUtility.generateSuccessResponse(null, audit);
@@ -105,7 +105,7 @@ public class audi_crud2 extends CRUDCore {
 			tx.commit();
 			session.close();
 			/*
-			 * if (!audit.isEmpty()) { Audit_Report Audit_report = audit.get(0); //String
+			 * if (!audit.isEmpty()) { AuditReportPOJO Audit_report = audit.get(0); //String
 			 * hashed = userPOJO.getPassword(); UserPOJO userPOJO = Audit_report.getUser();
 			 * String userdata = userPOJO.getUsername(); System.out.println(userdata);
 			 * String authJSON = GeneralUtility.readAuthJSON(); JsonParser parser = new
@@ -131,9 +131,9 @@ public class audi_crud2 extends CRUDCore {
 
 	/*
 	 * try { int id = Integer.parseInt(request.getParameter("id"));
-	 * List<Audit_Report> report = session.
-	 * createQuery("select a.id,a.date_generated,a.obtained_credit,a.percentage_of_degree_finish,b.id FROM Audit_Report a,UserPOJO b  where a.id="
-	 * +id).list();//("FROM Audit_Report where  id="+id).list(); response =
+	 * List<AuditReportPOJO> report = session.
+	 * createQuery("select a.id,a.date_generated,a.obtained_credit,a.percentage_of_degree_finish,b.id FROM AuditReportPOJO a,UserPOJO b  where a.id="
+	 * +id).list();//("FROM AuditReportPOJO where  id="+id).list(); response =
 	 * GeneralUtility.generateSuccessResponse(null, report); }
 	 */
 	@Override
@@ -153,12 +153,12 @@ public class audi_crud2 extends CRUDCore {
 		System.out.println("LOLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 		int id = (int) request.getAttribute("id");
 		UserPOJO user = session.get(UserPOJO.class, id);
-		String hql = "from Audit_Report where user_id=" + id;
+		String hql = "from AuditReportPOJO where user_id=" + id;
 		Query query = session.createQuery(hql);
-		List<Audit_Report> audit = query.list();
+		List<AuditReportPOJO> audit = query.list();
 		
 		JsonArray array = new JsonArray();
-		for(Audit_Report report : audit) {
+		for(AuditReportPOJO report : audit) {
 			JsonObject obj= new JsonObject();
 			obj.addProperty("id", report.getId());
 			UserPOJO user1 = report.getUser();
