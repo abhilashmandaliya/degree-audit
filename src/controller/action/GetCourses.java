@@ -14,7 +14,6 @@ public class GetCourses implements Action {
 		if (!GeneralUtility.isAutheticatedUser(request)) {
 			return GeneralUtility.generateUnauthorizedResponse().toString();
 		}
-		System.out.println("hey");
 		return (String) new CourseCRUD().retrive(request);
 	}
 	

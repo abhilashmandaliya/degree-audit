@@ -1,28 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pojo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Audit_report")
-
+@Table(name = "audit_report")
 public class AuditReportPOJO {
 
 	@Id
@@ -30,62 +15,62 @@ public class AuditReportPOJO {
 	@Column(name = "id")
 	private int id;
 
+	@ManyToOne
+	@JoinColumn(name = "student_id")
+	private StudentPOJO student_id;
+
+	@Column(name = "date_generated")
 	private String date_generated;
-	private double percentage_of_degree_finish;
-	private double obtained_credit;
-	private double require__credit;
-	private double present_CPI;
-	private double require_CPI;
-	private double present_cource;
-	private double require_courcce;
-	private double time_left_finish_degree;
+
+	@Column(name = "degree_completed_percent")
+	private double degree_completed_percent;
+
+	@Column(name = "obtained_credits")
+	private double obtained_credits;
+
+	@Column(name = "required_credits")
+	private double required_credits;
+
+	@Column(name = "current_cpi")
+	private double current_cpi;
+
+	@Column(name = "required_cpi")
+	private double required_cpi;
+
+	@Column(name = "present_courses")
+	private double present_courses;
+
+	@Column(name = "required_courses")
+	private double required_courses;
+
+	@Column(name = "time_left")
+	private double time_left;
 	
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private UserPOJO user;
-	//private int CPI;
-	@OneToOne
-	@JoinColumn(name="id")
+	@ManyToOne
+	@JoinColumn(name = "sem")
 	private SemesterPOJO sem;
-	// private int no_of_cource;
 
 	public AuditReportPOJO() {
+
 	}
 
-	public SemesterPOJO getSem() {
-		return sem;
-	}
-
-	public void setSem(SemesterPOJO sem) {
-		this.sem = sem;
-	}
-
-	public UserPOJO getUser() {
-		return user;
-	}
-
-	public void setUser(UserPOJO user) {
-		this.user = user;
-	}
-
-	public AuditReportPOJO(double percentage_of_degree_finish, double obtained_credit,
-			double require__credit, double present_CPI, double require_CPI, double present_cource,
-			double require_courcce, double time_left_finish_degree, UserPOJO user,SemesterPOJO sem) 
-	{
+	public AuditReportPOJO(StudentPOJO student_id, double degree_completed_percent, double obtained_credits,
+			double required_credits, double current_cpi, double required_cpi, double present_courses,
+			double required_courses, double time_left, SemesterPOJO sem) {
 		super();
+		this.student_id = student_id;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = new Date();
 		this.date_generated = dateFormat.format(date).toString();
-		this.percentage_of_degree_finish = percentage_of_degree_finish;
-		this.obtained_credit = obtained_credit;
-		this.require__credit = require__credit;
-		this.present_CPI = present_CPI;
-		this.require_CPI = require_CPI;
-		this.present_cource = present_cource;
-		this.require_courcce = require_courcce;
-		this.time_left_finish_degree = time_left_finish_degree;
-		this.user = user;
-		//this.sem=sem;
+		this.degree_completed_percent = degree_completed_percent;
+		this.obtained_credits = obtained_credits;
+		this.required_credits = required_credits;
+		this.current_cpi = current_cpi;
+		this.required_cpi = required_cpi;
+		this.present_courses = present_courses;
+		this.required_courses = required_courses;
+		this.time_left = time_left;
+		this.sem = sem;
 	}
 
 	public int getId() {
@@ -96,7 +81,13 @@ public class AuditReportPOJO {
 		this.id = id;
 	}
 
-	
+	public StudentPOJO getStudent_id() {
+		return student_id;
+	}
+
+	public void setStudent_id(StudentPOJO student_id) {
+		this.student_id = student_id;
+	}
 
 	public String getDate_generated() {
 		return date_generated;
@@ -106,68 +97,76 @@ public class AuditReportPOJO {
 		this.date_generated = date_generated;
 	}
 
-	public double getPercentage_of_degree_finish() {
-		return percentage_of_degree_finish;
+	public double getDegree_completed_percent() {
+		return degree_completed_percent;
 	}
 
-	public void setPercentage_of_degree_finish(double percentage_of_degree_finish) {
-		this.percentage_of_degree_finish = percentage_of_degree_finish;
+	public void setDegree_completed_percent(double degree_completed_percent) {
+		this.degree_completed_percent = degree_completed_percent;
 	}
 
-	public double getObtained_credit() {
-		return obtained_credit;
+	public double getObtained_credits() {
+		return obtained_credits;
 	}
 
-	public void setObtained_credit(double obtained_credit) {
-		this.obtained_credit = obtained_credit;
+	public void setObtained_credits(double obtained_credits) {
+		this.obtained_credits = obtained_credits;
 	}
 
-	public double getRequire__credit() {
-		return require__credit;
+	public double getRequired_credits() {
+		return required_credits;
 	}
 
-	public void setRequire__credit(double require__credit) {
-		this.require__credit = require__credit;
+	public void setRequired_credits(double required_credits) {
+		this.required_credits = required_credits;
 	}
 
-	public double getPresent_CPI() {
-		return present_CPI;
+	public double getCurrent_cpi() {
+		return current_cpi;
 	}
 
-	public void setPresent_CPI(double present_CPI) {
-		this.present_CPI = present_CPI;
+	public void setCurrent_cpi(double current_cpi) {
+		this.current_cpi = current_cpi;
 	}
 
-	public double getRequire_CPI() {
-		return require_CPI;
+	public double getRequired_cpi() {
+		return required_cpi;
 	}
 
-	public void setRequire_CPI(double require_CPI) {
-		this.require_CPI = require_CPI;
+	public void setRequired_cpi(double required_cpi) {
+		this.required_cpi = required_cpi;
 	}
 
-	public double getPresent_cource() {
-		return present_cource;
+	public double getPresent_courses() {
+		return present_courses;
 	}
 
-	public void setPresent_cource(double present_cource) {
-		this.present_cource = present_cource;
+	public void setPresent_courses(double present_courses) {
+		this.present_courses = present_courses;
 	}
 
-	public double getRequire_courcce() {
-		return require_courcce;
+	public double getRequired_courses() {
+		return required_courses;
 	}
 
-	public void setRequire_courcce(double require_courcce) {
-		this.require_courcce = require_courcce;
+	public void setRequired_courses(double required_courses) {
+		this.required_courses = required_courses;
 	}
 
-	public double getTime_left_finish_degree() {
-		return time_left_finish_degree;
+	public double getTime_left() {
+		return time_left;
 	}
 
-	public void setTime_left_finish_degree(double time_left_finish_degree) {
-		this.time_left_finish_degree = time_left_finish_degree;
+	public void setTime_left(double time_left) {
+		this.time_left = time_left;
+	}
+
+	public SemesterPOJO getSem() {
+		return sem;
+	}
+
+	public void setSem(SemesterPOJO sem) {
+		this.sem = sem;
 	}
 
 }
