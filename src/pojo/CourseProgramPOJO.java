@@ -28,6 +28,10 @@ public class CourseProgramPOJO {
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private CoursePOJO course;
+	
+	@ManyToOne
+	@JoinColumn(name = "course_cat")
+	private CourseCategoryPOJO course_category;
 
 	public int getId() {
 		return id;
@@ -61,14 +65,23 @@ public class CourseProgramPOJO {
 		this.course = course;
 	}
 	
+	public CourseCategoryPOJO getCourse_category() {
+		return course_category;
+	}
+
+	public void setCourse_category(CourseCategoryPOJO course_category) {
+		this.course_category = course_category;
+	}
+
 	public CourseProgramPOJO() {
 		
 	}
 	
-	public CourseProgramPOJO(ProgramPOJO program, CoursePOJO course, boolean is_active) {
+	public CourseProgramPOJO(ProgramPOJO program, CoursePOJO course, boolean is_active, CourseCategoryPOJO course_category) {
 		this.program = program;
 		this.course = course;
 		this.is_active = is_active;
+		this.course_category = course_category;
 	}
 	
 }
