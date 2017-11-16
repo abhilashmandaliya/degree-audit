@@ -26,10 +26,10 @@ public class AuditReportPOJO {
 	private double degree_completed_percent;
 
 	@Column(name = "obtained_credits")
-	private double obtained_credits;
+	private int obtained_credits;
 
 	@Column(name = "required_credits")
-	private double required_credits;
+	private int required_credits;
 
 	@Column(name = "current_cpi")
 	private double current_cpi;
@@ -38,25 +38,24 @@ public class AuditReportPOJO {
 	private double required_cpi;
 
 	@Column(name = "present_courses")
-	private double present_courses;
+	private int present_courses;
 
 	@Column(name = "required_courses")
-	private double required_courses;
+	private int required_courses;
 
 	@Column(name = "time_left")
 	private double time_left;
 	
-	@ManyToOne
-	@JoinColumn(name = "sem")
-	private SemesterPOJO sem;
+	@Column(name = "sem")
+	private short sem;
 
 	public AuditReportPOJO() {
 
 	}
 
-	public AuditReportPOJO(StudentPOJO student_id, double degree_completed_percent, double obtained_credits,
-			double required_credits, double current_cpi, double required_cpi, double present_courses,
-			double required_courses, double time_left, SemesterPOJO sem) {
+	public AuditReportPOJO(StudentPOJO student_id, double degree_completed_percent, int obtained_credits,
+			int required_credits, double current_cpi, double required_cpi, int present_courses,
+			int required_courses, double time_left, short sem) {
 		super();
 		this.student_id = student_id;
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -105,19 +104,19 @@ public class AuditReportPOJO {
 		this.degree_completed_percent = degree_completed_percent;
 	}
 
-	public double getObtained_credits() {
+	public int getObtained_credits() {
 		return obtained_credits;
 	}
 
-	public void setObtained_credits(double obtained_credits) {
+	public void setObtained_credits(int obtained_credits) {
 		this.obtained_credits = obtained_credits;
 	}
 
-	public double getRequired_credits() {
+	public int getRequired_credits() {
 		return required_credits;
 	}
 
-	public void setRequired_credits(double required_credits) {
+	public void setRequired_credits(int required_credits) {
 		this.required_credits = required_credits;
 	}
 
@@ -137,19 +136,19 @@ public class AuditReportPOJO {
 		this.required_cpi = required_cpi;
 	}
 
-	public double getPresent_courses() {
+	public int getPresent_courses() {
 		return present_courses;
 	}
 
-	public void setPresent_courses(double present_courses) {
+	public void setPresent_courses(int present_courses) {
 		this.present_courses = present_courses;
 	}
 
-	public double getRequired_courses() {
+	public int getRequired_courses() {
 		return required_courses;
 	}
 
-	public void setRequired_courses(double required_courses) {
+	public void setRequired_courses(int required_courses) {
 		this.required_courses = required_courses;
 	}
 
@@ -161,11 +160,11 @@ public class AuditReportPOJO {
 		this.time_left = time_left;
 	}
 
-	public SemesterPOJO getSem() {
+	public short getSem() {
 		return sem;
 	}
 
-	public void setSem(SemesterPOJO sem) {
+	public void setSem(short sem) {
 		this.sem = sem;
 	}
 
