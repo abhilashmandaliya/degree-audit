@@ -43,11 +43,21 @@ public class SemesterCourseCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		String search = request.getParameter("search").toLowerCase();
+		String search = ((String) request.getAttribute("search")).toLowerCase();
 		if (search.equals("all_semester_courses")) {
 			try {
-				Integer semester_id = Integer.parseInt(request.getParameter("semester_id"));
-				Integer program_id = Integer.parseInt(request.getParameter("program_id"));
+				Object temp = request.getAttribute("semester_id");
+				Short semester_id = null;
+				Integer program_id = null;
+				if (temp instanceof String)
+					semester_id = Short.valueOf((String) temp);
+				else
+					semester_id = (Short) temp;
+				temp = request.getAttribute("program_id");
+				if (temp instanceof String)
+					program_id = Integer.valueOf((String) temp);
+				else
+					program_id = (Integer) temp;
 				List<SemesterCoursePOJO> semesterCourses = session.createQuery(
 						"FROM SemesterCoursePOJO WHERE semester = " + semester_id + " AND program_id = " + program_id)
 						.list();

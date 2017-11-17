@@ -8,7 +8,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Restrictions;
 
 import pojo.CourseCategoryPOJO;
 import pojo.CoursePOJO;
@@ -43,10 +45,11 @@ public class CourseProgramCRUD extends CRUDCore {
 		return response;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 		try {
-			String search = request.getParameter("search").toLowerCase();
+			String search = ((String) request.getAttribute("search")).toLowerCase();
 			if (search.equals("program_wise_course")) {
 				Integer program_id = Integer.parseInt(request.getParameter("program_id"));
 				CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -56,11 +59,33 @@ public class CourseProgramCRUD extends CRUDCore {
 				criteria.where(builder.equal(courseProgramPOJORoot.get("program").get("id"), program_id));
 				List<CourseProgramPOJO> courses = session.createQuery(criteria).getResultList();
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+			} else if (search.equals("program_course_wise_course_category")) {
+				Object temp = request.getAttribute("program_id");
+				Integer program_id, course_id;
+				if (temp instanceof String)
+					program_id = Integer.valueOf((String) temp);
+				else
+					program_id = (Integer) temp;
+				temp = request.getAttribute("course_id");
+				if (temp instanceof String)
+					course_id = Integer.valueOf((String) temp);
+				else
+					course_id = (Integer) temp;
+				Criteria criteria = session.createCriteria(CourseProgramPOJO.class, "course_program")
+						.createAlias("course_program.program", "program").createAlias("course_program.course", "course")
+						.add(Restrictions.eq("course.id", course_id)).add(Restrictions.eq("program.id", program_id));
+				List<CourseProgramPOJO> courses = criteria.list();
+				System.out.println(course_id + " " + program_id);
+				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
 			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
 		}
-		return response.toString();
+		return response;
 	}
 
 	@Override

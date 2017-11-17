@@ -56,6 +56,21 @@ public class ProgramSemesterDetailPOJO {
 	@Column(name = "max_open_electives_credits")
 	private int max_open_electives_credits;
 
+	@Column(name = "min_semester_credits")
+	private int min_semester_credits;
+
+	@Column(name = "max_semester_credits")
+	private int max_semester_credits;
+
+	@Column(name = "max_semester_courses")
+	private int max_semester_courses;
+
+	@Column(name = "min_semester_courses")
+	private int min_semester_courses;
+
+	@Column(name = "min_spi")
+	private float min_spi;
+
 	public ProgramSemesterDetailPOJO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -63,7 +78,8 @@ public class ProgramSemesterDetailPOJO {
 	public ProgramSemesterDetailPOJO(SemesterPOJO semester, ProgramPOJO program, int core, int min_tech_electives,
 			int max_tech_electives, int min_open_electives, int max_open_electives, int core_credits,
 			int min_tech_electives_credits, int max_tech_electives_credits, int min_open_electives_credits,
-			int max_open_electives_credits) {
+			int max_open_electives_credits, int min_semester_credits, int max_semester_credits,
+			int min_semester_courses, int max_semester_cources, float min_spi) {
 		super();
 		this.semester = semester;
 		this.program = program;
@@ -77,6 +93,51 @@ public class ProgramSemesterDetailPOJO {
 		this.max_tech_electives_credits = max_tech_electives_credits;
 		this.min_open_electives_credits = min_open_electives_credits;
 		this.max_open_electives_credits = max_open_electives_credits;
+		this.min_semester_credits = min_semester_credits;
+		this.max_semester_credits = max_semester_credits;
+		this.max_semester_courses = max_semester_cources;
+		this.min_semester_courses = min_semester_courses;
+		this.min_spi = min_spi;
+	}
+
+	public int getMax_semester_courses() {
+		return max_semester_courses;
+	}
+
+	public void setMax_semester_courses(int max_semester_courses) {
+		this.max_semester_courses = max_semester_courses;
+	}
+
+	public int getMin_semester_courses() {
+		return min_semester_courses;
+	}
+
+	public void setMin_semester_courses(int min_semester_courses) {
+		this.min_semester_courses = min_semester_courses;
+	}
+
+	public float getMin_spi() {
+		return min_spi;
+	}
+
+	public void setMin_spi(float min_spi) {
+		this.min_spi = min_spi;
+	}
+
+	public int getMin_semester_credits() {
+		return min_semester_credits;
+	}
+
+	public void setMin_semester_credits(int min_semester_credits) {
+		this.min_semester_credits = min_semester_credits;
+	}
+
+	public int getMax_semester_credits() {
+		return max_semester_credits;
+	}
+
+	public void setMax_semester_credits(int max_semester_credits) {
+		this.max_semester_credits = max_semester_credits;
 	}
 
 	public int getId() {

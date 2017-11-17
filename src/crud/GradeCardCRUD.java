@@ -3,6 +3,7 @@ package crud;
 import java.io.IOException;
 
 import pojo.CoursePOJO;
+import pojo.CourseProgramPOJO;
 import pojo.GradeCard;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class GradeCardCRUD extends CRUDCore {
 			e.printStackTrace();
 		} finally {
 			if (session.isOpen()) {
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -87,7 +88,7 @@ public class GradeCardCRUD extends CRUDCore {
 		} finally {
 			if (session.isOpen()) {
 				tx.commit();
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -96,6 +97,41 @@ public class GradeCardCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 		try {
+			Object temp = request.getAttribute("student_id");
+			Integer student_id;
+
+			if (temp instanceof String)
+				student_id = Integer.valueOf((String) temp);
+			else
+				student_id = (Integer) temp;
+			String search = (String) request.getAttribute("search");
+			System.out.println("search " + search);
+			if (search != null) {
+				try {
+					if (search.toLowerCase().equals("get_all_grades_of_student")) {
+						Criteria criteria = session.createCriteria(GradeCard.class, "grade_card")
+								.createAlias("grade_card.student_id", "student_id")
+								.add(Restrictions.eq("student_id", session.get(StudentPOJO.class, student_id)));
+						List<GradeCard> courses = criteria.list();
+						response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+						return response;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (student_id != null) {
+				try {
+					String sql = "SELECT MAX(semester) FROM GradeCard WHERE student_id = " + student_id + ")";
+					Query query = session.createQuery(sql);
+					Short sum = (Short) query.list().get(0);
+					response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), sum);
+				} catch (HibernateException e) {
+					e.printStackTrace();
+				} finally {
+					// session.close();
+				}
+				return response;
+			}
 			Integer course_id = (Integer) request.getAttribute("course_id");
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
 			try {
@@ -108,11 +144,10 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		} catch (Exception e1) {
-			System.out.println("exception");
 			e1.printStackTrace();
 			try {
 				List<GradeCard> programs = session.createQuery("FROM GradeCard").list();
@@ -124,7 +159,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		}
@@ -166,7 +201,7 @@ public class GradeCardCRUD extends CRUDCore {
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
 			if (session.isOpen()) {
 				tx.commit();
-				session.close();
+				// session.close();
 			}
 		}
 		return response;
@@ -189,7 +224,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		} catch (Exception e1) {
@@ -201,7 +236,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					session.close();
+					// session.close();
 				}
 			}
 		}

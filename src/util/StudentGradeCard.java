@@ -19,8 +19,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import crud.AuditReportCRUD;
 import crud.StudentCRUD;
-import crud.audi_crud2;
 import pojo.GradeCard;
 import pojo.StudentPOJO;
 
@@ -131,8 +131,8 @@ public class StudentGradeCard {
 		return response.toString();
 	}
 
-	public JsonArray getDataFromAuditReport(HttpServletRequest req) {
-		return new audi_crud2().getUserAudit(req);
+	public String getDataFromAuditReport(HttpServletRequest req) throws IOException {
+		return new AuditReportCRUD().retrive(req).toString();
 		//return "{'key': 'value', 'key2': 'value2' }";
 	}
 }
