@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 
+import pojo.CourseCategoryPOJO;
 import pojo.CoursePOJO;
 import pojo.CourseProgramPOJO;
 import pojo.ProgramPOJO;
@@ -26,10 +27,12 @@ public class CourseProgramCRUD extends CRUDCore {
 		try {
 			Integer course_id = Integer.parseInt(request.getParameter("course_id"));
 			Integer program_id = Integer.parseInt(request.getParameter("program_id"));
+			Integer course_cat_id = Integer.parseInt(request.getParameter("course_cat"));
 			boolean is_active = true;
 			ProgramPOJO program = session.get(ProgramPOJO.class, program_id);
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
-			CourseProgramPOJO courseProgram = new CourseProgramPOJO(program, course, is_active);
+			CourseCategoryPOJO course_cat = session.get(CourseCategoryPOJO.class, course_cat_id);
+			CourseProgramPOJO courseProgram = new CourseProgramPOJO(program, course, is_active, course_cat);
 			id = (Integer) session.save(courseProgram);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);

@@ -139,7 +139,7 @@ public class GradeCardCRUD extends CRUDCore {
 				criteria.add(Restrictions.eq("course_id", course));
 				List<GradeCard> list = criteria.list();
 				response = GeneralUtility.generateSuccessResponse(null, list);
-			} catch (HibernateException e) {
+			} catch (Exception e) {
 				tx.rollback();
 				e.printStackTrace();
 			} finally {
@@ -151,6 +151,8 @@ public class GradeCardCRUD extends CRUDCore {
 			e1.printStackTrace();
 			try {
 				List<GradeCard> programs = session.createQuery("FROM GradeCard").list();
+				System.out.println("no. of gradecard entries ... " + programs.size());
+
 				response = GeneralUtility.generateSuccessResponse(null, programs);
 			} catch (HibernateException e) {
 				tx.rollback();

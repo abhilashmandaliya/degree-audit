@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="js/script.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -16,7 +17,7 @@
     <div class="row">
       <div class="col-md-2">
         <div class="panel panel-default">
-          <div class="panel-heading">Student Prolife</div>
+          <div class="panel-heading stud_name_1">Student Profile</div>
           <img class="img-circle" src="StudentDfaultProPic.jpeg"></img>
           <div style="position: absolute; width:100%;">
 
@@ -25,7 +26,7 @@
                 Audits Reports
               </a>
             </div>
-            <div class="collapse" id="audits">
+            <div class="collapse"  id="audits">
               <div class="card card-body btn-group" style="width:100%">
                 <button type="button" class="btn btn-info" style="width:100%">Sem-2 21-2-17</button>
                 <button type="button" class="btn btn-info" style="width:100%">Sem-1 2-12-16</button>
@@ -39,7 +40,7 @@
             </div>
             <div class="collapse" id="gradecard">
               <div class="card card-body btn-group" style="width:100%">
-                <button type="button" class="btn btn-info" style="width:100%" onclick="getGradeCardOf(1)">Sem-2</button>
+                <button type="button" class="btn btn-info" style="width:100%" onclick="getGradeCard(1)">Sem-2</button>
                 <button type="button" class="btn btn-info" style="width:100%" onclick="getGradeCardOf(1)">Sem-1</button>
               </div>
             </div>
@@ -55,12 +56,82 @@
         </div>
       </div>
       <div class="col-md-8 pageContent" style="margin-left: 25%;text-align: center;">
-        adjkshdkjah
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"><h2>Profile</h2></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Name</th>
+              <td class="stud_name">Hemant.S.Singh</td>
+            </tr>
+            <tr>
+              <th scope="row">Programme</th>
+              <td class="program_name">Msc.(IT)</td>
+            </tr>
+            <tr>
+              <th scope="row">E-mail</th>
+              <td class="email_address">Hemantsingh@paaja.com</td>
+            </tr>
+            <tr >
+              <td>
+                <button type="button" class="btn btn-primary" style="margin-top: 3px;" onclick="edit_details()">Edit</button>
+              </td>
+              <td>
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </body>
 <script type="text/javascript">
+<<<<<<< HEAD
+	$(document).ready(function(){
+		var userData = JSON.parse(localStorage.getItem("loginUser"));
+		//console.log(userData);
+		$(".stud_name_1").html(userData.first_name+" "+userData.last_name);
+		$(".stud_name").html(userData.first_name+" "+userData.last_name);
+		$(".email_address").html(userData.email);
+		/*$.ajax({
+			url:'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&mode=api&student_id='+userData.id,
+		    dataType: 'json',
+		    success: function(result) {
+		    	console.log(result);
+		    	var str = "";
+		    	var i = result.data.length-1;
+		    	for(var j=1; j<=3 && i!=0;j++){
+					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+result.data[i][1]+')" style="width:100%">'+result.data[i][0]+'</button>';
+					i--;
+		    	}
+		    	if(i!=0);{
+		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+		    	}
+		    	$("#audits").html(str);
+				$(".program_name").html(result.data.student_details.program_id.name);
+		    }
+		});*/
+		$.ajax({
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id=2',
+		    dataType: 'json',
+		    success: function(result) {
+		    	var str="";
+		    	var i = result.data.length-1;
+		    	for(var j=1; j<=3 && i!=0;j++){
+					str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i][1]+')" style="width:100%">'+result.data[i][0]+'</button>';
+					i--;
+		    	}
+		    	if(i!=0);{
+		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+		    	}
+		    	$("#audits").html(str);
+		    }
+		});
+	});
   function getGradeCardOf(sem){
     $.ajax({
       url: "gradeCard.html",

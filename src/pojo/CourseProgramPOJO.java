@@ -33,14 +33,6 @@ public class CourseProgramPOJO {
 	@JoinColumn(name = "course_cat")
 	private CourseCategoryPOJO course_category;
 
-	public CourseCategoryPOJO getCourse_category() {
-		return course_category;
-	}
-
-	public void setCourse_category(CourseCategoryPOJO course_category) {
-		this.course_category = course_category;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -71,6 +63,14 @@ public class CourseProgramPOJO {
 
 	public void setCourse(CoursePOJO course) {
 		this.course = course;
+	}
+
+	public CourseCategoryPOJO getCourse_category() {
+		return course_category;
+	}
+
+	public void setCourse_category(CourseCategoryPOJO course_category) {
+		this.course_category = course_category;
 	}
 
 	public CourseProgramPOJO() {

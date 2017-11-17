@@ -29,10 +29,6 @@ public class CoursePOJO {
 	private int course_credits;
 
 	@ManyToOne
-	@JoinColumn(name = "course_category")
-	private CourseCategoryPOJO course_category;
-
-	@ManyToOne
 	@JoinColumn(name = "slot_id")
 	private SlotPOJO slot;
 
@@ -49,17 +45,16 @@ public class CoursePOJO {
 
 	}
 
-	public CoursePOJO(String course_name, String course_id, int course_credits, CourseCategoryPOJO course_category) {
+	public CoursePOJO(String course_name, String course_id, int course_credits) {
 		super();
 		this.course_name = course_name;
 		this.course_id = course_id;
 		this.course_credits = course_credits;
-		this.course_category = course_category;
 	}
 
-	public CoursePOJO(String course_name, String course_id, int course_credits, CourseCategoryPOJO course_category,
+	public CoursePOJO(String course_name, String course_id, int course_credits,
 			SlotPOJO slot) {
-		this(course_name, course_id, course_credits, course_category);
+		this(course_name, course_id, course_credits);
 		this.slot = slot;
 	}
 
@@ -95,13 +90,4 @@ public class CoursePOJO {
 	public void setCourse_credits(int course_credits) {
 		this.course_credits = course_credits;
 	}
-
-	public CourseCategoryPOJO getCourse_category() {
-		return course_category;
-	}
-
-	public void setCourse_category(CourseCategoryPOJO course_category) {
-		this.course_category = course_category;
-	}
-
 }

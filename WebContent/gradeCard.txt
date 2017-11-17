@@ -1,23 +1,21 @@
-     <h2>Grade Card Semester - 1</h2> 
+     <h2>Grade Card Semester - {sem}</h2> 
 
     <table class="table table-hover col-lg-6">
   	<tr>
-  	<th>Enrollment Number</th>
-  	<th>Name</th>
-  	<th>Date</th>
-  	<th>Semester</th>
+  	<th style="text-align:center">Enrollment Number</th>
+  	<th style="text-align:center">Name</th>
+  	<th style="text-align:center">Semester</th>
   	</tr>
 
 
   	<tr class="info">
   		<td>
-  		201612104
+  		{id}
   		</td>
   		<td>
-  		Shah Parin
+  		{name}
   		</td>
-  <td>20-Jul-2018</td>
-  <td>1 </td>
+  <td>{sem}</td>
     	</tr>
   	<tr>
   	</tr>
@@ -26,50 +24,13 @@
   <table class="table table-striped col-lg-6" style="text-align: center;">
     <thead>
       <tr>
-        <th>Course Code</th>
-        <th>Course Title</th>
-        <th>Earned Points</th>
-        <th>Grade</th>
+        <th style="text-align:center">Course Code</th>
+        <th style="text-align:center">Course Title</th>
+        <th style="text-align:center">Earned Points</th>
       </tr>
     </thead>
   <tbody>
-    <tr>
-      <td  >PC 613</td>
-      <td  >CS</td>
-      <td  nowrap>36</td>
-      <td  nowrap>AB</td>
-    </tr>
-
-    <tr>
-      <td  >IT 617</td>
-      <td  >DM</td>
-      <td  nowrap>46</td>
-      <td  nowrap>A</td>
-    </tr>
-    <tr>
-      <td  >IT 613</td>
-      <td  >SEN</td>
-      <td  nowrap>32</td>
-      <td  nowrap>CD</td>
-    </tr>
-    <tr>
-      <td  >IT 999</td>
-      <td  >HM</td>
-      <td  nowrap>25</td>
-      <td  nowrap>CD</td>
-    </tr>
-  <tr>
-    <td  >
-    IT 001
-    </td>
-    <td  >
-    OOPs
-    </td>
-  <td  nowrap>34</td>
-  <td  nowrap>AB</td>
-    </tr>
-  <tr>
-  </tr>
+    {courses_data}
   </tbody>
 </table>
 <br>

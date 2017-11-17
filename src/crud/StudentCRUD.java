@@ -9,6 +9,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import pojo.ProgramPOJO;
 import pojo.StudentPOJO;
 import pojo.UserPOJO;
@@ -62,9 +65,15 @@ public class StudentCRUD extends CRUDCore {
 	public Object retrive(HttpServletRequest request) {
 		Response response = null;
 		try {
+			String hql;
 			Integer s_id = (Integer) request.getAttribute("student_id");
+			if (s_id != null) {
+				hql = "FROM StudentPOJO s WHERE id =" + s_id;
+			} else {
+				long user_id = Integer.valueOf(request.getParameter("user_id"));
+				hql = "FROM StudentPOJO s WHERE user_id =" + user_id;
+			}
 			try {
-				String hql = "FROM StudentPOJO s WHERE id =" + s_id;
 				Query query = session.createQuery(hql);
 				List<StudentPOJO> programs = query.list();
 
@@ -176,5 +185,31 @@ public class StudentCRUD extends CRUDCore {
 		// }
 		// }
 		return response;
+	}
+
+	public Integer getUserId(HttpServletRequest request) throws IOException {
+		Integer id = null;
+		System.out.println("get user id from student ID");
+
+		int user_id = Integer.valueOf(request.getParameter("student_id"));
+		try {
+			String hql = "FROM StudentPOJO s WHERE user_id =" + user_id;
+			Query query = session.createQuery(hql);
+			List<StudentPOJO> programs = query.list();
+			// System.out.println("programs size " + programs.size());
+			StudentPOJO s1 = programs.get(0);
+			id = s1.getStudent_id();
+			// System.out.println(s1.getStudent_name() + " ***********************");
+		} catch (HibernateException e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+
+		System.out.println("id return ....... " + id);
+		return id;
 	}
 }
