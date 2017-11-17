@@ -77,10 +77,11 @@ public class CourseProgramPOJO {
 
 	}
 
-	public CourseProgramPOJO(ProgramPOJO program, CoursePOJO course, boolean is_active) {
+	public CourseProgramPOJO(ProgramPOJO program, CoursePOJO course, boolean is_active, CourseCategoryPOJO course_category) {
 		this.program = program;
 		this.course = course;
 		this.is_active = is_active;
+		this.course_category = course_category;
 	}
 
 }
