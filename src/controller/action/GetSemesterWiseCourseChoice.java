@@ -52,7 +52,7 @@ public class GetSemesterWiseCourseChoice implements Action {
 			request.setAttribute("search", originalSearch);
 			System.out.println("core " + coreCourses.size() + " noncore " + nonCoreCourses.size());
 			String _response = (String) GeneralUtility.getSemesterCourseCombinations(request, nonCoreCourses,
-					coreCourses);
+					coreCourses);			
 			return _response;
 		} catch (Exception e) {
 			e.printStackTrace();

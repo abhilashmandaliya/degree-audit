@@ -392,6 +392,7 @@ public final class GeneralUtility {
 				}
 			}
 		}
+		request.setAttribute("valid_combinations", valid_combination.size());
 		return new Response(GeneralUtility.getRedirect(request), valid_combination).toString();
 	}
 }

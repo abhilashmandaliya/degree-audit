@@ -63,35 +63,44 @@ public class ProgramSemesterDetailCRUD extends CRUDCore {
 		}
 		return response;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		String search = (String) request.getAttribute("search");
-		if (search != null) {
-			search = search.toLowerCase();
-			if (search.equals("program_id_semester_id_wise")) {
-				Short semester_id = null;
-				Integer program_id = null;
-				Object temp = request.getAttribute("semester_id");
-				if (temp instanceof String)
-					semester_id = Short.valueOf((String) temp);
-				else
-					semester_id = (Short) temp;
-				temp = request.getAttribute("program_id");
-				if (temp instanceof String)
-					program_id = Integer.valueOf((String) temp);
-				else
-					program_id = (Integer) temp;
-				
-				Criteria criteria = session.createCriteria(ProgramSemesterDetailPOJO.class, "program_semester_detail")
-						.createAlias("program_semester_detail.program", "program")
-						.createAlias("program_semester_detail.semester", "semester")
-						.add(Restrictions.eq("semester.id", (int) semester_id))
-						.add(Restrictions.eq("program.id", program_id));
-				List<ProgramSemesterDetailPOJO> programSemesterDetail = criteria.list();
-				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
-						programSemesterDetail.get(0));
+		try {
+			String search = (String) request.getAttribute("search");
+			if (search != null) {
+				search = search.toLowerCase();
+				if (search.equals("program_id_semester_id_wise")) {
+					Short semester_id = null;
+					Integer program_id = null;
+					Object temp = request.getAttribute("semester_id");
+					if (temp instanceof String)
+						semester_id = Short.valueOf((String) temp);
+					else
+						semester_id = (Short) temp;
+					temp = request.getAttribute("program_id");
+					if (temp instanceof String)
+						program_id = Integer.valueOf((String) temp);
+					else
+						program_id = (Integer) temp;
+
+					Criteria criteria = session
+							.createCriteria(ProgramSemesterDetailPOJO.class, "program_semester_detail")
+							.createAlias("program_semester_detail.program", "program")
+							.createAlias("program_semester_detail.semester", "semester")
+							.add(Restrictions.eq("semester.id", (int) semester_id))
+							.add(Restrictions.eq("program.id", program_id));
+					List<ProgramSemesterDetailPOJO> programSemesterDetail = criteria.list();
+					response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
+							programSemesterDetail.get(0));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
 			}
 		}
 		return response;

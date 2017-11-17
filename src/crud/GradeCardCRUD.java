@@ -3,6 +3,7 @@ package crud;
 import java.io.IOException;
 
 import pojo.CoursePOJO;
+import pojo.CourseProgramPOJO;
 import pojo.GradeCard;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -95,14 +96,31 @@ public class GradeCardCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		System.out.println("came in function");
 		try {
-			System.out.println("hello");
-			Integer student_id = (Integer) request.getAttribute("student_id");
-			System.out.println("hello" + student_id);
-			if (student_id != null) {
+			Object temp = request.getAttribute("student_id");
+			Integer student_id;
+
+			if (temp instanceof String)
+				student_id = Integer.valueOf((String) temp);
+			else
+				student_id = (Integer) temp;
+			String search = (String) request.getAttribute("search");
+			System.out.println("search " + search);
+			if (search != null) {
 				try {
-					System.out.println("came in if");
+					if (search.toLowerCase().equals("get_all_grades_of_student")) {
+						Criteria criteria = session.createCriteria(GradeCard.class, "grade_card")
+								.createAlias("grade_card.student_id", "student_id")
+								.add(Restrictions.eq("student_id", session.get(StudentPOJO.class, student_id)));
+						List<GradeCard> courses = criteria.list();
+						response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+						return response;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (student_id != null) {
+				try {
 					String sql = "SELECT MAX(semester) FROM GradeCard WHERE student_id = " + student_id + ")";
 					Query query = session.createQuery(sql);
 					Short sum = (Short) query.list().get(0);
@@ -114,7 +132,6 @@ public class GradeCardCRUD extends CRUDCore {
 				}
 				return response;
 			}
-			System.out.println("did not came in if" + student_id);
 			Integer course_id = (Integer) request.getAttribute("course_id");
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
 			try {
