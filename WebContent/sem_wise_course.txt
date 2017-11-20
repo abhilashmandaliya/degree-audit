@@ -1,0 +1,38 @@
+      <h2>Sem - {sem_no} Courses</h2>
+      <div class="row-12">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-6">
+              <table class="table table-hover" id="semesterTable">
+                <thead>
+                  <tr>
+                    <th>Course Id</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sem_courses}
+                </tbody>
+              </table>
+            </div>
+            <div class="col-sm-6">
+              <table class="table table-hover" id="masterList">
+                <thead>
+                  <tr id="add">
+                    
+                    <th>Course Id</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {master_courses}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>

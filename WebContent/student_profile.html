@@ -92,7 +92,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var userData = JSON.parse(localStorage.getItem("loginUser"));
-		//console.log(userData);
+		console.log(userData);
 		$(".stud_name_1").html(userData.first_name+" "+userData.last_name);
 		$(".stud_name").html(userData.first_name+" "+userData.last_name);
 		$(".email_address").html(userData.email);
@@ -115,7 +115,7 @@
 		    }
 		});*/
 		$.ajax({
-			url:'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id=2',
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id='+userData.id,
 		    dataType: 'json',
 		    success: function(result) {
 		    	var str="";
