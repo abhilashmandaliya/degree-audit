@@ -25,6 +25,9 @@ $(document).ready(function () {
 						type : $('#chartType').attr('value'),
 						data : chartData
 					});
+					console.log(data);
+					$('#_required').text(data['data'][1]);
+					$('#_taken').text(data['data'][0]);
 				}
 			}
 		})
