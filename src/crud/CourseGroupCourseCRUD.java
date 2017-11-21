@@ -80,6 +80,17 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 					courses.add(courseGroupCoursePOJO.getCourse());
 				}
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+			} else if (search.equals("getcoursecoursegroupandmapping")) {
+				try {
+					List<CourseGroupCoursePOJO> courses = session.createQuery("FROM CourseGroupCoursePOJO").list();
+					response = GeneralUtility.generateSuccessResponse(null, courses);
+				} catch (HibernateException e) {
+					tx.rollback();
+					e.printStackTrace();
+				} finally {
+					session.close();
+				}
+				return response;
 			}
 		} catch (HibernateException e) {
 			if (tx != null) {
