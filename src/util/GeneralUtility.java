@@ -346,6 +346,8 @@ public final class GeneralUtility {
 					System.out.println("this combination doesn't have slot conflict");
 
 					String[] labels = new String[combination.size() + core_courses.size()];
+					String[] fullName = new String[combination.size() + core_courses.size()];
+					String[] category = new String[combination.size() + core_courses.size()];
 					int[][] data = new int[4][combination.size() + core_courses.size()];
 					int index = 0;
 					int eligibility = -10;
@@ -366,7 +368,8 @@ public final class GeneralUtility {
 						String course_category = ((CourseCategoryPOJO) ((List<CourseProgramPOJO>) ((Response) new CourseProgramCRUD()
 								.retrive(request)).getData()).get(0).getCourse_category()).getCourse_cat_name();
 						System.out.println(course.getId() + " " + course.getCourse_name() + course_category);
-						labels[index] = course.getCourse_name();
+						labels[index] = course.getCourse_id();
+						fullName[index] = course.getCourse_name();
 						if (course_category.toLowerCase().startsWith("core")) {
 							eligibility = CORE;
 						} else {
@@ -381,6 +384,7 @@ public final class GeneralUtility {
 								eligibility = HIGHLY_RECOMMENDED;
 							}
 						}
+						category[index] = course_category;
 						data[0][index] = (eligibility == CORE) ? eligibility : 0;
 						data[1][index] = (eligibility == CAN_NOT_SAY) ? eligibility : 0;
 						data[2][index] = (eligibility == NOT_RECOMMENDED) ? eligibility : 0;
@@ -391,6 +395,11 @@ public final class GeneralUtility {
 					Map<String, Object> _response = new HashMap<>();
 					_response.put("labels", labels);
 					_response.put("data", data);
+					_response.put("fullName", fullName);
+					_response.put("category", category);
+					_response.put("core", core);
+					_response.put("tech", tech_electives);
+					_response.put("open", open_electives);
 					valid_combination.add(new Response(GeneralUtility.getRedirect(request), _response));
 					System.out.println("added new " + valid_combination.size());
 				}

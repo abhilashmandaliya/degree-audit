@@ -8,7 +8,7 @@
 <%@page import="pojo.UserPOJO"%>
 <html lang="en">
 <head>
-<title>Bootstrap Example</title>
+<title>Semester Wise Course Choice</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -36,74 +36,100 @@ canvas {
 </style>
 </head>
 <body>
-	<script>
-		$(document)
-				.ready(
-						function() {
-							var data = $('#data').attr('value');
-							if (data) {
-								data = JSON.parse(data);
-								data = data['data'];
-								console.log(data);
-								for (i = 1; i <= data.length; i++) {
-									var barChartData = {
-										labels : data[i - 1].data.labels,
-										datasets : [
-												{
-													label : 'Core',
-													backgroundColor : window.chartColors.blue,
-													data : data[i - 1].data.data[0]
-												},
-												{
-													label : 'Can\'t say',
-													backgroundColor : window.chartColors.orange,
-													data : data[i - 1].data.data[1]
-												},
-												{
-													label : 'Not recomended',
-													backgroundColor : window.chartColors.red,
-													data : data[i - 1].data.data[2]
-												},
-												{
-													label : 'Highly recomended',
-													backgroundColor : window.chartColors.green,
-													data : data[i - 1].data.data[3]
-												} ]
-									};
-									var ctx = document.getElementById(
-											"canvas" + i).getContext("2d");
-									window.myBar = new Chart(
-											ctx,
-											{
-												type : 'bar',
-												data : barChartData,
-												options : {
-													title : {
-														display : true,
-														text : "Predicted course performance"
+	<div class="container">
+		<div class="page-header">
+			<h1>
+				<center>Semester Wise Course Choice</center>
+			</h1>
+		</div>
+		<hr />
+		<script>
+			$(document)
+					.ready(
+							function() {
+								var data = $('#data').attr('value');
+								if (data) {
+									data = JSON.parse(data);
+									data = data['data'];
+									console.log(data);
+									for (i = 1; i <= data.length; i++) {
+										var barChartData = {
+											labels : data[i - 1].data.labels,
+											datasets : [
+													{
+														label : 'Core',
+														backgroundColor : window.chartColors.blue,
+														data : data[i - 1].data.data[0]
 													},
-													tooltips : {
-														mode : 'index',
-														intersect : false
+													{
+														label : 'Can\'t say',
+														backgroundColor : window.chartColors.orange,
+														data : data[i - 1].data.data[1]
 													},
-													responsive : true,
-													scales : {
-														xAxes : [ {
-															stacked : true,
-														} ],
-														yAxes : [ {
-															stacked : true
-														} ]
+													{
+														label : 'Not recomended',
+														backgroundColor : window.chartColors.red,
+														data : data[i - 1].data.data[2]
+													},
+													{
+														label : 'Highly recomended',
+														backgroundColor : window.chartColors.green,
+														data : data[i - 1].data.data[3]
+													} ]
+										};
+										var ctx = document.getElementById(
+												"canvas" + i).getContext("2d");
+										window.myBar = new Chart(
+												ctx,
+												{
+													type : 'bar',
+													data : barChartData,
+													options : {
+														title : {
+															display : false,
+															text : "Predicted course performance"
+														},
+														tooltips : {
+															mode : 'index',
+															intersect : false
+														},
+														responsive : true,
+														scales : {
+															xAxes : [ {
+																stacked : true,
+															} ],
+															yAxes : [ {
+																stacked : true
+															} ]
+														}
 													}
-												}
-											});
+												});
+										for (j = 0; j < data[i - 1].data.fullName.length; j++) {
+											$('#data_table' + i + " tr:last")
+													.after(
+															"<tr style='text-align:center;'><td>"
+																	+ data[i - 1].data.labels[j]
+																	+ "</td><td>"
+																	+ data[i - 1].data.fullName[j]
+																	+ "</td><td>"
+																	+ data[i - 1].data.category[j]
+																	+ "</td></tr>");
+										}
+										$('#course_table' + i + ' tr:last')
+												.after(
+														"<tr style='text-align:center;'><td>"
+																+ data[i - 1].data.core
+																+ "</td><td>"
+																+ data[i - 1].data.tech
+																+ "</td><td>"
+																+ data[i - 1].data.open
+																+ "</td></tr>");
+									}
+								} else {
+									alert("Couldn't generate report.");
 								}
-							} else {
-								alert("Couldn't generate report.");
-							}
-						});
-	</script>
-	<div id="demo" class="carousel slide" data-ride="carousel">
+							});
+		</script>
 
 		<%
 			String action = "getsemesterwisecoursechoice";
@@ -128,25 +154,14 @@ canvas {
 			out.write("<input id='data' type='hidden' name='data' value='" + data + "'/>");
 			Integer valid_combinations = (Integer) request.getAttribute("valid_combinations");
 			for (int i = 1; i <= valid_combinations; i++) {
-				out.write("<div class=\"carousel-item");
-				if (i == 1)
-					out.write(" active");
-				out.write("\">	<div style=\"width: 100%\"><canvas id=\"canvas" + i + "\"></canvas></div></div>");
+				out.write("<center><h3>Choice " + i + "/" + valid_combinations
+						+ "</h3></center><div class='row'><div class='col-sm-7'><canvas id='canvas" + i
+						+ "'></canvas><table id='course_table" + i
+						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th colspan='3'>Minimum Semester Requirement</th></tr><tr style='text-align:center;'><th>Core Courses</th><th>Technical Elective Courses</th><th>Open Elective Courses</th></tr></thead><tbody></tbody></table></div><div class='col-sm-5'><table id='data_table"
+						+ i
+						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Course Code</th><th>Course Name</th><th>Course Category</th></tr></thead><tbody></tbody></table></div></div><hr />");
 			}
-			out.write("<ul class=\"carousel-indicators\">");
-			for (int i = 1; i <= valid_combinations; i++) {
-				out.write("<li data-target=\"#demo\" data-slide-to=\"" + i + "\"");
-				if (i == 1)
-					out.write("class=\"active\"");
-				out.write("></li>");
-			}
-			out.write("</ul><div class=\"carousel-inner\"></div>");
 		%>
-		<a class="carousel-control-prev" href="#demo" data-slide="prev"> <span
-			class="carousel-control-prev-icon"></span>
-		</a> <a class="carousel-control-next" href="#demo" data-slide="next">
-			<span class="carousel-control-next-icon"></span>
-		</a>
 	</div>
 </body>
 </html>
