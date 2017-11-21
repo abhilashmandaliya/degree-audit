@@ -49,7 +49,15 @@ public class CourseCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) {
 		Response response = null;
+		String search = request.getParameter("search");
 		try {
+			
+			if(search == null) {
+				
+			} else if(search.equalsIgnoreCase("by_program_and_sem")) {
+				
+			}
+			
 			List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO").list();
 			response = GeneralUtility.generateSuccessResponse(null, courses);
 		} catch (HibernateException e) {
