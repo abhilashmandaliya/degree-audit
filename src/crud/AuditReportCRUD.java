@@ -60,23 +60,28 @@ public class AuditReportCRUD extends CRUDCore {
 		try {
 
 			if (search == null) {
-				
+
 				Integer student_id = Integer.parseInt(request.getParameter("student_id"));
 				String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " ORDER BY ar.id DESC";
 				Query query = session.createQuery(hql);
 				List<AuditReportPOJO> audit_list = query.list();
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), audit_list);
-			
+
 			} else if (search.equalsIgnoreCase("by_audit_id")) {
 				Integer student_id = Integer.parseInt(request.getParameter("student_id"));
 				Integer audit_id = Integer.parseInt(request.getParameter("audit_id"));
-				String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " AND ar.id = " + audit_id + " ORDER BY ar.id DESC";
+				String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " AND ar.id = " + audit_id
+						+ " ORDER BY ar.id DESC";
 				Query query = session.createQuery(hql);
 				List<AuditReportPOJO> audit_list = query.list();
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), audit_list);
 			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
 		}
 		return response;
 	}

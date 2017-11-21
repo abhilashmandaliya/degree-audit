@@ -49,25 +49,33 @@ public class ProgramCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 
-		String search = request.getParameter("search");
+		try {
+			String search = request.getParameter("search");
 
-		if (search.equalsIgnoreCase("all_programs")) {
-			try {
-				List<ProgramPOJO> programs = session.createQuery("FROM ProgramPOJO").list();
+			if (search.equalsIgnoreCase("all_programs")) {
+				try {
+					List<ProgramPOJO> programs = session.createQuery("FROM ProgramPOJO").list();
+					response = GeneralUtility.generateSuccessResponse(null, programs);
+				} catch (HibernateException e) {
+					tx.rollback();
+					e.printStackTrace();
+				} finally {
+					session.close();
+				}
+			} else if (search.equalsIgnoreCase("by_pc")) {
+				Integer pc_id = Integer.parseInt(request.getParameter("pc_id"));
+
+				List<ProgramCoordinatorPOJO> programs = session
+						.createQuery("FROM ProgramCoordinatorPOJO WHERE user = " + pc_id).list();
 				response = GeneralUtility.generateSuccessResponse(null, programs);
-			} catch (HibernateException e) {
-				tx.rollback();
-				e.printStackTrace();
-			} finally {
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
 				session.close();
 			}
-		} else if (search.equalsIgnoreCase("by_pc")) {
-			Integer pc_id = Integer.parseInt(request.getParameter("pc_id"));
-			
-			List<ProgramCoordinatorPOJO> programs = session.createQuery("FROM ProgramCoordinatorPOJO WHERE user = " + pc_id).list();
-			response = GeneralUtility.generateSuccessResponse(null, programs);
 		}
-
 		return response.toString();
 	}
 
