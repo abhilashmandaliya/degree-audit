@@ -53,13 +53,13 @@ public class CourseCRUD extends CRUDCore {
 		try {
 			
 			if(search == null) {
-				
+				List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO").list();
+				response = GeneralUtility.generateSuccessResponse(null, courses);
 			} else if(search.equalsIgnoreCase("by_program_and_sem")) {
 				
 			}
 			
-			List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO").list();
-			response = GeneralUtility.generateSuccessResponse(null, courses);
+			
 		} catch (HibernateException e) {
 			tx.rollback();
 			e.printStackTrace();
