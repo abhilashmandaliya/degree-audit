@@ -3,10 +3,14 @@ package crud;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
 
+import pojo.CourseGroupCoursePOJO;
 import pojo.CoursePOJO;
 import pojo.ProgramPOJO;
 import pojo.SemesterCoursePOJO;
@@ -64,6 +68,27 @@ public class SemesterCourseCRUD extends CRUDCore {
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), semesterCourses);
 			} catch (HibernateException e) {
 				tx.rollback();
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+		} else if (search.equals("all_program_courses")) {
+			try {
+				Object temp = request.getAttribute("program_id");
+				Integer program_id;
+				if (temp instanceof String)
+					program_id = Integer.valueOf((String) temp);
+				else
+					program_id = (Integer) temp;
+				System.out.println(program_id);
+				CriteriaBuilder builder = session.getCriteriaBuilder();
+				CriteriaQuery<SemesterCoursePOJO> criteria = builder.createQuery(SemesterCoursePOJO.class);
+				Root<SemesterCoursePOJO> semesterCoursesPOJORoot = criteria.from(SemesterCoursePOJO.class);
+				criteria.select(semesterCoursesPOJORoot);
+				criteria.where(builder.equal(semesterCoursesPOJORoot.get("program"), program_id));
+				List<SemesterCoursePOJO> semesterCourses = session.createQuery(criteria).getResultList();
+				response = GeneralUtility.generateSuccessResponse(null, semesterCourses);
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				session.close();
