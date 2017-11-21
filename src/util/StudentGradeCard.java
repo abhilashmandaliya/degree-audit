@@ -54,30 +54,13 @@ public class StudentGradeCard {
 
 			Integer _id = new StudentCRUD().getUserId(request);
 			request.setAttribute("id", _id);
-			/*
-			 * try { Integer _id = new StudentCRUD().getUserId(request);
-			 * System.out.println("ID found  " + _id); } catch (Exception e) {
-			 * System.out.println("exception check function please ..."); }
-			 */
 
 			String hql = null;
 			List resuList = null;
 			StudentPOJO student = session.get(StudentPOJO.class, Integer.valueOf(_id));
 			resuList = session.createCriteria(GradeCard.class).add(Restrictions.eq("student_id", student))
-					/*
-					 * .setProjection(Projections.projectionList().add(Projections.groupProperty(
-					 * "student_id"))
-					 * .add(Projections.groupProperty("semester")).add(Projections.groupProperty(
-					 * "course_id")) .add(Projections.groupProperty("earn_grade")))
-					 */
 					.list();
 
-			/*
-			 * Query query = session.createSQLQuery(hql); List<Object[]> list =
-			 * query.list(); for (Object[] arr : list) {
-			 * System.out.println(Arrays.toString(arr)); }
-			 */
-			//student_details.put("student_details", student);
 			System.out.println("checkout ----------------------------------------------------------");
 			GsonBuilder builder = new GsonBuilder();
 			builder.setPrettyPrinting();
@@ -95,23 +78,59 @@ public class StudentGradeCard {
 				JsonObject courseID = course.getAsJsonObject("course_id");
 				courseID.add("earn_grade", course.get("earn_grade"));
 
+				System.out.println("course _ id " + courseID);
+
 				if (semesters.containsKey(sem)) {
-					HashSet<Object> set = (HashSet<Object>) semesters.get(sem);
+					HashSet<JsonObject> set = (HashSet<JsonObject>) semesters.get(sem);
 					set.add(courseID);
 					semesters.put(sem, set);
 				} else {
-					HashSet<Object> set = new HashSet<>();
+					HashSet<JsonObject> set = new HashSet<>();
 					set.add(courseID);
 					semesters.put(sem, set);
 				}
 
 				System.out.println("Response get ***************\n" + course);
-				HashMap<String, String> cours = new HashMap<>();
+				// HashMap<String, String> cours = new HashMap<>();
 			}
 
-			//JsonParser parser = new JsonParser();
-			//JsonObject o = parser.parse(getDataFromAuditReport(request)).getAsJsonObject();
-			//student_details.put("Audit", getDataFromAuditReport(request));
+			double total_course_credit = 0;
+			double cpi = 0;
+			double total_grade_points = 0;
+
+			for (String key : semesters.keySet()) {
+				HashSet<Object> set = (HashSet<Object>) semesters.get(key);
+				double sem_course_credit = 0;
+				double sem_grade_points = 0; // mull
+				double spi;
+
+				for (Object couri : set) {
+					JsonObject cour = (JsonObject) couri;
+					System.out.println("Testing ........ " + cour);
+					double credit = Double.valueOf(cour.get("course_credits").toString());
+					double grade = Double.valueOf(cour.get("earn_grade").toString());
+					sem_course_credit += credit;
+					sem_grade_points += (grade * credit);
+				}
+				
+				HashMap<String, Object> temp = new HashMap<>();
+				temp.put("course", set);
+
+				spi = sem_grade_points / sem_course_credit;
+				temp.put("sem_course_credit", sem_course_credit);
+				temp.put("sem_grade_points", sem_grade_points);
+				temp.put("spi", spi);
+				semesters.put(key, temp);	
+
+				total_grade_points += sem_grade_points;
+				total_course_credit += sem_course_credit;
+			}
+
+			cpi = total_grade_points / total_course_credit;
+			student_details.put("total_course_credit", total_course_credit);
+			student_details.put("toal_grade_points", total_grade_points);
+			student_details.put("cpi", cpi);
+
 			student_details.put("semester", semesters);
 			String manualResponse = gson.toJson(student_details);
 
@@ -133,6 +152,5 @@ public class StudentGradeCard {
 
 	public Object getDataFromAuditReport(HttpServletRequest req) throws IOException {
 		return new AuditReportCRUD().retrive(req);
-		//return "{'key': 'value', 'key2': 'value2' }";
 	}
 }
