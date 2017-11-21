@@ -15,8 +15,10 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
+
 <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand col-3" href="dashboard.html"><img
@@ -40,7 +42,7 @@
 				<li><a class="nav-link" href="programme_courses.html">Courses</a></li>
 				<li><a class="nav-link" href="#" name="prgstr">Program
 						Structure</a></li>
-				<li><a class="nav-link" href="">Student
+				<li><a class="nav-link" href="student_detail.html">Student
 						Details</a></li>
 			</ul>
 			<ul class="navbar-nav col-2 align-items-end">
@@ -51,54 +53,32 @@
 	</nav>
 	<br>
 	<br>
-	<div class="container container-fluid">
-		<font size="5"><em>Fetch Student Details</em></font> <br>
-		<div class="row border p-5">
-			<div class="row">
-				<div class="col-2"></div>
-				<div class="col-2">Id:</div>
-				<div class="col-8">
-					<input type="text" id="stud_id">
-				</div>
-				<br>
-				<div class="col-12 mt-3">
-					<center>
-						<button type="button" class="btn btn-primary fetchDetail">
-							Submit Details
-						</button>
-					</center>
-				</div>
-
-			</div>
-		</div>
-		<br> <br>
-		<div class="row">
-			<div class="col-1"></div>
-			<div class="col-2">
-				<b>Result Found:</b>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-1"></div>
-			<div class="col-10">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Student Id</th>
-							<th>Student Name</th>
-							<th>Current Sem</th>
-							<th>Enrollment Year</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody class="stud_details_table">
-						
-					</tbody>
-				</table>
-			</div>
-		</div>
+	<div class="container-fluid page_content col-lg-10">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col"><h2>Profile</h2></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Name</th>
+					<td class="name">Hemant.S.Singh</td>
+				</tr>
+				<tr>
+					<th scope="row">E-mail</th>
+					<td class="email_address">Hemantsingh@paaja.com</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<!-- Scripts -->
+
 	<script type="text/javascript"
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript"
@@ -111,15 +91,14 @@
 	<script type="text/javascript" src="js/script.js"></script>
 
 	<script type="text/javascript">
-	$(document).ready(function() {
-		var userData = JSON.parse(localStorage.getItem("loginUser"));
-		getProgramByCordinator(userData.id);	
+		$(document).ready(function() {
+			var userData = JSON.parse(localStorage.getItem("loginUser"));
+			$(".name").html(userData.first_name + " " + userData.last_name);
+			$(".email_address").html(userData.email);
 
-	});
-	$(".fetchDetail").click(function() {
-		getStudentDetails($("#stud_id").val());
-	})
+			getProgramByCordinator(userData.id);
+
+		});
 	</script>
-
 </body>
 </html>
