@@ -1,6 +1,7 @@
 package crud;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,8 +40,16 @@ public class CourseGroupCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 		// TODO Auto-generated method stub
-
-		return null;
+		try {
+			List<CourseGroupPOJO> courseGroups = session.createQuery("FROM CourseGroupPOJO").list();
+			response = GeneralUtility.generateSuccessResponse(null, courseGroups);
+		} catch (HibernateException e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return response;
 	}
 
 	@Override

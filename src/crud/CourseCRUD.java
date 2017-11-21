@@ -58,7 +58,7 @@ public class CourseCRUD extends CRUDCore {
 		} finally {
 			session.close();
 		}
-		return response.toString();
+		return response;
 	}
 
 	@Override
