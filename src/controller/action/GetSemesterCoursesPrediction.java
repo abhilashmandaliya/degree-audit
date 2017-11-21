@@ -25,7 +25,11 @@ public class GetSemesterCoursesPrediction implements Action {
 		// TODO Auto-generated method stub
 		List<SemesterCoursePOJO> semesterCourses = (List<SemesterCoursePOJO>) ((Response) new SemesterCourseCRUD()
 				.retrive(request)).getData();
+
 		String[] labels = new String[semesterCourses.size()];
+		String[] fullName = new String[semesterCourses.size()];
+		String[] category = new String[semesterCourses.size()];
+
 		int[][] data = new int[4][semesterCourses.size()];
 		int index = 0;
 		int eligibility = -10;
@@ -35,12 +39,14 @@ public class GetSemesterCoursesPrediction implements Action {
 		final int NOT_RECOMMENDED = 25;
 
 		for (SemesterCoursePOJO semesterCourse : semesterCourses) {
-			labels[index] = semesterCourse.getCourse().getCourse_name();
+			labels[index] = semesterCourse.getCourse().getCourse_id();
+			fullName[index] = semesterCourse.getCourse().getCourse_name();
 			String search = "program_course_wise_course_category";
 			request.setAttribute("search", search);
 			request.setAttribute("course_id", semesterCourse.getCourse().getId());
 			String course_category = ((CourseCategoryPOJO) ((List<CourseProgramPOJO>) ((Response) new CourseProgramCRUD()
 					.retrive(request)).getData()).get(0).getCourse_category()).getCourse_cat_name();
+			category[index] = course_category;
 			if (course_category.toLowerCase().startsWith("core")) {
 				eligibility = CORE;
 			} else {
@@ -62,6 +68,8 @@ public class GetSemesterCoursesPrediction implements Action {
 		Map<String, Object> _response = new HashMap<>();
 		_response.put("labels", labels);
 		_response.put("data", data);
+		_response.put("fullName", fullName);
+		_response.put("category", category);
 		return new Response(GeneralUtility.getRedirect(request), _response).toString();
 	}
 

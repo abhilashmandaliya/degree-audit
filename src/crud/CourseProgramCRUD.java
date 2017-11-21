@@ -71,11 +71,11 @@ public class CourseProgramCRUD extends CRUDCore {
 					course_id = Integer.valueOf((String) temp);
 				else
 					course_id = (Integer) temp;
+				System.out.println(course_id + " " + program_id);
 				Criteria criteria = session.createCriteria(CourseProgramPOJO.class, "course_program")
 						.createAlias("course_program.program", "program").createAlias("course_program.course", "course")
 						.add(Restrictions.eq("course.id", course_id)).add(Restrictions.eq("program.id", program_id));
 				List<CourseProgramPOJO> courses = criteria.list();
-				System.out.println(course_id + " " + program_id);
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
 			}
 		} catch (HibernateException e) {

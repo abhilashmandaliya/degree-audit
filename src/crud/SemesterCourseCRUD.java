@@ -47,50 +47,60 @@ public class SemesterCourseCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		String search = ((String) request.getAttribute("search")).toLowerCase();
-		if (search.equals("all_semester_courses")) {
-			try {
-				Object temp = request.getAttribute("semester_id");
-				Short semester_id = null;
-				Integer program_id = null;
-				if (temp instanceof String)
-					semester_id = Short.valueOf((String) temp);
-				else
-					semester_id = (Short) temp;
-				temp = request.getAttribute("program_id");
-				if (temp instanceof String)
-					program_id = Integer.valueOf((String) temp);
-				else
-					program_id = (Integer) temp;
-				List<SemesterCoursePOJO> semesterCourses = session.createQuery(
-						"FROM SemesterCoursePOJO WHERE semester = " + semester_id + " AND program_id = " + program_id)
-						.list();
-				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), semesterCourses);
-			} catch (HibernateException e) {
-				tx.rollback();
-				e.printStackTrace();
-			} finally {
-				session.close();
+		try {
+			String search = ((String) request.getAttribute("search")).toLowerCase();
+			if (search.equals("all_semester_courses")) {
+				try {
+					Object temp = request.getAttribute("semester_id");
+					Short semester_id = null;
+					Integer program_id = null;
+					if (temp instanceof String)
+						semester_id = Short.valueOf((String) temp);
+					else
+						semester_id = (Short) temp;
+					temp = request.getAttribute("program_id");
+					if (temp instanceof String)
+						program_id = Integer.valueOf((String) temp);
+					else
+						program_id = (Integer) temp;
+					List<SemesterCoursePOJO> semesterCourses = session
+							.createQuery("FROM SemesterCoursePOJO WHERE semester = " + semester_id
+									+ " AND program_id = " + program_id)
+							.list();
+					response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
+							semesterCourses);
+				} catch (HibernateException e) {
+					tx.rollback();
+					e.printStackTrace();
+				} finally {
+					session.close();
+				}
+			} else if (search.equals("all_program_courses")) {
+				try {
+					Object temp = request.getAttribute("program_id");
+					Integer program_id;
+					if (temp instanceof String)
+						program_id = Integer.valueOf((String) temp);
+					else
+						program_id = (Integer) temp;
+					System.out.println(program_id);
+					CriteriaBuilder builder = session.getCriteriaBuilder();
+					CriteriaQuery<SemesterCoursePOJO> criteria = builder.createQuery(SemesterCoursePOJO.class);
+					Root<SemesterCoursePOJO> semesterCoursesPOJORoot = criteria.from(SemesterCoursePOJO.class);
+					criteria.select(semesterCoursesPOJORoot);
+					criteria.where(builder.equal(semesterCoursesPOJORoot.get("program"), program_id));
+					List<SemesterCoursePOJO> semesterCourses = session.createQuery(criteria).getResultList();
+					response = GeneralUtility.generateSuccessResponse(null, semesterCourses);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					session.close();
+				}
 			}
-		} else if (search.equals("all_program_courses")) {
-			try {
-				Object temp = request.getAttribute("program_id");
-				Integer program_id;
-				if (temp instanceof String)
-					program_id = Integer.valueOf((String) temp);
-				else
-					program_id = (Integer) temp;
-				System.out.println(program_id);
-				CriteriaBuilder builder = session.getCriteriaBuilder();
-				CriteriaQuery<SemesterCoursePOJO> criteria = builder.createQuery(SemesterCoursePOJO.class);
-				Root<SemesterCoursePOJO> semesterCoursesPOJORoot = criteria.from(SemesterCoursePOJO.class);
-				criteria.select(semesterCoursesPOJORoot);
-				criteria.where(builder.equal(semesterCoursesPOJORoot.get("program"), program_id));
-				List<SemesterCoursePOJO> semesterCourses = session.createQuery(criteria).getResultList();
-				response = GeneralUtility.generateSuccessResponse(null, semesterCourses);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
 				session.close();
 			}
 		}

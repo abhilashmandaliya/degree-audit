@@ -88,7 +88,7 @@ public class GradeCardCRUD extends CRUDCore {
 		} finally {
 			if (session.isOpen()) {
 				tx.commit();
-				// session.close();
+				session.close();
 			}
 		}
 		return response;
@@ -228,7 +228,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					// session.close();
+					session.close();
 				}
 			}
 		} catch (Exception e1) {
@@ -240,7 +240,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					// session.close();
+					session.close();
 				}
 			}
 		}
