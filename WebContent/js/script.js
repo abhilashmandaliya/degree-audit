@@ -264,36 +264,34 @@ function getAuditOf(audit_id) {
 }
 
 function showAllAuditDates() {
-	$
-			.ajax({
-				url : 'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id=2',
-				dataType : 'json',
-				success : function(result) {
-					var str = "";
-					var i;
-					str += '<table class="table table-hover" style="margin-top:3%">';
-					str += '<thead>';
+	$.ajax({
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id=81',
+			dataType : 'json',
+			success : function(result) {
+				var str = "";
+				var i;
+				str+='<h2>Audit Report List</h2>';
+				str += '<table class="table table-hover" style="margin-top:3%">';
+				str += '<thead>';
+				str += '<tr>';
+				str += '<th style="text-align:center">Sr.</th>';
+				str += '<th style="text-align:center">Audit Date</th>';
+				str += '</tr>';
+				str += '</thead>';
+				str += '<tbody>';
+				for (i = 0; i <= result.data.length - 1; i++) {
 					str += '<tr>';
-					str += '<th style="text-align:center">Sr.</th>';
-					str += '<th style="text-align:center">Audit Date</th>';
+					str += '<td>' + (i+1) + '</td>';
+					str += '<td>';
+					str += '<a onclick="getAuditOf(' + result.data[i].id
+							+ ')">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</a><br>';
+					str += '</td>';
 					str += '</tr>';
-					str += '</thead>';
-					str += '<tbody>';
-					var j = 1;
-					for (i = result.data.length - 1; i >= 0; i--) {
-						str += '<tr>';
-						str += '<td>' + j + '</td>';
-						str += '<td>';
-						str += '<a onclick="getAuditOf(' + result.data[i][1]
-								+ ')">' + result.data[i][0] + '</a><br>';
-						str += '</td>';
-						str += '</tr>';
-						j++;
-					}
-					str += '</tbody></table>';
-					$(".pageContent").html(str);
 				}
-			});
+				str += '</tbody></table>';
+				$(".pageContent").html(str);
+			}
+		});
 }
 
 function searchCourseNameID() {
@@ -326,7 +324,15 @@ function edit_details() {
 	var str = "";
 	var userData = JSON.parse(localStorage.getItem("loginUser"));
 	str += '<div id="editprofile" class="col-md-8">';
-	str += '<table>';
+	str += '<table class="table">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th scope="col"><h2>Edit Profile</h2></th>';
+	str += '<th></th>';
+	str += '<th></th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
 	str += '<tr style="margin-top:2%">';
 	str += '<td>First Name: </td>';
 	str += '<td width="25%"></td>';
@@ -345,6 +351,10 @@ function edit_details() {
 	str += '<td><input type="text" class="form-control" id="email" value="'
 			+ userData.email + '"></td>';
 	str += '</tr>';
+	str += '<tr>';
+	str += '<td colspan="3"><button class="btn btn-primary">Update</button></td>';
+	str += '</tr>';
+	str += '</tbody>';
 	str += '</table>';
 
 	str += '</div>';
