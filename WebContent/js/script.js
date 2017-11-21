@@ -366,41 +366,38 @@ function getGradeCard(sem) {
 		if (this.readyState == 4 && this.status == 200) {
 			var res = client.responseText;
 			var userData = JSON.parse(localStorage.getItem("loginUser"));
-			$
-					.ajax({
-						url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
-								+ userData.id,
-						dataType : 'json',
-						success : function(result) {
-							if (result.statusCode != 401) {
-								var temp = result.data.semester;
-								var course_grades = "";
-								for ( var sem_no in temp) {
-									res = res.replace("{sem}", sem_no);
-									res = res.replace("{sem}", sem_no);
-									for ( var course_opt in temp[sem_no]) {
-										course_grades += "<tr>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].course_id
-												+ "</td>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].course_name
-												+ "</td>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].earn_grade
-												+ "</td>";
-										course_grades += "<tr>";
-									}
-								}
-								res = res.replace("{courses_data}",
-										course_grades);
-								res = res.replace("{id}", userData.id);
-								res = res.replace("{name}", userData.first_name
-										+ " " + userData.last_name);
-							}
-							$(".pageContent").html(res);
+			$.ajax({
+				url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
+						+ userData.id,
+				dataType : 'json',
+				success : function(result) {
+					if (result.statusCode != 401) {
+						var temp = result.data.semester[sem];
+						var course_grades = "";
+						res = res.replace("{sem}", sem);
+						res = res.replace("{sem}", sem);
+						for (var cnt=0;cnt<temp.length;cnt++) {
+							course_grades += "<tr>";
+							course_grades += "<td>"
+									+ temp[cnt].course_id
+									+ "</td>";
+							course_grades += "<td>"
+									+ temp[cnt].course_name
+									+ "</td>";
+							course_grades += "<td>"
+									+ temp[cnt].earn_grade
+									+ "</td>";
+							course_grades += "<tr>";
 						}
-					});
+						res = res.replace("{courses_data}",
+								course_grades);
+						res = res.replace("{id}", userData.id);
+						res = res.replace("{name}", userData.first_name
+								+ " " + userData.last_name);
+						$(".pageContent").html(res);
+					}
+				}
+			});
 		}
 	}
 	client.send();
@@ -414,7 +411,7 @@ function generateAudit() {
 		dataType: 'json',
 		success: function(result) {
 			if (result.statusCode != 401) {
-				console.log(result);
+				getAuditOf(result.data);
 			}
 			else{
 				console.log(result);

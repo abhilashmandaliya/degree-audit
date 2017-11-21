@@ -96,24 +96,22 @@
 		$(".stud_name_1").html(userData.first_name+" "+userData.last_name);
 		$(".stud_name").html(userData.first_name+" "+userData.last_name);
 		$(".email_address").html(userData.email);
-		/*$.ajax({
+		$.ajax({
 			url:'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&mode=api&student_id='+userData.id,
 		    dataType: 'json',
 		    success: function(result) {
-		    	console.log(result);
 		    	var str = "";
-		    	var i = result.data.length-1;
+		    	var i = Object.keys(result.data.semester).length;
 		    	for(var j=1; j<=3 && i!=0;j++){
-					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+result.data.semester[1]+')" style="width:100%">'+result.data[i][0]+'</button>';
+					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+i+')" style="width:100%">Sem - '+i+'</button>';
 					i--;
 		    	}
 		    	if(i!=0);{
 		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
 		    	}
-		    	$("#audits").html(str);
-				$(".program_name").html(result.data.student_details.program_id.name);
+		    	$("#gradecard").html(str);
 		    }
-		});*/
+		});
 		$.ajax({
 			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='+userData.id,
 		    dataType: 'json',
