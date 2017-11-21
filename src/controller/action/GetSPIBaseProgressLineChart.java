@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import controller.Action;
 import crud.GradeCardCRUD;
 import crud.ProgramSemesterDetailCRUD;
+import crud.SemesterCRUD;
 import pojo.GradeCard;
 import pojo.ProgramSemesterDetailPOJO;
+import pojo.SemesterPOJO;
 import util.GeneralUtility;
 import util.Response;
 
@@ -47,10 +50,18 @@ public class GetSPIBaseProgressLineChart implements Action {
 					.retrive(request)).getData();
 			desired_performance.put(semester, (double) program_semester_detail.getMin_spi());
 		}
+		Set<Short> _semesterIds = actual_performance.keySet();
+		Set<String> _semesterName = new TreeSet<>();
+		request.setAttribute("search", "semester_name_from_id");
+		for (Short semester : _semesterIds) {
+			request.setAttribute("semester_id", Integer.valueOf(semester));
+			SemesterPOJO _semester = (SemesterPOJO) ((Response) new SemesterCRUD().retrive(request)).getData();
+			_semesterName.add(_semester.getName());
+		}
 		Map<String, Object> response_map = new TreeMap<>();
 		response_map.put("actual", actual_performance.values());
 		response_map.put("desired", desired_performance.values());
-		response_map.put("keys", actual_performance.keySet());
+		response_map.put("keys", _semesterName);
 		Response _response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), response_map);
 		return _response.toString();
 	}

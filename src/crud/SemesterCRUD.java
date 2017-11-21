@@ -51,8 +51,7 @@ public class SemesterCRUD extends CRUDCore {
 		if (search.equalsIgnoreCase("semester_id_from_name")) {
 			try {
 				String semester_name = (String) request.getAttribute("semester_name");
-				Criteria criteria = session
-						.createCriteria(SemesterPOJO.class, "semester")
+				Criteria criteria = session.createCriteria(SemesterPOJO.class, "semester")
 						.add(Restrictions.eq("semester.name", semester_name));
 				List<ProgramPOJO> semester = criteria.list();
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), semester);
@@ -62,6 +61,15 @@ public class SemesterCRUD extends CRUDCore {
 			} finally {
 				session.close();
 			}
+		} else if (search.equalsIgnoreCase("semester_name_from_id")) {
+			Object temp = request.getAttribute("semester_id");
+			Integer semester;
+			if (temp instanceof String)
+				semester = Integer.valueOf((String) temp);
+			else
+				semester = (Integer) temp;
+			SemesterPOJO _semester = session.get(SemesterPOJO.class, semester);
+			response = GeneralUtility.generateSuccessResponse(null, _semester);
 		}
 
 		return response;
