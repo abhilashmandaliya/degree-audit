@@ -46,7 +46,7 @@
             </div>
 
             <div class="btn-group" style="width:100%">
-              <button type="button" class="btn btn-primary" style="width:100%">Generate Audit</button>
+              <button type="button" class="btn btn-primary" onclick="generateAudit()" style="width:100%">Generate Audit</button>
             </div>
 
             <div class="btn-group" style="width:100%">
@@ -92,7 +92,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var userData = JSON.parse(localStorage.getItem("loginUser"));
-		console.log(userData);
+		//console.log(userData);
 		$(".stud_name_1").html(userData.first_name+" "+userData.last_name);
 		$(".stud_name").html(userData.first_name+" "+userData.last_name);
 		$(".email_address").html(userData.email);
@@ -104,7 +104,7 @@
 		    	var str = "";
 		    	var i = result.data.length-1;
 		    	for(var j=1; j<=3 && i!=0;j++){
-					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+result.data[i][1]+')" style="width:100%">'+result.data[i][0]+'</button>';
+					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+result.data.semester[1]+')" style="width:100%">'+result.data[i][0]+'</button>';
 					i--;
 		    	}
 		    	if(i!=0);{
@@ -115,18 +115,23 @@
 		    }
 		});*/
 		$.ajax({
-			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id=81',
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='+userData.id,
 		    dataType: 'json',
 		    success: function(result) {
-		    	var str="";
-		    	console.log(result);
-		    	for(var i=0; i<=2 ;i++){
-					str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i].id+')" style="width:100%">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</button>';
+		    	if (result.statusCode != 401) {
+			    	var str="";
+			    	//console.log(result);
+			    	for(var i=0; i<=2 ;i++){
+						str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i].id+')" style="width:100%">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</button>';
+			    	}
+			    	if(result.data.length>3){
+			    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+			    	}
+			    	$("#audits").html(str);
 		    	}
-		    	if(result.data.length>3){
-		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+		    	else{
+		    		$(location).attr("href", "index.html");
 		    	}
-		    	$("#audits").html(str);
 		    }
 		});
 	});
