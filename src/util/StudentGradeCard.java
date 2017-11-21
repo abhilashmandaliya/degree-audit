@@ -77,7 +77,7 @@ public class StudentGradeCard {
 			 * query.list(); for (Object[] arr : list) {
 			 * System.out.println(Arrays.toString(arr)); }
 			 */
-			student_details.put("student_details", student);
+			//student_details.put("student_details", student);
 			System.out.println("checkout ----------------------------------------------------------");
 			GsonBuilder builder = new GsonBuilder();
 			builder.setPrettyPrinting();
@@ -111,7 +111,7 @@ public class StudentGradeCard {
 
 			//JsonParser parser = new JsonParser();
 			//JsonObject o = parser.parse(getDataFromAuditReport(request)).getAsJsonObject();
-			student_details.put("Audit", getDataFromAuditReport(request));
+			//student_details.put("Audit", getDataFromAuditReport(request));
 			student_details.put("semester", semesters);
 			String manualResponse = gson.toJson(student_details);
 
@@ -131,8 +131,8 @@ public class StudentGradeCard {
 		return response.toString();
 	}
 
-	public String getDataFromAuditReport(HttpServletRequest req) throws IOException {
-		return new AuditReportCRUD().retrive(req).toString();
+	public Object getDataFromAuditReport(HttpServletRequest req) throws IOException {
+		return new AuditReportCRUD().retrive(req);
 		//return "{'key': 'value', 'key2': 'value2' }";
 	}
 }
