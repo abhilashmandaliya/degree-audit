@@ -38,10 +38,10 @@ public class AuditReportCRUD extends CRUDCore {
 			double currentCpi = getCurrentCPI(gradesObtained);
 			short sem = getSemester(gradesObtained);
 			double timeLeft = getTimeLeft(sem, enrolledProgram);
-			
+
 			AuditReportPOJO auditReport = new AuditReportPOJO(student, degreeCompleted, earnedCredits, requiredCredits,
 					currentCpi, requiredCpi, presentCourses, requiredCourses, timeLeft, sem);
-			
+
 			id = (Integer) session.save(auditReport);
 			tx.commit();
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
@@ -55,12 +55,26 @@ public class AuditReportCRUD extends CRUDCore {
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
 
+		String search = request.getParameter("search");
+
 		try {
-			Integer student_id = Integer.parseInt(request.getParameter("student_id"));
-			String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " ORDER BY ar.id DESC";
-			Query query = session.createQuery(hql);
-			List<AuditReportPOJO> audit_list = query.list();
-			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), audit_list);
+
+			if (search == null) {
+				
+				Integer student_id = Integer.parseInt(request.getParameter("student_id"));
+				String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " ORDER BY ar.id DESC";
+				Query query = session.createQuery(hql);
+				List<AuditReportPOJO> audit_list = query.list();
+				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), audit_list);
+			
+			} else if (search.equalsIgnoreCase("by_audit_id")) {
+				Integer student_id = Integer.parseInt(request.getParameter("student_id"));
+				Integer audit_id = Integer.parseInt(request.getParameter("audit_id"));
+				String hql = "FROM AuditReportPOJO ar WHERE ar.student_id = " + student_id + " AND ar.id = " + audit_id + " ORDER BY ar.id DESC";
+				Query query = session.createQuery(hql);
+				List<AuditReportPOJO> audit_list = query.list();
+				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), audit_list);
+			}
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
@@ -88,8 +102,7 @@ public class AuditReportCRUD extends CRUDCore {
 	}
 
 	private List<GradeCard> getGradesByStudentID(Integer student_id) {
-		Query earnedCreditsQuery = session
-				.createQuery("FROM GradeCard WHERE student_id = " + student_id);
+		Query earnedCreditsQuery = session.createQuery("FROM GradeCard WHERE student_id = " + student_id);
 
 		List<GradeCard> grades = earnedCreditsQuery.list();
 
@@ -97,13 +110,13 @@ public class AuditReportCRUD extends CRUDCore {
 	}
 
 	private double getCurrentCPI(List<GradeCard> grades) {
-		
+
 		double gradpoints = 0, totalCredits = 0;
-		for(GradeCard grade : grades) {
+		for (GradeCard grade : grades) {
 			gradpoints += (grade.getEarn_grade() * grade.getCourse_id().getCourse_credits());
 			totalCredits += grade.getCourse_id().getCourse_credits();
 		}
-		
+
 		return (gradpoints / totalCredits);
 	}
 
@@ -116,16 +129,16 @@ public class AuditReportCRUD extends CRUDCore {
 
 		return earned_credits;
 	}
-	
+
 	private short getSemester(List<GradeCard> grades) {
 		short maxSem = -1;
-		for(GradeCard grade : grades) {
-			if(grade.getSemester() >= maxSem)
+		for (GradeCard grade : grades) {
+			if (grade.getSemester() >= maxSem)
 				maxSem = grade.getSemester();
 		}
 		return (short) (maxSem + 1);
 	}
-	
+
 	private double getTimeLeft(short sem, ProgramPOJO enrolledProgram) {
 		double time = 0;
 		time = (enrolledProgram.getMin_duration() * 2) - sem + 1;
