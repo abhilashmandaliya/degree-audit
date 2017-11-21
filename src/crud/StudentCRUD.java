@@ -104,6 +104,10 @@ public class StudentCRUD extends CRUDCore {
 					session.close();
 				}
 			}
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
 		}
 		return response;
 	}
