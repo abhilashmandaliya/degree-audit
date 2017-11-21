@@ -117,8 +117,8 @@ canvas {
 					window.myLine = new Chart(ctx, config);
 					for (i = 0; i < keys.length; i++) {
 						$('#data_table tr:last').after(
-								'<tr><td>' + keys[i] + '</td><td>' + desired[i]
-										+ '</td><td>' + actual[i]
+								'<tr><td>' + (Math.round(keys[i] * 100) / 100) + '</td><td>' + (Math.round(desired[i] * 100) / 100)
+										+ '</td><td>' + (Math.round(actual[i] * 100) / 100)
 										+ '</td></tr>');
 					}
 				});
