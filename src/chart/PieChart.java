@@ -34,9 +34,9 @@ public class PieChart extends CRUDCore {
 					+ student_id + ")";
 			query = session.createQuery(sql);
 			Integer credits_required = (Integer) query.list().get(0);
-			String[] labels = { "Required", "Earned" };
-			String[] backGroundColors = { "#ff0000", "#00ff00" };
-			Long[] data = { Math.max(0, credits_required - credits_earned), credits_earned };
+			String[] labels = { "Earned", "Required" };
+			String[] backGroundColors = { "#00ff00", "#ff0000" };
+			Long[] data = { credits_earned, Math.max(0, credits_required - credits_earned) };
 			Chart chart = new Chart(labels, backGroundColors, data);
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), chart);
 		} else if (action.equals("getcoursewisepiechart")) {
@@ -50,9 +50,9 @@ public class PieChart extends CRUDCore {
 			query = session.createQuery(sql);
 			temp = query.list();
 			Integer courses_required = temp.isEmpty() ? 0 : (Integer) query.list().get(0);
-			String[] labels = { "Required", "Taken" };
-			String[] backGroundColors = { "#ff0000", "#00ff00" };
-			Long[] data = { Math.max(0, courses_required - courses_taken), courses_taken };
+			String[] labels = { "Taken", "Required" };
+			String[] backGroundColors = { "#00ff00", "#ff0000" };
+			Long[] data = { courses_taken, Math.max(0, courses_required - courses_taken) };
 			Chart chart = new Chart(labels, backGroundColors, data);
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), chart);
 		}

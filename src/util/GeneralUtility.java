@@ -88,10 +88,14 @@ public final class GeneralUtility {
 	public static boolean isAutheticatedUser(HttpServletRequest request) {
 		boolean authenticated = false;
 		HttpSession session = request.getSession();
+		String action = request.getParameter("action");
+		if (action != null && action.toLowerCase().equals("login"))
+			return true;
 		String category;
 		if ((category = (String) session.getAttribute("userCategory")) != null) {
-			String action = request.getParameter("action");
 			if (action != null) {
+				if (action.toLowerCase().equals("login"))
+					return true;
 				JsonParser parser = new JsonParser();
 				JsonArray roles = parser.parse(readAuthJSON()).getAsJsonArray();
 				outer: for (JsonElement ele : roles) {

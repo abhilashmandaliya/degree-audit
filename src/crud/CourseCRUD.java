@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import pojo.CourseCategoryPOJO;
 import pojo.CoursePOJO;
 import pojo.ProgramPOJO;
+import pojo.SemesterPOJO;
 import pojo.SlotPOJO;
 import util.GeneralUtility;
 import util.HibernateSessionFactory;
@@ -56,7 +57,10 @@ public class CourseCRUD extends CRUDCore {
 				List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO").list();
 				response = GeneralUtility.generateSuccessResponse(null, courses);
 			} else if(search.equalsIgnoreCase("by_program_and_sem")) {
-				
+				ProgramPOJO program = session.get(ProgramPOJO.class, Integer.parseInt(request.getParameter("program_id")));
+				SemesterPOJO sem = session.get(SemesterPOJO.class, Integer.parseInt(request.getParameter("sem_id")));
+				List<CoursePOJO> courses = session.createQuery("FROM CoursePOJO WHERE id NOT IN (SELECT course FROM SemesterCoursePOJO WHERE program = " + program.getId() + " AND semester = " + sem.getId() + ")" ).list();
+				response = GeneralUtility.generateSuccessResponse(null, courses);
 			}
 			
 			
