@@ -241,7 +241,7 @@ function getAuditOf(audit_id) {
 										"{degree_completed}",
 										result.data[0].degree_completed_percent);
 						res = res.replace("{present_cpi}",
-								result.data[0].current_cpi);
+								result.data[0].current_cpi.toFixed(2));
 						res = res.replace("{course_completed}",
 								result.data[0].present_courses);
 						res = res.replace("{cpi_required}",
@@ -350,7 +350,7 @@ function edit_details() {
 			+ userData.email + '"></td>';
 	str += '</tr>';
 	str += '<tr>';
-	str += '<td colspan="3"><button class="btn btn-primary">Update</button></td>';
+	str += '<td colspan="3"><button class="btn btn-primary" onclick="update_profile()">Update</button></td>';
 	str += '</tr>';
 	str += '</tbody>';
 	str += '</table>';
@@ -359,6 +359,12 @@ function edit_details() {
 	$(".pageContent").html(str);
 }
 
+function update_profile(){
+	$.ajax({
+		url: 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
+			+ userData.id,
+	});
+}
 function getGradeCard(sem) {
 	var client = new XMLHttpRequest();
 	client.open('GET', 'gradeCard.txt');
@@ -372,7 +378,8 @@ function getGradeCard(sem) {
 				dataType : 'json',
 				success : function(result) {
 					if (result.statusCode != 401) {
-						var temp = result.data.semester[sem];
+						console.log(result);
+						var temp = result.data.semester[sem].course;
 						var course_grades = "";
 						res = res.replace("{sem}", sem);
 						res = res.replace("{sem}", sem);
@@ -389,8 +396,21 @@ function getGradeCard(sem) {
 									+ "</td>";
 							course_grades += "<tr>";
 						}
+						res = res.replace("{}")
 						res = res.replace("{courses_data}",
 								course_grades);
+						res = res.replace("{earned_credits}",
+								result.data.semester[sem].sem_course_credit);
+						res = res.replace("{grade_points}",
+								result.data.semester[sem].sem_grade_points);
+						res = res.replace("{total_credits_earned}",
+								result.data.total_course_credit);
+						res = res.replace("{total_grade_points}",
+								result.data.toal_grade_points);
+						res = res.replace("{cpi}",
+								result.data.cpi.toFixed(2));
+						res = res.replace("{spi}",
+								result.data.semester[sem].spi.toFixed(2));
 						res = res.replace("{id}", userData.id);
 						res = res.replace("{name}", userData.first_name
 								+ " " + userData.last_name);

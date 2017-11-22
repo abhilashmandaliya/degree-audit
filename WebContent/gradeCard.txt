@@ -47,10 +47,10 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td>21.0</td>
-			<td>21.0</td>
-			<td>192.0</td>
-			<td>9.14</td>
+			<td></td>
+			<td>{earned_credits}</td>
+			<td>{grade_points}</td>
+			<td>{spi}</td>
 		</tr>
 	</tbody>
 </table>
@@ -69,10 +69,10 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td>21.0</td>
-			<td>21.0</td>
-			<td>192.0</td>
-			<td>9.14</td>
+			<td></td>
+			<td>{total_credits_earned}</td>
+			<td>{total_grade_points}</td>
+			<td>{cpi}</td>
 		</tr>
 	</tbody>
 </table>
