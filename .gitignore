@@ -5,3 +5,4 @@
 /target/
 /bin/
 /.clover/
+/src/unittest/*
