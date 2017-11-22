@@ -37,7 +37,6 @@ public class CourseCategoryCRUD extends CRUDCore {
 
 	@Override
 	public Object retrive(HttpServletRequest request) throws IOException {
-		Response response = null;
 		try {
 			List<CourseCategoryPOJO> course_cats = session.createQuery("FROM CourseCategoryPOJO").list();
 			response = GeneralUtility.generateSuccessResponse(null, course_cats);

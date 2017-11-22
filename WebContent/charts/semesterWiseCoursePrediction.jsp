@@ -11,8 +11,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Bar Chart</title>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.js"></script>
+<title>Semester Wise Course Prediction</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
 <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 <style>
@@ -25,9 +30,32 @@ canvas {
 </head>
 
 <body>
-	<div style="width: 75%">
-		<canvas id="canvas"></canvas>
+	<div class="container">
+		<div class="page-header">
+			<h1>
+				<center>Semester Wise Course Prediction</center>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="col-sm-7">
+				<canvas id="canvas"></canvas>
+			</div>
+			<div class="col-sm-5">
+				<table id="data_table" class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Course Code</th>
+							<th>Course Name</th>
+							<th>Course Category</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
+
 	<script>
 		$(document).ready(function() {
 			var data = $('#data').attr('value');
@@ -35,8 +63,11 @@ canvas {
 				console.log(data);
 				data = JSON.parse(data);
 				data = data['data'];
+				labels = data.labels;
+				fullName = data.fullName;
+				category = data.category;
 				var barChartData = {
-					labels : data.labels,
+					labels : labels,
 					datasets : [ {
 						label : 'Core',
 						backgroundColor : window.chartColors.blue,
@@ -61,7 +92,7 @@ canvas {
 					data : barChartData,
 					options : {
 						title : {
-							display : true,
+							display : false,
 							text : "Predicted course performance"
 						},
 						tooltips : {
@@ -79,6 +110,9 @@ canvas {
 						}
 					}
 				});
+				for (i = 0; i < labels.length; i++) {
+					$('#data_table tr:last').after('<tr><td>'+ labels[i] + '</td><td>' + fullName[i] + '</td><td>' + category[i] + '</td></tr>');
+				}
 			} else {
 				alert("Couldn't generate report.");
 			}

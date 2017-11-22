@@ -88,7 +88,7 @@ public class GradeCardCRUD extends CRUDCore {
 		} finally {
 			if (session.isOpen()) {
 				tx.commit();
-				// session.close();
+				session.close();
 			}
 		}
 		return response;
@@ -121,7 +121,7 @@ public class GradeCardCRUD extends CRUDCore {
 				}
 			} else if (student_id != null) {
 				try {
-					String sql = "SELECT MAX(semester) FROM GradeCard WHERE student_id = " + student_id + ")";
+					String sql = "SELECT MAX(semester) FROM GradeCard WHERE student_id = " + student_id;
 					Query query = session.createQuery(sql);
 					Short sum = (Short) query.list().get(0);
 					response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), sum);
@@ -228,7 +228,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					// session.close();
+					session.close();
 				}
 			}
 		} catch (Exception e1) {
@@ -240,7 +240,7 @@ public class GradeCardCRUD extends CRUDCore {
 				e.printStackTrace();
 			} finally {
 				if (session.isOpen()) {
-					// session.close();
+					session.close();
 				}
 			}
 		}
