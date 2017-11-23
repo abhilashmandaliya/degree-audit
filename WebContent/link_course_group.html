@@ -67,71 +67,15 @@
 			onkeyup="searchCourseNameID()" placeholder="Search for course... ">
 
 		<table class="table table-hover" id="myTable">
-			<tr class="header">
-				<th>Course ID</th>
-				<th>Name</th>
-				<th>Category</th>
-			</tr>
-			<tr>
-				<td>IT365</td>
-				<td>Animesh Kumar</td>
-				<td>
-					<div class="col-8">
-						<div class="form-group">
-							<select class="form-control" id="exampleSelect1">
-								<option>Select</option>
-								<option>EC</option>
-								<option>IT</option>
-							</select>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>IT876</td>
-				<td>Audarya Rathod</td>
-				<td>
-					<div class="col-8">
-						<div class="form-group">
-							<select class="form-control" id="exampleSelect1">
-								<option>Select</option>
-								<option>EC</option>
-								<option>IT</option>
-							</select>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>IT400</td>
-				<td>Sankalp Ranade</td>
-				<td>
-					<div class="col-8">
-						<div class="form-group">
-							<select class="form-control" id="exampleSelect1">
-								<option>Select</option>
-								<option>EC</option>
-								<option>IT</option>
-							</select>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>IT605</td>
-				<td>Harmeet Singh</td>
-				<td>
-					<div class="col-8">
-						<div class="form-group">
-							<select class="form-control" id="exampleSelect1">
-								<option>Select</option>
-								<option>EC</option>
-								<option>IT</option>
-							</select>
-						</div>
-					</div>
-				</td>
-			</tr>
+			<thead>
+				<tr class="header">
+					<th>Course ID</th>
+					<th>Name</th>
+					<th>Category</th>
+				</tr>
+			</thead>
+			<tbody class="table_data">
+			</tbody>
 		</table>
 		<a type="button" class="btn btn-primary" href="#">Update</a>
 
@@ -154,6 +98,7 @@
 		$(".email_address").html(userData.email);
 
 		getProgramByCordinator(userData.id);
+		getCourseAndGroup();
 
 	});
 	</script>

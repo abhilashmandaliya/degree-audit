@@ -467,7 +467,35 @@ function getStudentDetails(id) {
 				}
 			});
 }
-/* Program Course */
+
+function getCourseAndGroup(){
+	$.ajax({
+		url: 'http://localhost:8080/DegreeAudit/controller?action=getcoursecoursegroupandmapping&search=getcoursecoursegroupandmapping',
+		success: function (result) {
+			var res = JSON.parse(result);
+			
+			var str = "";
+			for(var i = 0;i<Object.keys(res.data.courseGroupCourse.data).length;i++){
+				str+="<tr>";
+				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_id+"</td>";
+				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_name+"</td>";
+				var select_txt="<select>";
+				for(var i = 0;i<Object.keys(res.data.courseGroups.data).length;i++){
+					select_txt+="<option value='"+res.data.courseGroups.data[i].id+"'";
+					if(res.data.courseGroupCourse.data[i].course_group.id==res.data.courseGroups.data[i].id)
+						select_txt+=" selected";
+					select_txt+=">"+res.data.courseGroups.data[i].group_name+"</option>";
+				}
+				console.log(select_txt);
+				select_txt+="</select>";
+				str+="<td id='course"+i+"'>"+select_txt+"</td>";
+				str+="</tr>";
+			}
+			$(".table_data").html(str);
+			
+		}
+	});
+}
 
 function remove() {
 	alert();
