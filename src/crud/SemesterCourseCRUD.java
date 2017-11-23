@@ -9,6 +9,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
+import org.hibernate.query.Query;
 
 import pojo.CourseGroupCoursePOJO;
 import pojo.CoursePOJO;
@@ -109,8 +110,39 @@ public class SemesterCourseCRUD extends CRUDCore {
 
 	@Override
 	public Response update(HttpServletRequest request) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			Integer program_id = Integer.parseInt(request.getParameter("program_id"));
+			Integer sem_id = Integer.parseInt(request.getParameter("sem_id"));
+			ProgramPOJO program = session.get(ProgramPOJO.class, program_id);
+			SemesterPOJO sem = session.get(SemesterPOJO.class, sem_id);
+
+			Query query = session
+					.createQuery("DELETE FROM SemesterCoursePOJO WHERE program = :program AND semester = :semester");
+			query.setParameter("program", program);
+			query.setParameter("semester", sem);
+			query.executeUpdate();
+
+			String courses[] = request.getParameter("courses").split(",");
+			Integer resultAdded = 0;
+
+			for (String course : courses) {
+				CoursePOJO coursep = session.get(CoursePOJO.class, Integer.parseInt(course));
+				SemesterCoursePOJO semCourse = new SemesterCoursePOJO(coursep, sem, program);
+				session.save(semCourse);
+				resultAdded++;
+			}
+			tx.commit();
+			response = GeneralUtility.generateSuccessResponse(null, resultAdded);
+		} catch (HibernateException e) {
+			tx.rollback();
+			e.printStackTrace();
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		return response;
 	}
 
 	@Override
