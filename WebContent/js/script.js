@@ -360,9 +360,27 @@ function edit_details() {
 }
 
 function update_profile(){
+	var userData = JSON.parse(localStorage.getItem("loginUser"));
+	console.log('http://localhost:8080/DegreeAudit/controller?action=updatestudentdetails&user_id='
+			+ userData.id+"&first_name="+$("#fname").val()+"&last_name="+$("#lname").val()+"&email="+$("#email").val());
 	$.ajax({
-		url: 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
-			+ userData.id,
+		url: 'http://localhost:8080/DegreeAudit/controller?action=updatestudentdetails&user_id='
+			+ userData.id+"&first_name="+$("#fname").val()+"&last_name="+$("#lname").val()+"&email="+$("#email").val(),
+		dataType: 'json',
+		success: function(result) {
+			if (result.statusCode != 401) {
+				alert("Updated Successfully!");
+				var userData = JSON.parse(localStorage.getItem("loginUser"));
+				userData.first_name=$("#fname").val();
+				userData.last_name=$("#lname").val();
+				userData.email=$("#email").val();
+				localStorage.setItem("loginUser", JSON.stringify(userData));
+				location.reload();
+			}
+			else{
+				alert("Failed :(");
+			}
+		}
 	});
 }
 function getGradeCard(sem) {
@@ -401,8 +419,12 @@ function getGradeCard(sem) {
 								course_grades);
 						res = res.replace("{earned_credits}",
 								result.data.semester[sem].sem_course_credit);
+						res = res.replace("{earned_credits}",
+								result.data.semester[sem].sem_course_credit);
 						res = res.replace("{grade_points}",
 								result.data.semester[sem].sem_grade_points);
+						res = res.replace("{total_credits_earned}",
+								result.data.total_course_credit);
 						res = res.replace("{total_credits_earned}",
 								result.data.total_course_credit);
 						res = res.replace("{total_grade_points}",
@@ -432,6 +454,26 @@ function generateAudit() {
 		success: function(result) {
 			if (result.statusCode != 401) {
 				getAuditOf(result.data);
+				$.ajax({
+					url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='+userData.id,
+				    dataType: 'json',
+				    success: function(result) {
+				    	if (result.statusCode != 401) {
+					    	var str="";
+					    	//console.log(result);
+					    	for(var i=0; i<=2 ;i++){
+								str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i].id+')" style="width:100%">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</button>';
+					    	}
+					    	if(result.data.length>3){
+					    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+					    	}
+					    	$("#audits").html(str);
+				    	}
+				    	else{
+				    		$(location).attr("href", "index.html");
+				    	}
+				    }
+				});
 			}
 			else{
 				console.log(result);
