@@ -141,7 +141,7 @@ public class AuditReportCRUD extends CRUDCore {
 			if (grade.getSemester() >= maxSem)
 				maxSem = grade.getSemester();
 		}
-		return (short) (maxSem + 1);
+		return (short) (maxSem - 8 + 1);
 	}
 
 	private double getTimeLeft(short sem, ProgramPOJO enrolledProgram) {
