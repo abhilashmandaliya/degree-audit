@@ -27,6 +27,7 @@ public class Controller extends HttpServlet {
 		String data = !GeneralUtility.isAutheticatedUser(request)
 				? GeneralUtility.generateUnauthorizedResponse().toString()
 				: action.perform(request, response);
+		// String data = action.perform(request, response);
 		Gson json = new Gson();
 		Response next = json.fromJson(data, Response.class);
 		response.addHeader("Access-Control-Allow-Origin", "*");

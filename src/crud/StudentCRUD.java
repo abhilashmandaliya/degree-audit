@@ -23,22 +23,13 @@ public class StudentCRUD extends CRUDCore {
 
 	@Override
 	public Response create(HttpServletRequest request) throws IOException {
-		// Transaction tx = null;
 		Integer id = null;
-		System.out.println("in crud man -----------");
 		try {
-			// tx = session.beginTransaction();
 			int user_id = Integer.parseInt(request.getParameter("user_id"));
 			int program_id = Integer.parseInt(request.getParameter("program_id"));
-			System.out.println("Student id " + user_id + "  program_id " + program_id);
 			Integer year_of_enrolment = Integer.parseInt(request.getParameter("year_of_enrolment"));
 			UserPOJO user = session.get(UserPOJO.class, user_id);
 			ProgramPOJO program = session.get(ProgramPOJO.class, program_id);
-
-			if (user == null || program == null) {
-				System.out.println("Bc error che dhyan rakh");
-
-			}
 
 			StudentPOJO student = new StudentPOJO(user, program, year_of_enrolment);
 			try {
@@ -76,10 +67,7 @@ public class StudentCRUD extends CRUDCore {
 			try {
 				Query query = session.createQuery(hql);
 				List<StudentPOJO> programs = query.list();
-
 				StudentPOJO s1 = programs.get(0);
-				// System.out.println(s1.getStudent_name() + " ***********************");
-
 				response = GeneralUtility.generateSuccessResponse(null, programs);
 			} catch (HibernateException e) {
 				tx.rollback();
@@ -90,11 +78,8 @@ public class StudentCRUD extends CRUDCore {
 				}
 			}
 		} catch (Exception e1) {
-			System.err.println(e1);
-			System.err.println("unexpected error encounter.");
 			try {
 				List<StudentPOJO> programs = session.createQuery("FROM StudentPOJO").list();
-				System.err.println("List size " + programs.size());
 				response = GeneralUtility.generateSuccessResponse(null, programs);
 			} catch (HibernateException e) {
 				tx.rollback();
@@ -193,17 +178,14 @@ public class StudentCRUD extends CRUDCore {
 
 	public Integer getUserId(HttpServletRequest request) throws IOException {
 		Integer id = null;
-		System.out.println("get user id from student ID");
 
 		int user_id = Integer.valueOf(request.getParameter("student_id"));
 		try {
 			String hql = "FROM StudentPOJO s WHERE user_id =" + user_id;
 			Query query = session.createQuery(hql);
 			List<StudentPOJO> programs = query.list();
-			// System.out.println("programs size " + programs.size());
 			StudentPOJO s1 = programs.get(0);
 			id = s1.getStudent_id();
-			// System.out.println(s1.getStudent_name() + " ***********************");
 		} catch (HibernateException e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -213,7 +195,6 @@ public class StudentCRUD extends CRUDCore {
 			}
 		}
 
-		System.out.println("id return ....... " + id);
 		return id;
 	}
 }

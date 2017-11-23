@@ -23,7 +23,7 @@
 
             <div>
               <a class="btn btn-primary" style="width:100%;" data-toggle="collapse" href="#audits" aria-expanded="false" aria-controls="collapseExample">
-                Audits Reports
+                Audit Reports
               </a>
             </div>
             <div class="collapse"  id="audits">
@@ -46,7 +46,7 @@
             </div>
 
             <div class="btn-group" style="width:100%">
-              <button type="button" class="btn btn-primary" style="width:100%">Generate Audit</button>
+              <button type="button" class="btn btn-primary" onclick="generateAudit()" style="width:100%">Generate Audit</button>
             </div>
 
             <div class="btn-group" style="width:100%">
@@ -96,49 +96,43 @@
 		$(".stud_name_1").html(userData.first_name+" "+userData.last_name);
 		$(".stud_name").html(userData.first_name+" "+userData.last_name);
 		$(".email_address").html(userData.email);
-		/*$.ajax({
+		$.ajax({
 			url:'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&mode=api&student_id='+userData.id,
 		    dataType: 'json',
 		    success: function(result) {
-		    	console.log(result);
 		    	var str = "";
-		    	var i = result.data.length-1;
+		    	var i = Object.keys(result.data.semester).length;
 		    	for(var j=1; j<=3 && i!=0;j++){
-					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+result.data[i][1]+')" style="width:100%">'+result.data[i][0]+'</button>';
+					str += '<button type="button" class="btn btn-info" onclick="getGradeCard('+i+')" style="width:100%">Sem - '+i+'</button>';
 					i--;
 		    	}
-		    	if(i!=0);{
+		    	if(i!=0){
 		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
 		    	}
-		    	$("#audits").html(str);
-				$(".program_name").html(result.data.student_details.program_id.name);
+		    	$("#gradecard").html(str);
 		    }
-		});*/
+		});
 		$.ajax({
-			url:'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id='+userData.id,
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='+userData.id,
 		    dataType: 'json',
 		    success: function(result) {
-		    	var str="";
-		    	var i = result.data.length-1;
-		    	for(var j=1; j<=3 && i!=0;j++){
-					str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i][1]+')" style="width:100%">'+result.data[i][0]+'</button>';
-					i--;
+		    	if (result.statusCode != 401) {
+			    	var str="";
+			    	//console.log(result);
+			    	for(var i=0; i<=2 ;i++){
+						str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i].id+')" style="width:100%">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</button>';
+			    	}
+			    	if(result.data.length>3){
+			    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+			    	}
+			    	$("#audits").html(str);
 		    	}
-		    	if(i!=0);{
-		    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+		    	else{
+		    		$(location).attr("href", "index.html");
 		    	}
-		    	$("#audits").html(str);
 		    }
 		});
 	});
-  function getGradeCardOf(sem){
-    $.ajax({
-      url: "gradeCard.html",
-      success: function(result){
-        $(".pageContent").html(result);
-      }
-    });
-  }
 </script>
 
 </html>

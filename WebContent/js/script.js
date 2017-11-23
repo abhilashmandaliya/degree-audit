@@ -69,51 +69,49 @@ function addProgramme() {
 }
 
 function login() {
-	$
-			.ajax({
-				url : "http://localhost:8080/DegreeAudit/controller?action=login&username="
-						+ $("#username").val()
-						+ "&password="
-						+ $("#password").val(),
-				dataType : 'json',
-				success : function(result) {
-					localStorage.setItem("loginUser", JSON
-							.stringify(result.data));
-					if (result.statusCode == 200) {
-						if (result.data.userCategory.category == "admin") {
-							$(location).attr("href", "programme_list.html");
-						} else if (result.data.userCategory.category == "coordinator") {
-							$(location).attr("href", "pc_profile.html");
-						} else if (result.data.userCategory.category == "student") {
-							$(location).attr("href", "student_profile.html");
-						}
-					}
+	$.ajax({
+		url : "http://localhost:8080/DegreeAudit/controller?action=login&username="
+				+ $("#username").val()
+				+ "&password="
+				+ $("#password").val(),
+		dataType : 'json',
+		success : function(result) {
+			localStorage.setItem("loginUser", JSON
+					.stringify(result.data));
+			if (result.statusCode == 200) {
+				if (result.data.userCategory.category == "admin") {
+					$(location).attr("href", "programme_list.html");
+				} else if (result.data.userCategory.category == "coordinator") {
+					$(location).attr("href", "pc_profile.html");
+				} else if (result.data.userCategory.category == "student") {
+					$(location).attr("href", "student_profile.html");
 				}
-			});
+			}
+		}
+	});
 }
 
 function getProgramByCordinator(pc_id) {
-	$
-			.ajax({
-				url : "http://localhost:8080/DegreeAudit/controller?action=getprogrambypc&search=by_pc&pc_id="
-						+ pc_id,
-				success : function(result) {
-					var res = JSON.parse(result);
+	$.ajax({
+		url : "http://localhost:8080/DegreeAudit/controller?action=getprogrambypc&search=by_pc&pc_id="
+				+ pc_id,
+		success : function(result) {
+			var res = JSON.parse(result);
 
-					localStorage.setItem("program", result);
-					var str = "";
-					for (var i = 1; i <= res.data[0].program.min_duration * 2; i++) {
-						str += '<a class="dropdown-item" style="cursor: pointer;" onclick="navigateToSemCourses('
-								+ i + ')">Sem-' + i + '</a>';
-					}
+			localStorage.setItem("program", result);
+			var str = "";
+			for (var i = 1; i <= res.data[0].program.min_duration * 2; i++) {
+				str += '<a class="dropdown-item" style="cursor: pointer;" onclick="navigateToSemCourses('
+						+ i + ')">Sem-' + i + '</a>';
+			}
 
-					$("#sem_nos").html(str);
+			$("#sem_nos").html(str);
 
-				},
-				error : function(error_res) {
-					console.log(error_res);
-				}
-			});
+		},
+		error : function(error_res) {
+			console.log(error_res);
+		}
+	});
 }
 
 function navigateToSemCourses(sem_name) {
@@ -207,93 +205,91 @@ function getCourseTableData() {
 	});
 }
 function getCourseCategoryData() {
-	$
-			.ajax({
-				url : 'http://localhost:8080/DegreeAudit/controller?action=getCourseCategory',
-				dataType : 'json',
-				success : function(result) {
-					if (result.statusCode != 401) {
-						console.log(result);
-					} else {
-						$(location).attr("href", "index.html");
-					}
-				}
-			});
+	$.ajax({
+		url : 'http://localhost:8080/DegreeAudit/controller?action=getCourseCategory',
+		dataType : 'json',
+		success : function(result) {
+			if (result.statusCode != 401) {
+				console.log(result);
+			} else {
+				$(location).attr("href", "index.html");
+			}
+		}
+	});
 }
 
 function getAuditOf(audit_id) {
-	$
-			.ajax({
-				url : 'http://localhost:8080/DegreeAudit/controller?action=getauditdata2&id='
-						+ audit_id,
-				dataType : 'json',
-				success : function(result) {
-					if (result.statusCode != 401) {
-						var client = new XMLHttpRequest();
-						client.open('GET', 'audit_report.txt');
-						client.onreadystatechange = function() {
-							if (this.readyState == 4 && this.status == 200) {
-								var res = client.responseText;
-								res = res.replace("{date}",
-										result.data[0].date_generated);
-								res = res.replace("{grade_obtain}",
-										result.data[0].obtained_credit);
-								res = res
-										.replace(
-												"{degree_completed}",
-												result.data[0].percentage_of_degree_finish);
-								res = res.replace("{present_cpi}",
-										result.data[0].present_CPI);
-								res = res.replace("{course_completed}",
-										result.data[0].present_cource);
-								res = res.replace("{cpi_required}",
-										result.data[0].require_CPI);
-								res = res.replace("{credits_required}",
-										result.data[0].require__credit);
-								res = res.replace("{no_courses_required}",
-										result.data[0].require_courcce);
-								res = res.replace("{time_left_to_graduate}",
-										result.data[0].time_left_finish_degree);
-								$(".pageContent").html(res);
-							}
-						}
-						client.send();
+	var userData = JSON.parse(localStorage.getItem("loginUser"));
+	$.ajax({
+		url : 'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='
+				+ userData.id+"&audit_id="+audit_id+"&search=by_audit_id",
+		dataType : 'json',
+		success : function(result) {
+			if (result.statusCode != 401) {
+				console.log(result);
+				var client = new XMLHttpRequest();
+				client.open('GET', 'audit_report.txt');
+				client.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						var res = client.responseText;
+						res = res.replace("{date}",
+								result.data[0].date_generated);
+						res = res.replace("{grade_obtain}",
+								result.data[0].obtained_credits);
+						res = res
+								.replace(
+										"{degree_completed}",
+										result.data[0].degree_completed_percent);
+						res = res.replace("{present_cpi}",
+								result.data[0].current_cpi.toFixed(2));
+						res = res.replace("{course_completed}",
+								result.data[0].present_courses);
+						res = res.replace("{cpi_required}",
+								result.data[0].required_cpi);
+						res = res.replace("{credits_required}",
+								result.data[0].required_credits);
+						res = res.replace("{no_courses_required}",
+								result.data[0].required_courses);
+						res = res.replace("{time_left_to_graduate}",
+								result.data[0].time_left);
+						$(".pageContent").html(res);
 					}
 				}
-			});
+				client.send();
+			}
+		}
+	});
 }
 
 function showAllAuditDates() {
-	$
-			.ajax({
-				url : 'http://localhost:8080/DegreeAudit/controller?action=getauditdata&id=2',
-				dataType : 'json',
-				success : function(result) {
-					var str = "";
-					var i;
-					str += '<table class="table table-hover" style="margin-top:3%">';
-					str += '<thead>';
+	$.ajax({
+			url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id=81',
+			dataType : 'json',
+			success : function(result) {
+				var str = "";
+				var i;
+				str+='<h2>Audit Report List</h2>';
+				str += '<table class="table table-hover" style="margin-top:3%">';
+				str += '<thead>';
+				str += '<tr>';
+				str += '<th style="text-align:center">Sr.</th>';
+				str += '<th style="text-align:center">Audit Date</th>';
+				str += '</tr>';
+				str += '</thead>';
+				str += '<tbody>';
+				for (i = 0; i <= result.data.length - 1; i++) {
 					str += '<tr>';
-					str += '<th style="text-align:center">Sr.</th>';
-					str += '<th style="text-align:center">Audit Date</th>';
+					str += '<td>' + (i+1) + '</td>';
+					str += '<td>';
+					str += '<a onclick="getAuditOf(' + result.data[i].id
+							+ ')">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</a><br>';
+					str += '</td>';
 					str += '</tr>';
-					str += '</thead>';
-					str += '<tbody>';
-					var j = 1;
-					for (i = result.data.length - 1; i >= 0; i--) {
-						str += '<tr>';
-						str += '<td>' + j + '</td>';
-						str += '<td>';
-						str += '<a onclick="getAuditOf(' + result.data[i][1]
-								+ ')">' + result.data[i][0] + '</a><br>';
-						str += '</td>';
-						str += '</tr>';
-						j++;
-					}
-					str += '</tbody></table>';
-					$(".pageContent").html(str);
 				}
-			});
+				str += '</tbody></table>';
+				$(".pageContent").html(str);
+			}
+		});
 }
 
 function searchCourseNameID() {
@@ -326,7 +322,15 @@ function edit_details() {
 	var str = "";
 	var userData = JSON.parse(localStorage.getItem("loginUser"));
 	str += '<div id="editprofile" class="col-md-8">';
-	str += '<table>';
+	str += '<table class="table">';
+	str += '<thead>';
+	str += '<tr>';
+	str += '<th scope="col"><h2>Edit Profile</h2></th>';
+	str += '<th></th>';
+	str += '<th></th>';
+	str += '</tr>';
+	str += '</thead>';
+	str += '<tbody>';
 	str += '<tr style="margin-top:2%">';
 	str += '<td>First Name: </td>';
 	str += '<td width="25%"></td>';
@@ -345,12 +349,40 @@ function edit_details() {
 	str += '<td><input type="text" class="form-control" id="email" value="'
 			+ userData.email + '"></td>';
 	str += '</tr>';
+	str += '<tr>';
+	str += '<td colspan="3"><button class="btn btn-primary" onclick="update_profile()">Update</button></td>';
+	str += '</tr>';
+	str += '</tbody>';
 	str += '</table>';
 
 	str += '</div>';
 	$(".pageContent").html(str);
 }
 
+function update_profile(){
+	var userData = JSON.parse(localStorage.getItem("loginUser"));
+	console.log('http://localhost:8080/DegreeAudit/controller?action=updatestudentdetails&user_id='
+			+ userData.id+"&first_name="+$("#fname").val()+"&last_name="+$("#lname").val()+"&email="+$("#email").val());
+	$.ajax({
+		url: 'http://localhost:8080/DegreeAudit/controller?action=updatestudentdetails&user_id='
+			+ userData.id+"&first_name="+$("#fname").val()+"&last_name="+$("#lname").val()+"&email="+$("#email").val(),
+		dataType: 'json',
+		success: function(result) {
+			if (result.statusCode != 401) {
+				alert("Updated Successfully!");
+				var userData = JSON.parse(localStorage.getItem("loginUser"));
+				userData.first_name=$("#fname").val();
+				userData.last_name=$("#lname").val();
+				userData.email=$("#email").val();
+				localStorage.setItem("loginUser", JSON.stringify(userData));
+				location.reload();
+			}
+			else{
+				alert("Failed :(");
+			}
+		}
+	});
+}
 function getGradeCard(sem) {
 	var client = new XMLHttpRequest();
 	client.open('GET', 'gradeCard.txt');
@@ -358,44 +390,96 @@ function getGradeCard(sem) {
 		if (this.readyState == 4 && this.status == 200) {
 			var res = client.responseText;
 			var userData = JSON.parse(localStorage.getItem("loginUser"));
-			$
-					.ajax({
-						url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
-								+ userData.id,
-						dataType : 'json',
-						success : function(result) {
-							if (result.statusCode != 401) {
-								var temp = result.data.semester;
-								var course_grades = "";
-								for ( var sem_no in temp) {
-									res = res.replace("{sem}", sem_no);
-									res = res.replace("{sem}", sem_no);
-									for ( var course_opt in temp[sem_no]) {
-										course_grades += "<tr>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].course_id
-												+ "</td>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].course_name
-												+ "</td>";
-										course_grades += "<td>"
-												+ temp[sem_no][course_opt].earn_grade
-												+ "</td>";
-										course_grades += "<tr>";
-									}
-								}
-								res = res.replace("{courses_data}",
-										course_grades);
-								res = res.replace("{id}", userData.id);
-								res = res.replace("{name}", userData.first_name
-										+ " " + userData.last_name);
-							}
-							$(".pageContent").html(res);
+			$.ajax({
+				url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
+						+ userData.id,
+				dataType : 'json',
+				success : function(result) {
+					if (result.statusCode != 401) {
+						console.log(result);
+						var temp = result.data.semester[sem].course;
+						var course_grades = "";
+						res = res.replace("{sem}", sem);
+						res = res.replace("{sem}", sem);
+						for (var cnt=0;cnt<temp.length;cnt++) {
+							course_grades += "<tr>";
+							course_grades += "<td>"
+									+ temp[cnt].course_id
+									+ "</td>";
+							course_grades += "<td>"
+									+ temp[cnt].course_name
+									+ "</td>";
+							course_grades += "<td>"
+									+ temp[cnt].earn_grade
+									+ "</td>";
+							course_grades += "<tr>";
 						}
-					});
+						res = res.replace("{}")
+						res = res.replace("{courses_data}",
+								course_grades);
+						res = res.replace("{earned_credits}",
+								result.data.semester[sem].sem_course_credit);
+						res = res.replace("{earned_credits}",
+								result.data.semester[sem].sem_course_credit);
+						res = res.replace("{grade_points}",
+								result.data.semester[sem].sem_grade_points);
+						res = res.replace("{total_credits_earned}",
+								result.data.total_course_credit);
+						res = res.replace("{total_credits_earned}",
+								result.data.total_course_credit);
+						res = res.replace("{total_grade_points}",
+								result.data.toal_grade_points);
+						res = res.replace("{cpi}",
+								result.data.cpi.toFixed(2));
+						res = res.replace("{spi}",
+								result.data.semester[sem].spi.toFixed(2));
+						res = res.replace("{id}", userData.id);
+						res = res.replace("{name}", userData.first_name
+								+ " " + userData.last_name);
+						$(".pageContent").html(res);
+					}
+				}
+			});
 		}
 	}
 	client.send();
+}
+
+function generateAudit() {
+	var userData = JSON.parse(localStorage.getItem("loginUser"));
+	$.ajax({
+		url: 'http://localhost:8080/DegreeAudit/controller?action=generateauditbystudentid&student_id='
+			+ userData.id,
+		dataType: 'json',
+		success: function(result) {
+			if (result.statusCode != 401) {
+				getAuditOf(result.data);
+				$.ajax({
+					url:'http://localhost:8080/DegreeAudit/controller?action=getauditbystudentid&student_id='+userData.id,
+				    dataType: 'json',
+				    success: function(result) {
+				    	if (result.statusCode != 401) {
+					    	var str="";
+					    	//console.log(result);
+					    	for(var i=0; i<=2 ;i++){
+								str += '<button type="button" class="btn btn-info" onclick="getAuditOf('+result.data[i].id+')" style="width:100%">Sem - '+result.data[i].sem+" "+result.data[i].date_generated+'</button>';
+					    	}
+					    	if(result.data.length>3){
+					    		str += '<button type="button" class="btn btn-info" onclick="showAllAuditDates()" style="width:100%">More..</button>';
+					    	}
+					    	$("#audits").html(str);
+				    	}
+				    	else{
+				    		$(location).attr("href", "index.html");
+				    	}
+				    }
+				});
+			}
+			else{
+				console.log(result);
+			}
+		}
+	});
 }
 
 function getStudentDetails(id) {
@@ -425,7 +509,34 @@ function getStudentDetails(id) {
 				}
 			});
 }
-/* Program Course */
+
+function getCourseAndGroup(){
+	$.ajax({
+		url: 'http://localhost:8080/DegreeAudit/controller?action=getcoursecoursegroupandmapping&search=getcoursecoursegroupandmapping',
+		success: function (result) {
+			var res = JSON.parse(result);
+			var str = "";
+			for(var i = 0;i<Object.keys(res.data.courseGroupCourse.data).length;i++){
+				str+="<tr>";
+				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_id+"</td>";
+				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_name+"</td>";
+				var select_txt="<select>";
+				for(var j = 0;j<Object.keys(res.data.courseGroups.data).length;j++){
+					select_txt+="<option value='"+res.data.courseGroups.data[j].id+"'";
+					if(res.data.courseGroupCourse.data[i].course_group.id==res.data.courseGroups.data[j].id)
+						select_txt+=" selected";
+					select_txt+=">"+res.data.courseGroups.data[j].group_name+"</option>";
+				}
+				console.log(select_txt);
+				select_txt+="</select>";
+				str+="<td id='course"+i+"'>"+select_txt+"</td>";
+				str+="</tr>";
+			}
+			$(".table_data").html(str);
+			
+		}
+	});
+}
 
 function remove() {
 	alert();

@@ -48,7 +48,6 @@ public class StudentGradeCard {
 
 		Integer id = null;
 		response = null;
-		System.out.println("checkout ----------------------------------------------------------");
 		try {
 			String student_id = request.getParameter("student_id");
 
@@ -61,24 +60,19 @@ public class StudentGradeCard {
 			resuList = session.createCriteria(GradeCard.class).add(Restrictions.eq("student_id", student))
 					.list();
 
-			System.out.println("checkout ----------------------------------------------------------");
 			GsonBuilder builder = new GsonBuilder();
 			builder.setPrettyPrinting();
 			Gson gson = builder.create();
 			String sendResponse = gson.toJson(resuList);
 
-			System.out.println("Response get ***************\n" + sendResponse);
 			JsonElement jelement = new JsonParser().parse(sendResponse);
 			JsonArray courses = jelement.getAsJsonArray();
 
-			// System.out.println("Response get ***************\n" + courses);
 			for (int i = 0; i < courses.size(); i++) {
 				JsonObject course = (JsonObject) courses.get(i);
 				String sem = course.get("semester").toString();
 				JsonObject courseID = course.getAsJsonObject("course_id");
 				courseID.add("earn_grade", course.get("earn_grade"));
-
-				System.out.println("course _ id " + courseID);
 
 				if (semesters.containsKey(sem)) {
 					HashSet<JsonObject> set = (HashSet<JsonObject>) semesters.get(sem);
@@ -90,7 +84,6 @@ public class StudentGradeCard {
 					semesters.put(sem, set);
 				}
 
-				System.out.println("Response get ***************\n" + course);
 				// HashMap<String, String> cours = new HashMap<>();
 			}
 
@@ -106,7 +99,6 @@ public class StudentGradeCard {
 
 				for (Object couri : set) {
 					JsonObject cour = (JsonObject) couri;
-					System.out.println("Testing ........ " + cour);
 					double credit = Double.valueOf(cour.get("course_credits").toString());
 					double grade = Double.valueOf(cour.get("earn_grade").toString());
 					sem_course_credit += credit;
@@ -134,13 +126,9 @@ public class StudentGradeCard {
 			student_details.put("semester", semesters);
 			String manualResponse = gson.toJson(student_details);
 
-			System.out.println(
-					"Response in my CRUD \n" + manualResponse + "\n----------------------------------------------");
-
 			response = GeneralUtility.generateSuccessResponse(null, student_details);
 			tx.commit();
 		} catch (NumberFormatException | HibernateException | IOException e1) {
-			System.out.println(e1 + " -------------------------");
 			tx.rollback();
 		} finally {
 			if (session.isOpen()) {
