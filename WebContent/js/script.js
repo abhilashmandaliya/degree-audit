@@ -473,18 +473,17 @@ function getCourseAndGroup(){
 		url: 'http://localhost:8080/DegreeAudit/controller?action=getcoursecoursegroupandmapping&search=getcoursecoursegroupandmapping',
 		success: function (result) {
 			var res = JSON.parse(result);
-			
 			var str = "";
 			for(var i = 0;i<Object.keys(res.data.courseGroupCourse.data).length;i++){
 				str+="<tr>";
 				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_id+"</td>";
 				str+="<td>"+res.data.courseGroupCourse.data[i].course.course_name+"</td>";
 				var select_txt="<select>";
-				for(var i = 0;i<Object.keys(res.data.courseGroups.data).length;i++){
-					select_txt+="<option value='"+res.data.courseGroups.data[i].id+"'";
-					if(res.data.courseGroupCourse.data[i].course_group.id==res.data.courseGroups.data[i].id)
+				for(var j = 0;j<Object.keys(res.data.courseGroups.data).length;j++){
+					select_txt+="<option value='"+res.data.courseGroups.data[j].id+"'";
+					if(res.data.courseGroupCourse.data[i].course_group.id==res.data.courseGroups.data[j].id)
 						select_txt+=" selected";
-					select_txt+=">"+res.data.courseGroups.data[i].group_name+"</option>";
+					select_txt+=">"+res.data.courseGroups.data[j].group_name+"</option>";
 				}
 				console.log(select_txt);
 				select_txt+="</select>";
