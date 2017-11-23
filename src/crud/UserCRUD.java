@@ -82,9 +82,9 @@ public class UserCRUD extends CRUDCore {
 							break;
 						}
 					}
-					HttpSession session = request.getSession();
-					session.setAttribute("userCategory", category);
-					session.setAttribute("user", userPOJO);
+//					HttpSession session = request.getSession();
+//					session.setAttribute("userCategory", category);
+//					session.setAttribute("user", userPOJO);
 				}
 			}
 		} catch (HibernateException e) {
