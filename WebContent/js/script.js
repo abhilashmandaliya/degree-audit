@@ -96,17 +96,22 @@ function getProgramByCordinator(pc_id) {
 		url : "http://localhost:8080/DegreeAudit/controller?action=getprogrambypc&search=by_pc&pc_id="
 				+ pc_id,
 		success : function(result) {
-			var res = JSON.parse(result);
-
-			localStorage.setItem("program", result);
-			var str = "";
-			for (var i = 1; i <= res.data[0].program.min_duration * 2; i++) {
-				str += '<a class="dropdown-item" style="cursor: pointer;" onclick="navigateToSemCourses('
-						+ i + ')">Sem-' + i + '</a>';
+			if (result.statusCode != 401) {
+				var res = JSON.parse(result);
+	
+				localStorage.setItem("program", result);
+				var str = "";
+				for (var i = 1; i <= res.data[0].program.min_duration * 2; i++) {
+					str += '<a class="dropdown-item" style="cursor: pointer;" onclick="navigateToSemCourses('
+							+ i + ')">Sem-' + i + '</a>';
+				}
+	
+				$("#sem_nos").html(str);
 			}
-
-			$("#sem_nos").html(str);
-
+			
+			else {
+				$(location).attr("href", "index.html");
+			}
 		},
 		error : function(error_res) {
 			console.log(error_res);
@@ -189,6 +194,15 @@ function getSemCourse(sem_name) {
 	});
 }
 
+function logout() {
+	$.ajax({
+		url:"http://localhost:8080/DegreeAudit/controller?action=logout",
+		success: function() {
+			localStorage.setItem("loginUser",null);
+			$(location).attr("href", "index.html");
+		}
+	})
+}
 function updateSemCourses(sem_name) {
 	$.ajax({
 		url : "http://localhost:8080/DegreeAudit/controller?action=getsemesteridfromname&search=semester_id_from_name&semester_name="
@@ -517,12 +531,12 @@ function generateAudit() {
 }
 
 function getStudentDetails(id) {
-	$
-			.ajax({
+	$.ajax({
 				url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
 						+ id,
 				dataType : 'json',
 				success : function(result) {
+					console.log(result);
 					if (result.statusCode != 401) {
 						var str = "";
 						str += "<tr>";

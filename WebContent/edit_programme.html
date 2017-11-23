@@ -49,7 +49,7 @@
 						Details</a></li>
 			</ul>
 			<ul class="navbar-nav col-2 align-items-end">
-				<li class="nav-item"><a class="nav-link" href="#"><i
+				<li class="nav-item"><a class="nav-link" onclick="logout()"><i
 						class="fa fa-power-off" aria-hidden="true"></i> Logout</a></li>
 			</ul>
 		</div>
@@ -63,10 +63,10 @@
 			<div class="col-2"></div>
 			<form class="col-8">
 				<div class="form-group row">
-					<label for="courseName" class="col-4 col-form-label">Course
+					<label for="programName" class="col-4 col-form-label">Program
 						Name</label>
 					<div class="col-5">
-						<input type="text" required class="form-control" id="courseName">
+						<input type="text" required class="form-control" id="programName">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -133,19 +133,6 @@
 						<input type="text" required class="form-control" id="maxCourse">
 					</div>
 				</div>
-
-				<div class="form-group row">
-					<label for="maxCourse" class="col-4 col-form-label">Program
-						Co-ordinator</label>
-					<div class="col-5">
-						<select class="btn btn" style="border: 1px lightgrey solid">
-							<option>Agrawal, Yash</option>
-							<option>Banerjee, Asim</option>
-							<option>Bhateja, Puneet</option>
-							<option>Bhatt, Amit</option>
-						</select>
-					</div>
-				</div>
 				<button type="submit" class="btn btn-primary col-3">Submit
 					Details</button>
 			</form>
@@ -169,7 +156,19 @@
 			$(".email_address").html(userData.email);
 			
 			getProgramByCordinator(userData.id);
-			console.log(localStorage.getItem("program"));
+			var res = JSON.parse(localStorage.getItem("program"));
+			console.log(res);
+			
+			$("#programName").val(res.data[0].program.name);
+			$("#minDuration").val(res.data[0].program.min_duration);
+			$("#maxDuration").val(res.data[0].program.max_duration);
+			$("#minCredits").val(res.data[0].program.min_credits);
+			$("#maxCredits").val(res.data[0].program.max_credits);
+			$("#minGradePts").val(res.data[0].program.min_grade_points);
+			$("#minCPI").val(res.data[0].program.min_cpi);
+			$("#foundationCount").val(res.data[0].program.min_foundation_course);
+			$("#minCourse").val(res.data[0].program.min_courses);
+			$("#maxCourse").val(res.data[0].program.max_courses);
 		});
 	</script>
 </body>

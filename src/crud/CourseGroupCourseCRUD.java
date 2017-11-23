@@ -34,7 +34,7 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 		Integer id = null;
 
 		try {
-			Integer course_id = (Integer) request.getAttribute("course_id");
+			Integer course_id = Integer.parseInt(request.getParameter("course_id"));
 			Integer course_group_id = Integer.parseInt(request.getParameter("course_group_id"));
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
 			CourseGroupPOJO courseGroup = session.get(CourseGroupPOJO.class, course_group_id);
