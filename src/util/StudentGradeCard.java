@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -22,6 +23,7 @@ import com.google.gson.JsonParser;
 import crud.AuditReportCRUD;
 import crud.StudentCRUD;
 import pojo.GradeCard;
+import pojo.SemesterPOJO;
 import pojo.StudentPOJO;
 
 public class StudentGradeCard {
@@ -57,8 +59,7 @@ public class StudentGradeCard {
 			String hql = null;
 			List resuList = null;
 			StudentPOJO student = session.get(StudentPOJO.class, Integer.valueOf(_id));
-			resuList = session.createCriteria(GradeCard.class).add(Restrictions.eq("student_id", student))
-					.list();
+			resuList = session.createCriteria(GradeCard.class).add(Restrictions.eq("student_id", student)).list();
 
 			GsonBuilder builder = new GsonBuilder();
 			builder.setPrettyPrinting();
@@ -71,6 +72,7 @@ public class StudentGradeCard {
 			for (int i = 0; i < courses.size(); i++) {
 				JsonObject course = (JsonObject) courses.get(i);
 				String sem = course.get("semester").toString();
+				sem = getSemId(sem);
 				JsonObject courseID = course.getAsJsonObject("course_id");
 				courseID.add("earn_grade", course.get("earn_grade"));
 
@@ -83,8 +85,6 @@ public class StudentGradeCard {
 					set.add(courseID);
 					semesters.put(sem, set);
 				}
-
-				// HashMap<String, String> cours = new HashMap<>();
 			}
 
 			double total_course_credit = 0;
@@ -104,7 +104,7 @@ public class StudentGradeCard {
 					sem_course_credit += credit;
 					sem_grade_points += (grade * credit);
 				}
-				
+
 				HashMap<String, Object> temp = new HashMap<>();
 				temp.put("course", set);
 
@@ -112,7 +112,7 @@ public class StudentGradeCard {
 				temp.put("sem_course_credit", sem_course_credit);
 				temp.put("sem_grade_points", sem_grade_points);
 				temp.put("spi", spi);
-				semesters.put(key, temp);	
+				semesters.put(key, temp);
 
 				total_grade_points += sem_grade_points;
 				total_course_credit += sem_course_credit;
@@ -140,5 +140,11 @@ public class StudentGradeCard {
 
 	public Object getDataFromAuditReport(HttpServletRequest req) throws IOException {
 		return new AuditReportCRUD().retrive(req);
+	}
+
+	public String getSemId(String semName) {
+		String hql = "select name from SemesterPOJO where id='" + Integer.valueOf(semName) + "'";
+		Query query = session.createQuery(hql);
+		return query.list().get(0).toString();
 	}
 }
