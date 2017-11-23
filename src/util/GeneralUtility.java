@@ -263,9 +263,9 @@ public final class GeneralUtility {
 		int max_semester_courses = programSemesterDetail.getMax_semester_courses();
 		int core = programSemesterDetail.getCore();
 
-		int r = min_semester_courses - core;
-		int max_r = max_semester_courses - core;
-
+		int r = min_semester_courses - core_courses.size();
+		int max_r = max_semester_courses - core_courses.size();
+		max_r = Math.min(max_r, non_core_courses.size());
 		CourseCategoryPOJO tech_elective = null, open_elective = null;
 
 		// getting all course category to retrieve categories of tech_elective and
@@ -290,8 +290,8 @@ public final class GeneralUtility {
 		// list of all possible combinations
 		ArrayList<Response> valid_combination = new ArrayList<>();
 		// finding all possible combinations from r to max_r
-		for (int i = r; i <= r; i++) {
-			List<List<CoursePOJO>> combinations = getCombination(non_core_courses, n, r);
+		for (int i = r; i <= max_r; i++) {
+			List<List<CoursePOJO>> combinations = getCombination(non_core_courses, n, i);
 			System.out.println("no of cominations : " + combinations.size());
 			combinations_loop: for (List<CoursePOJO> combination : combinations) {
 

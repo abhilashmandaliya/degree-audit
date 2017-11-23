@@ -22,3 +22,12 @@
 <title>Chart</title>
 </head>
 <body>
+<nav class="navbar navbar-default">
+  <ul class="nav navbar-nav">
+    <li><a href="getCourseWisePieChart.jsp">Course Wise Pie Chart</a></li>
+    <li><a href="getCreditWisePieChart.jsp">Credit Wise Pie Chart</a></li>
+    <li><a href="getSPIWiseProgressLineChart.jsp">SPI Wise Line Chart</a></li>
+    <li><a href="semesterWiseCoursePrediction.jsp">Semester Course Prediction</a></li>
+    <li><a href="semesterWiseCourseChoice.jsp">Semestser Wise Course Choice</a></li>
+  </ul>
+</nav>

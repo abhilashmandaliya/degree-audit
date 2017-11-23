@@ -22,11 +22,9 @@ public class GradeCardCRUD extends CRUDCore {
 
 	@Override
 	public Response delete(HttpServletRequest request) throws IOException {
-		// Transaction tx = null;
 		Integer id = null;
-		System.out.println("in crud man -----------");
+		//System.out.println("in crud man -----------");
 		try {
-			// tx = session.beginTransaction();
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			Integer course_id = Integer.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
@@ -58,11 +56,9 @@ public class GradeCardCRUD extends CRUDCore {
 
 	@Override
 	public Response update(HttpServletRequest request) throws IOException {
-		// Transaction tx = null;
 		Integer id = null;
-		System.out.println("in crud man -----------");
+		//System.out.println("in crud man -----------");
 		try {
-			// tx = session.beginTransaction();
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			String course_id = String.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
@@ -79,7 +75,6 @@ public class GradeCardCRUD extends CRUDCore {
 				id = -1;
 			}
 			response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), id);
-			// tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null) {
 				tx.rollback();
@@ -105,7 +100,7 @@ public class GradeCardCRUD extends CRUDCore {
 			else
 				student_id = (Integer) temp;
 			String search = (String) request.getAttribute("search");
-			System.out.println("search " + search);
+			//System.out.println("search " + search);
 			if (search != null) {
 				try {
 					if (search.toLowerCase().equals("get_all_grades_of_student")) {
@@ -151,8 +146,6 @@ public class GradeCardCRUD extends CRUDCore {
 			e1.printStackTrace();
 			try {
 				List<GradeCard> programs = session.createQuery("FROM GradeCard").list();
-				System.out.println("no. of gradecard entries ... " + programs.size());
-
 				response = GeneralUtility.generateSuccessResponse(null, programs);
 			} catch (HibernateException e) {
 				tx.rollback();
@@ -172,31 +165,25 @@ public class GradeCardCRUD extends CRUDCore {
 
 	@Override
 	public Response create(HttpServletRequest request) throws IOException {
-		// Transaction tx = null;
 		Integer id = null;
-		System.out.println("in crud man -----------");
+		//System.out.println("in crud man -----------");
 		try {
-			// tx = session.beginTransaction();
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			Integer course_id = Integer.valueOf(request.getParameter("course_id"));
 			short semester = Short.valueOf(request.getParameter("semester"));
 			boolean status = Boolean.valueOf(request.getParameter("status"));
 			double earn_grade = Double.valueOf(request.getParameter("earn_grade"));
 			CoursePOJO course = session.get(CoursePOJO.class, course_id);
-
-			// System.out.println("boom ---------" + course_id + " -------- " +
-			// course.getCourse_name());
 			StudentPOJO student = session.get(StudentPOJO.class, student_id);
 			// GradeCard gc = new GradeCard(student, course, semester, status, earn_grade);
 			GradeCard g = new GradeCard(student, course, semester, status, earn_grade);
 			try {
 				id = (Integer) session.save(g);
 			} catch (Exception e) {
-				System.out.println(e + "888888888888888888888888888888888888888888888");
+				System.out.println(e);
 				id = -1;
 			}
 		} catch (HibernateException e) {
-			System.out.println(e + " ----------------------------------------------");
 			if (tx != null) {
 				tx.rollback();
 			}

@@ -1,3 +1,4 @@
+
 <%
 	if (session.getAttribute("user") == null || session.getAttribute("userCategory") == null) {
 		response.sendRedirect("../index.html");
@@ -36,6 +37,18 @@ canvas {
 </head>
 
 <body>
+	<nav class="navbar navbar-default">
+	<ul class="nav navbar-nav">
+		<li><a href="getCourseWisePieChart.jsp">Course Wise Pie Chart</a></li>
+		<li><a href="getCreditWisePieChart.jsp">Credit Wise Pie Chart</a></li>
+		<li><a href="getSPIWiseProgressLineChart.jsp">SPI Wise Line
+				Chart</a></li>
+		<li><a href="semesterWiseCoursePrediction.jsp">Semester
+				Course Prediction</a></li>
+		<li><a href="semesterWiseCourseChoice.jsp">Semestser Wise
+				Course Choice</a></li>
+	</ul>
+	</nav>
 	<div class="container">
 		<div class="page-header">
 			<h1>
@@ -63,66 +76,71 @@ canvas {
 	</div>
 
 	<script>
-		$(document).ready(function() {
-			var data = $('#data').attr('value');
-			if (data) {
-				console.log(data);
-				data = JSON.parse(data);
-				data = data['data'];
-				labels = data.labels;
-				fullName = data.fullName;
-				category = data.category;
-				var barChartData = {
-					labels : labels,
-					datasets : [ {
-						label : 'Core',
-						backgroundColor : window.chartColors.blue,
-						data : data.data[0]
-					}, {
-						label : 'Can\'t say',
-						backgroundColor : window.chartColors.orange,
-						data : data.data[1]
-					}, {
-						label : 'Not recomended',
-						backgroundColor : window.chartColors.red,
-						data : data.data[2]
-					}, {
-						label : 'Highly recomended',
-						backgroundColor : window.chartColors.green,
-						data : data.data[3]
-					} ]
-				};
-				var ctx = document.getElementById("canvas").getContext("2d");
-				window.myBar = new Chart(ctx, {
-					type : 'bar',
-					data : barChartData,
-					options : {
-						title : {
-							display : false,
-							text : "Predicted course performance"
-						},
-						tooltips : {
-							mode : 'index',
-							intersect : false
-						},
-						responsive : true,
-						scales : {
-							xAxes : [ {
-								stacked : true,
-							} ],
-							yAxes : [ {
-								stacked : true
+		$(document).ready(
+				function() {
+					var data = $('#data').attr('value');
+					if (data) {
+						console.log(data);
+						data = JSON.parse(data);
+						data = data['data'];
+						labels = data.labels;
+						fullName = data.fullName;
+						category = data.category;
+						var barChartData = {
+							labels : labels,
+							datasets : [ {
+								label : 'Core',
+								backgroundColor : window.chartColors.blue,
+								data : data.data[0]
+							}, {
+								label : 'Can\'t say',
+								backgroundColor : window.chartColors.orange,
+								data : data.data[1]
+							}, {
+								label : 'Not recomended',
+								backgroundColor : window.chartColors.red,
+								data : data.data[2]
+							}, {
+								label : 'Highly recomended',
+								backgroundColor : window.chartColors.green,
+								data : data.data[3]
 							} ]
+						};
+						var ctx = document.getElementById("canvas").getContext(
+								"2d");
+						window.myBar = new Chart(ctx, {
+							type : 'bar',
+							data : barChartData,
+							options : {
+								title : {
+									display : false,
+									text : "Predicted course performance"
+								},
+								tooltips : {
+									mode : 'index',
+									intersect : false
+								},
+								responsive : true,
+								scales : {
+									xAxes : [ {
+										stacked : true,
+									} ],
+									yAxes : [ {
+										stacked : true
+									} ]
+								}
+							}
+						});
+						for (i = 0; i < labels.length; i++) {
+							$('#data_table tr:last').after(
+									'<tr><td>' + labels[i] + '</td><td>'
+											+ fullName[i] + '</td><td>'
+											+ category[i] + '</td></tr>');
 						}
+					} else {
+						alert("Couldn't generate report.");
 					}
 				});
-				for (i = 0; i < labels.length; i++) {
-					$('#data_table tr:last').after('<tr><td>'+ labels[i] + '</td><td>' + fullName[i] + '</td><td>' + category[i] + '</td></tr>');
-				}
-			} else {
-				alert("Couldn't generate report.");
-			}
-		});
 	</script>
 	<%
 		String action = "getsemestercoursesprediction";
