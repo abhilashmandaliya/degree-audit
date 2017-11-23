@@ -42,7 +42,7 @@ public class PieChart extends CRUDCore {
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), chart);
 			} else if (action.equals("getcoursewisepiechart")) {
 				int student_id = Integer.parseInt(request.getParameter("student_id"));
-				String sql = "SELECT COUNT(student_id) FROM GradeCard WHERE student_id = " + student_id + ")";
+				String sql = "SELECT COUNT(student_id) FROM GradeCard WHERE student_id = " + student_id;
 				Query query = session.createQuery(sql);
 				List temp = query.list();
 				Long courses_taken = temp.isEmpty() ? 0 : (Long) temp.get(0);
