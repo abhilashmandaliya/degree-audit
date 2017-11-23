@@ -178,7 +178,7 @@ canvas {
 				out.write("<center><h3>Choice " + i + "/" + valid_combinations
 						+ "</h3></center><div class='row'><div class='col-sm-7'><canvas id='canvas" + i
 						+ "'></canvas><table id='course_table" + i
-						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th colspan='3'>Minimum Semester Requirement</th></tr><tr style='text-align:center;'><th>Core Courses</th><th>Technical Elective Courses</th><th>Open Elective Courses</th></tr></thead><tbody></tbody></table></div><div class='col-sm-5'><table id='data_table"
+						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Core Courses</th><th>Technical Elective Courses</th><th>Open Elective Courses</th></tr></thead><tbody></tbody></table></div><div class='col-sm-5'><table id='data_table"
 						+ i
 						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Course Code</th><th>Course Name</th><th>Course Category</th></tr></thead><tbody></tbody></table></div></div><hr />");
 			}

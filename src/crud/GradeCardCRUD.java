@@ -5,6 +5,8 @@ import java.io.IOException;
 import pojo.CoursePOJO;
 import pojo.CourseProgramPOJO;
 import pojo.GradeCard;
+import pojo.SemesterCoursePOJO;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Criteria;
@@ -23,7 +25,7 @@ public class GradeCardCRUD extends CRUDCore {
 	@Override
 	public Response delete(HttpServletRequest request) throws IOException {
 		Integer id = null;
-		//System.out.println("in crud man -----------");
+		// System.out.println("in crud man -----------");
 		try {
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			Integer course_id = Integer.valueOf(request.getParameter("course_id"));
@@ -57,7 +59,7 @@ public class GradeCardCRUD extends CRUDCore {
 	@Override
 	public Response update(HttpServletRequest request) throws IOException {
 		Integer id = null;
-		//System.out.println("in crud man -----------");
+		// System.out.println("in crud man -----------");
 		try {
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			String course_id = String.valueOf(request.getParameter("course_id"));
@@ -100,7 +102,7 @@ public class GradeCardCRUD extends CRUDCore {
 			else
 				student_id = (Integer) temp;
 			String search = (String) request.getAttribute("search");
-			//System.out.println("search " + search);
+			// System.out.println("search " + search);
 			if (search != null) {
 				try {
 					if (search.toLowerCase().equals("get_all_grades_of_student")) {
@@ -108,6 +110,16 @@ public class GradeCardCRUD extends CRUDCore {
 								.createAlias("grade_card.student_id", "student_id")
 								.add(Restrictions.eq("student_id", session.get(StudentPOJO.class, student_id)));
 						List<GradeCard> courses = criteria.list();
+						response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+						return response;
+					} else if (search.toLowerCase().equals("all_same_group_taken_courses")) {
+						Object temp2 = request.getAttribute("course_id");
+						Integer course_id = temp2 instanceof String ? Integer.parseInt((String) temp2)
+								: (Integer) temp2;
+						List<GradeCard> courses = session.createQuery("FROM GradeCard WHERE student_id = "
+								+ session.get(StudentPOJO.class, student_id).getStudent_id() + " AND course_id = "
+								+ course_id).list();
+						System.out.println("found gradecard row : " + courses.size());
 						response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
 						return response;
 					}
@@ -125,6 +137,7 @@ public class GradeCardCRUD extends CRUDCore {
 				} finally {
 					// session.close();
 				}
+				System.out.println("returning from gradecard else if ");
 				return response;
 			}
 			Integer course_id = (Integer) request.getAttribute("course_id");
@@ -166,7 +179,7 @@ public class GradeCardCRUD extends CRUDCore {
 	@Override
 	public Response create(HttpServletRequest request) throws IOException {
 		Integer id = null;
-		//System.out.println("in crud man -----------");
+		// System.out.println("in crud man -----------");
 		try {
 			int student_id = Integer.valueOf(request.getParameter("student_id"));
 			Integer course_id = Integer.valueOf(request.getParameter("course_id"));

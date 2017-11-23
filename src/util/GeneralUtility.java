@@ -162,20 +162,26 @@ public final class GeneralUtility {
 		else
 			student_id = (Integer) request.getAttribute("student_id");
 		request.setAttribute("course_id", course_id);
+		Object _originalSearch = request.getAttribute("search");
+		request.setAttribute("search", "all_course_group_course");
 		List<CourseGroupCoursePOJO> courseGroupCourses = (List<CourseGroupCoursePOJO>) ((Response) new CourseGroupCourseCRUD()
 				.retrive(request)).getData();
+		request.setAttribute("search", _originalSearch);
 		if (courseGroupCourses != null) {
 			request.setAttribute("search", "all_course_group_course_course_group_wise");
 			for (CourseGroupCoursePOJO courseGroupCourse : courseGroupCourses) {
-				request.setAttribute("course_group_course_id", courseGroupCourse.getId());
+				request.setAttribute("course_group_course_id", courseGroupCourse.getCourse_group().getId());
 				List<CoursePOJO> courses = (List<CoursePOJO>) ((Response) (new CourseGroupCourseCRUD()
 						.retrive(request))).getData();
 				float temp_average = 0.0f;
 				int temp_cnt = 0;
-				GradeCardCRUD gradeCardCRUD = new GradeCardCRUD();
+				// GradeCardCRUD gradeCardCRUD = new GradeCardCRUD();
+				Object _originalSearch2 = request.getAttribute("search");
 				for (CoursePOJO course : courses) {
-					request.setAttribute("course_id", course.getId());
-					List<GradeCard> gradeCards = (List<GradeCard>) ((Response) gradeCardCRUD.retrive(request))
+					request.setAttribute("course_id", (Integer) course.getId());
+					request.setAttribute("search", "all_same_group_taken_courses");
+					System.out.println("search at this time is : " + request.getAttribute("search"));
+					List<GradeCard> gradeCards = (List<GradeCard>) ((Response) new GradeCardCRUD().retrive(request))
 							.getData();
 					if (gradeCards.size() > 0) {
 						for (GradeCard gradeCard : gradeCards) {
@@ -184,15 +190,20 @@ public final class GeneralUtility {
 						}
 					}
 				}
+				request.setAttribute("search", _originalSearch2);
+				System.out.println(temp_average + " : " + temp_cnt);
 				if (temp_cnt > 0) {
 					temp_average /= temp_cnt;
 					if (temp_average < courseGroupCourse.getCourse_group().getMin_avg()) {
 						return NOT_RECOMMENDED;
 					}
+					if (temp_average > courseGroupCourse.getCourse_group().getMax_avg()) {
+						cnt++;
+					}
 				}
 			}
 		}
-		return cnt == 0 ? NOTHING_CAN_BE_SAID : HIGHLY_RECOMMENDED;
+		return cnt == courseGroupCourses.size() && cnt != 0 ? HIGHLY_RECOMMENDED : NOTHING_CAN_BE_SAID;
 	}
 
 	public static void copyParamsToAttributes(HttpServletRequest request) {
@@ -400,6 +411,10 @@ public final class GeneralUtility {
 					_response.put("core", core);
 					_response.put("tech", tech_electives);
 					_response.put("open", open_electives);
+					_response.put("min_open_elective", min_open_elective);
+					_response.put("max_open_elective", max_open_elective);
+					_response.put("min_tech_elective", min_tech_elective);
+					_response.put("max_tech_elective", max_tech_elective);
 					valid_combination.add(new Response(GeneralUtility.getRedirect(request), _response));
 					System.out.println("added new " + valid_combination.size());
 				}

@@ -58,15 +58,22 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 		try {
 			String search = ((String) request.getAttribute("search")).toLowerCase();
 			if (search.equals("all_course_group_course")) {
-				Integer course_id = (Integer) request.getAttribute("course_id");
+				Integer course_id;
+				Object temp = request.getAttribute("course_id");
+				if (temp instanceof String)
+					course_id = Integer.parseInt((String) temp);
+				else
+					course_id = (Integer) temp;
 				CriteriaBuilder builder = session.getCriteriaBuilder();
 				CriteriaQuery<CourseGroupCoursePOJO> criteria = builder.createQuery(CourseGroupCoursePOJO.class);
 				Root<CourseGroupCoursePOJO> courseGroupCoursePOJORoot = criteria.from(CourseGroupCoursePOJO.class);
 				criteria.select(courseGroupCoursePOJORoot);
-				criteria.where(builder.equal(courseGroupCoursePOJORoot.get("course_id"), course_id));
+				criteria.where(builder.equal(courseGroupCoursePOJORoot.get("course"), course_id));
 				List<CourseGroupCoursePOJO> courseGroupCourses = session.createQuery(criteria).getResultList();
+				System.out.println("result size " + courseGroupCourses.size());
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request),
 						courseGroupCourses);
+				System.out.println("in all_course_group_course");
 			} else if (search.equals("all_course_group_course_course_group_wise")) {
 				Integer course_group_course_id = (Integer) request.getAttribute("course_group_course_id");
 				CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -80,6 +87,7 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 					courses.add(courseGroupCoursePOJO.getCourse());
 				}
 				response = GeneralUtility.generateSuccessResponse(GeneralUtility.getRedirect(request), courses);
+				System.out.println("in all_course_group_course_course_group_wise for course " + courses.size() + " for group "+ course_group_course_id);
 			} else if (search.equals("getcoursecoursegroupandmapping")) {
 				try {
 					List<CourseGroupCoursePOJO> courses = session.createQuery("FROM CourseGroupCoursePOJO").list();
@@ -90,6 +98,7 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 				} finally {
 					session.close();
 				}
+				System.out.println("in getcoursecoursegroupandmapping");
 				return response;
 			}
 		} catch (HibernateException e) {
@@ -99,7 +108,7 @@ public class CourseGroupCourseCRUD extends CRUDCore {
 			e.printStackTrace();
 		} finally {
 			session.close();
-		}
+		}		
 		return response;
 	}
 

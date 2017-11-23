@@ -1,6 +1,7 @@
 package crud;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import org.hibernate.Transaction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 import pojo.ProgramPOJO;
 import pojo.StudentPOJO;
@@ -18,6 +20,7 @@ import pojo.UserPOJO;
 import util.GeneralUtility;
 import util.HibernateSessionFactory;
 import util.Response;
+import util.StudentGradeCard;
 
 public class StudentCRUD extends CRUDCore {
 
@@ -196,5 +199,34 @@ public class StudentCRUD extends CRUDCore {
 		}
 
 		return id;
+	}
+
+	public Object getDetails(HttpServletRequest request) throws IOException {
+		int user_id = Integer.valueOf(request.getParameter("student_id"));
+		try {
+			String hql = "FROM StudentPOJO s WHERE user_id =" + user_id;
+			Query query = session.createQuery(hql);
+			List<StudentPOJO> programs = query.list();
+			StudentPOJO s1 = programs.get(0);
+
+			hql = "select max(semester) from GradeCard where student_id=" + user_id;
+
+			HashMap<String, Object> map = new HashMap<> ();
+			map.put("user_detail", s1);
+			Query query1 = session.createQuery(hql);
+			System.out.println(query1.list().size());
+			
+			String sem = query1.list().get(0).toString();
+			map.put("current_semester", new StudentGradeCard().getSemId(sem));
+
+			response = GeneralUtility.generateSuccessResponse(null, map);
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+		return response;
 	}
 }
