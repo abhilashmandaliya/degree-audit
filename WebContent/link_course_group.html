@@ -61,8 +61,14 @@
 	<br>
 	<br>
 	<div class="container container-fluid">
-	
-		<h2>Link Course - Group</h2>
+		<div class="row">
+			<div class="col-lg-6">
+				<center><h2>Link Course - Group</h2></center>
+			</div>
+			<div class="col-lg-6">
+				<center><button  class="updateLinkCourseGroup btn btn-primary">Update</button></center>
+			</div>
+		</div>
 		<input type="text" class="form-control" id="myInput"
 			onkeyup="searchCourseNameID()" placeholder="Search for course... ">
 
@@ -77,8 +83,6 @@
 			<tbody class="table_data">
 			</tbody>
 		</table>
-		<a type="button" class="btn btn-primary" href="#">Update</a>
-
 	</div>
 	<!-- Scripts -->
 	<script type="text/javascript"
@@ -99,6 +103,10 @@
 
 		getProgramByCordinator(userData.id);
 		getCourseAndGroup();
+		
+		$(".updateLinkCourseGroup").click(function() {
+			alert();
+		})
 
 	});
 	</script>

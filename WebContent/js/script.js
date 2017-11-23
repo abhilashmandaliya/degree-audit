@@ -138,6 +138,9 @@ function getSemCourse(sem_name) {
 					var str = "";
 					for (var i = 0; i < res.data.length; i++) {
 						str += '<tr id="default">';
+						str += '<td hidden>'
+							+ res.data[i].course.id
+							+ '</td>';
 						str += '<td>'
 								+ res.data[i].course.course_id
 								+ '</td>';
@@ -147,7 +150,7 @@ function getSemCourse(sem_name) {
 						str += '<td>'
 								+ res.data[i].course.course_credits
 								+ '</td>';
-						str += '<td><button class=" btn btn-danger" type="button" onclick="remove()" id="remove">Remove</button></td>';
+						str += '<td><button class=" btn btn-danger remove" type="button">Remove</button></td>';
 						str += '</tr>';
 					}
 					$(".sem_courses").html(str);
@@ -160,6 +163,9 @@ function getSemCourse(sem_name) {
 							console.log(res);
 							for (var i = 0; i < res.data.length; i++) {
 								str += '<tr id="add">';
+								str += '<td hidden>'
+									+ res.data[i].id
+									+ '</td>';
 								str += '<td>'
 										+ res.data[i].course_id
 										+ '</td>';
@@ -169,7 +175,7 @@ function getSemCourse(sem_name) {
 								str += '<td>'
 										+ res.data[i].course_credits
 										+ '</td>';
-								str += '<td><button class=" btn btn-primary" type="button" onclick="">Add</button></td>';
+								str += '<td><button class=" btn btn-primary add" type="button">Add</button></td>';
 								str += '</tr>';
 							}
 							$(".master_courses").html(str);
@@ -182,6 +188,34 @@ function getSemCourse(sem_name) {
 		}
 	});
 }
+
+function updateSemCourses(sem_name) {
+	$.ajax({
+		url : "http://localhost:8080/DegreeAudit/controller?action=getsemesteridfromname&search=semester_id_from_name&semester_name="
+				+ sem_name,
+		success : function(result) {
+			var res = JSON.parse(result);
+			var programData = JSON.parse(localStorage
+					.getItem("program")).data[0].program;
+			var course_ids="";
+			for(var i = 0;i<$(".sem_courses")[0].childNodes.length-1; i++) {
+				course_ids+=($(".sem_courses")[0].childNodes[i].childNodes[0].textContent)+",";
+			}
+			course_ids+=($(".sem_courses")[0].childNodes[$(".sem_courses")[0].childNodes.length-1].childNodes[0].textContent);
+			$.ajax({
+				url : "http://localhost:8080/DegreeAudit/controller?action=UpdateSemesterCourses&sem_id="
+						+ res.data[0].id
+						+ "&program_id="
+						+ programData.id
+						+ "&courses="+course_ids,
+				success : function(result) {
+					alert("Sem Course Updated!");
+				}
+			});
+		}
+	});
+}
+
 function getCourseTableData() {
 	$.ajax({
 		url : 'http://localhost:8080/DegreeAudit/controller?action=getcourses',
@@ -515,6 +549,7 @@ function getCourseAndGroup(){
 		url: 'http://localhost:8080/DegreeAudit/controller?action=getcoursecoursegroupandmapping&search=getcoursecoursegroupandmapping',
 		success: function (result) {
 			var res = JSON.parse(result);
+			console.log(res);
 			var str = "";
 			for(var i = 0;i<Object.keys(res.data.courseGroupCourse.data).length;i++){
 				str+="<tr>";
@@ -527,7 +562,6 @@ function getCourseAndGroup(){
 						select_txt+=" selected";
 					select_txt+=">"+res.data.courseGroups.data[j].group_name+"</option>";
 				}
-				console.log(select_txt);
 				select_txt+="</select>";
 				str+="<td id='course"+i+"'>"+select_txt+"</td>";
 				str+="</tr>";
@@ -538,22 +572,20 @@ function getCourseAndGroup(){
 	});
 }
 
-function remove() {
-	alert();
-	$(this).text('Add');
-	$(this).addClass('btn-primary').removeClass('btn-danger').attr('id',
-			'add-btn');
-	var tr = $(this).parent().parent();
-	$('#masterList').append(tr);
-}
 
-$("tr").on(
-		"click",
-		"#add-btn",
-		function() {
-			$(this).text('Remove');
-			$(this).removeClass('btn-primary').addClass('btn-danger').attr(
-					'id', 'remove');
-			var tr = $(this).parent().parent();
-			$('#semesterTable').append(tr);
-		});
+$(document).ready(()=>{
+	$(document).on("click", '.remove', function(event) { 
+		$(this).text('Add');
+		console.log($(this));
+		$(this).addClass('btn-primary add').removeClass('remove').removeClass('btn-danger').attr('id','add-btn');
+		var tr = $(this).parent().parent();
+		$('#masterList').append(tr);
+	});
+	$(document).on("click", '.add', function(event) { 
+		$(this).text('Remove');
+		$(this).removeClass('btn-primary').removeClass('add').addClass('btn-danger remove').attr(
+				'id', 'remove');
+		var tr = $(this).parent().parent();
+		$('#semesterTable').append(tr);
+	});
+});
