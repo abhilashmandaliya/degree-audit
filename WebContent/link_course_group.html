@@ -15,8 +15,7 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
-
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -61,44 +60,25 @@
 	</nav>
 	<br>
 	<br>
-	<div class="container-fluid">
+	<div class="container container-fluid">
+	
+		<h2>Link Course - Group</h2>
+		<input type="text" class="form-control" id="myInput"
+			onkeyup="searchCourseNameID()" placeholder="Search for course... ">
 
-		<div class="row-12">
-			<div class="container">
-				<h2 class="heading_with_sem"></h2>
-				<div class="row">
-					<div class="col-sm-6">
-						<table class="table table-hover" id="semesterTable">
-							<thead>
-								<tr>
-									<th>Course Id</th>
-									<th>Course Name</th>
-									<th>Credits</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody class="sem_courses">
-							</tbody>
-						</table>
-					</div>
-					<div class="col-sm-6">
-						<table class="table table-hover" id="masterList">
-							<thead>
-								<tr id="add">
+		<table class="table table-hover" id="myTable">
+			<thead>
+				<tr class="header">
+					<th>Course ID</th>
+					<th>Name</th>
+					<th>Category</th>
+				</tr>
+			</thead>
+			<tbody class="table_data">
+			</tbody>
+		</table>
+		<a type="button" class="btn btn-primary" href="#">Update</a>
 
-									<th>Course Id</th>
-									<th>Course Name</th>
-									<th>Credits</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody class="master_courses">
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 	<!-- Scripts -->
 	<script type="text/javascript"
@@ -112,15 +92,16 @@
 	<!-- Custom Scripts -->
 	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			var userData = JSON.parse(localStorage.getItem("loginUser"));
-			$(".name").html(userData.first_name + " " + userData.last_name);
-			$(".email_address").html(userData.email);
+	$(document).ready(function() {
+		var userData = JSON.parse(localStorage.getItem("loginUser"));
+		$(".name").html(userData.first_name + " " + userData.last_name);
+		$(".email_address").html(userData.email);
 
-			getProgramByCordinator(userData.id);
-			
-			getSemCourse(localStorage.getItem("sem_name"));
-		});
+		getProgramByCordinator(userData.id);
+		getCourseAndGroup();
+
+	});
 	</script>
 </body>
+
 </html>
