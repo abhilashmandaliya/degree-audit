@@ -1,3 +1,9 @@
+<%
+	if (session.getAttribute("user") == null || session.getAttribute("userCategory") == null) {
+		response.sendRedirect("../index.html");
+		return;
+	}
+%>
 <!doctype html>
 <%@page import="java.util.List"%>
 <%@page import="util.Response"%>
