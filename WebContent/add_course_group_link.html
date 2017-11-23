@@ -15,8 +15,7 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link rel="stylesheet"
 	href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
-
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -61,52 +60,29 @@
 	</nav>
 	<br>
 	<br>
-	<div class="container-fluid">
-
-		<div class="row-12">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6">
-						<center><h2 class="heading_with_sem"></h2></center>
-					</div>
-					<div class="col-lg-6">
-						<center><button  class="updateSemCourses btn btn-primary">Update</button></center>
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-sm-6">
-						<table class="table table-hover" id="semesterTable">
-							<thead>
-								<tr>
-									<th>Course Id</th>
-									<th>Course Name</th>
-									<th>Credits</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody class="sem_courses">
-							</tbody>
-						</table>
-					</div>
-					<div class="col-sm-6">
-						<table class="table table-hover" id="masterList">
-							<thead>
-								<tr id="add">
-
-									<th>Course Id</th>
-									<th>Course Name</th>
-									<th>Credits</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody class="master_courses">
-							</tbody>
-						</table>
-					</div>
-				</div>
+	<div class="container container-fluid">
+		<div class="row">
+			<div class="col-lg-6">
+				<center><h2>Add Link Course - Group</h2></center>
+			</div>
+			<div class="col-lg-6">
+				<center><button  class="updateLinkCourseGroup btn btn-primary">Update</button></center>
 			</div>
 		</div>
+		<input type="text" class="form-control" id="myInput"
+			onkeyup="searchCourseNameID()" placeholder="Search for course... ">
+
+		<table class="table table-hover" id="myTable">
+			<thead>
+				<tr class="header">
+					<th>Course ID</th>
+					<th>Name</th>
+					<th>Category</th>
+				</tr>
+			</thead>
+			<tbody class="table_data">
+			</tbody>
+		</table>
 	</div>
 	<!-- Scripts -->
 	<script type="text/javascript"
@@ -120,20 +96,20 @@
 	<!-- Custom Scripts -->
 	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			var userData = JSON.parse(localStorage.getItem("loginUser"));
-			$(".name").html(userData.first_name + " " + userData.last_name);
-			$(".email_address").html(userData.email);
+	$(document).ready(function() {
+		var userData = JSON.parse(localStorage.getItem("loginUser"));
+		$(".name").html(userData.first_name + " " + userData.last_name);
+		$(".email_address").html(userData.email);
 
-			getProgramByCordinator(userData.id);
-			
-			getSemCourse(localStorage.getItem("sem_name"));
-			
-			$(".updateSemCourses").click(function() {
-				updateSemCourses(localStorage.getItem("sem_name"));
-			});
-			
-		});
+		getProgramByCordinator(userData.id);
+		getCourseAndGroup();
+		
+		$(".updateLinkCourseGroup").click(function() {
+			alert();
+		})
+
+	});
 	</script>
 </body>
+
 </html>
