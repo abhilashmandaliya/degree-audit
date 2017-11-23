@@ -1,3 +1,9 @@
+<%
+	if (session.getAttribute("user") == null || session.getAttribute("userCategory") == null) {
+		response.sendRedirect("../index.html");
+		return;
+	}
+%>
 <%@page import="controller.action.GetSemesterCoursesPrediction"%>
 <%@page import="util.GeneralUtility"%>
 <%@page import="crud.GradeCardCRUD"%>
