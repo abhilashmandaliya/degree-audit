@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
+import org.hibernate.query.Query;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.gson.JsonArray;
@@ -82,9 +83,9 @@ public class UserCRUD extends CRUDCore {
 							break;
 						}
 					}
-//					HttpSession session = request.getSession();
-//					session.setAttribute("userCategory", category);
-//					session.setAttribute("user", userPOJO);
+					HttpSession session = request.getSession();
+					session.setAttribute("userCategory", category);
+					session.setAttribute("user", userPOJO);
 				}
 			}
 		} catch (HibernateException e) {
@@ -100,8 +101,29 @@ public class UserCRUD extends CRUDCore {
 
 	@Override
 	public Response update(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Integer user_id = Integer.parseInt(request.getParameter("user_id"));
+			String first_name = request.getParameter("first_name");
+			String last_name = request.getParameter("last_name");
+			String email = request.getParameter("email");
+
+			String hql = "UPDATE UserPOJO set first_name = :first_name, last_name = :last_name, email = :email WHERE id = :user_id";
+			Query query = session.createQuery(hql);
+			query.setParameter("first_name", first_name);
+			query.setParameter("last_name", last_name);
+			query.setParameter("email", email);
+			query.setParameter("user_id", user_id);
+			int result = query.executeUpdate();
+			response = GeneralUtility.generateSuccessResponse(null, result);
+		} catch (HibernateException e) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return response;
 	}
 
 	@Override
