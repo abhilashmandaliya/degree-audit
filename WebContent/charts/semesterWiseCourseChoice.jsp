@@ -19,13 +19,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
 <script src="http://www.chartjs.org/dist/2.7.1/Chart.bundle.js"></script>
 <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
 <style>
@@ -134,6 +134,8 @@ canvas {
 																	+ data[i - 1].data.fullName[j]
 																	+ "</td><td>"
 																	+ data[i - 1].data.category[j]
+																	+ "</td><td>"
+																	+ data[i - 1].data.optedCourseCredit[j]
 																	+ "</td></tr>");
 										}
 										$('#course_table' + i + ' tr:last')
@@ -141,9 +143,34 @@ canvas {
 														"<tr style='text-align:center;'><td>"
 																+ data[i - 1].data.core
 																+ "</td><td>"
+																+ data[i - 1].data.min_tech_electives
+																+ " <= "
 																+ data[i - 1].data.tech
+																+ " <= "
+																+ data[i - 1].data.max_tech_electives
 																+ "</td><td>"
+																+ data[i - 1].data.min_open_electives
+																+ " <= "
 																+ data[i - 1].data.open
+																+ " <= "
+																+ data[i - 1].data.max_open_electives
+																+ "</td><td>"
+																+ data[i - 1].data.core_credits
+																+ "</td><td>"
+																+ data[i - 1].data.min_tech_elective_credits
+																+ " <= "
+																+ data[i - 1].data.tech_credits
+																+ "</td><td>"
+																+ data[i - 1].data.min_open_elective_credits
+																+ " <= "
+																+ data[i - 1].data.open_credits
+																+ "</td><td>"
+																+ data[i - 1].data.min_semester_credits
+																+ " <= "
+																+ (data[i - 1].data.core_credits
+																		+ data[i - 1].data.tech_credits + data[i - 1].data.open_credits)
+																+ " <= "
+																+ data[i - 1].data.max_semester_credits
 																+ "</td></tr>");
 									}
 								} else {
@@ -177,10 +204,10 @@ canvas {
 			for (int i = 1; i <= valid_combinations; i++) {
 				out.write("<center><h3>Choice " + i + "/" + valid_combinations
 						+ "</h3></center><div class='row'><div class='col-sm-7'><canvas id='canvas" + i
-						+ "'></canvas><table id='course_table" + i
-						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Core Courses</th><th>Technical Elective Courses</th><th>Open Elective Courses</th></tr></thead><tbody></tbody></table></div><div class='col-sm-5'><table id='data_table"
+						+ "'></canvas></div><div class='col-sm-5'><table id='data_table" + i
+						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Course Code</th><th>Course Name</th><th>Course Category</th><th>Course Credits</th></tr></thead><tbody></tbody></table></div></div><div class='row'><div class='col-sm-12'><table id='course_table"
 						+ i
-						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Course Code</th><th>Course Name</th><th>Course Category</th></tr></thead><tbody></tbody></table></div></div><hr />");
+						+ "' class='table table-bordered'><thead><tr style='text-align:center;'><th>Core</th><th>Tech Elective</th><th>Open Elective</th><th>Core Credits</th><th>Tech Elective Credits</th><th>Open Elective Credits</th><th>Semester Credits</th></tr></thead><tbody></tbody></table></div></div><hr />");
 			}
 		%>
 	</div>

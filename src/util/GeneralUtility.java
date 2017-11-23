@@ -359,6 +359,7 @@ public final class GeneralUtility {
 					String[] labels = new String[combination.size() + core_courses.size()];
 					String[] fullName = new String[combination.size() + core_courses.size()];
 					String[] category = new String[combination.size() + core_courses.size()];
+					int[] optedCourseCredits = new int[combination.size() + core_courses.size()];
 					int[][] data = new int[4][combination.size() + core_courses.size()];
 					int index = 0;
 					int eligibility = -10;
@@ -396,6 +397,7 @@ public final class GeneralUtility {
 							}
 						}
 						category[index] = course_category;
+						optedCourseCredits[index] = course.getCourse_credits();
 						data[0][index] = (eligibility == CORE) ? eligibility : 0;
 						data[1][index] = (eligibility == CAN_NOT_SAY) ? eligibility : 0;
 						data[2][index] = (eligibility == NOT_RECOMMENDED) ? eligibility : 0;
@@ -408,13 +410,21 @@ public final class GeneralUtility {
 					_response.put("data", data);
 					_response.put("fullName", fullName);
 					_response.put("category", category);
+					_response.put("optedCourseCredit", optedCourseCredits);
 					_response.put("core", core);
 					_response.put("tech", tech_electives);
 					_response.put("open", open_electives);
-					_response.put("min_open_elective", min_open_elective);
-					_response.put("max_open_elective", max_open_elective);
-					_response.put("min_tech_elective", min_tech_elective);
-					_response.put("max_tech_elective", max_tech_elective);
+					_response.put("min_open_electives", min_open_elective);
+					_response.put("max_open_electives", max_open_elective);
+					_response.put("min_tech_electives", min_tech_elective);
+					_response.put("max_tech_electives", max_tech_elective);
+					_response.put("min_open_elective_credits", min_open_elective_credits);
+					_response.put("min_tech_elective_credits", min_tech_elective_credits);
+					_response.put("open_credits", open_elective_credits);
+					_response.put("tech_credits", tech_elective_credits);
+					_response.put("core_credits", core_credits);
+					_response.put("max_semester_credits", max_semester_credits);
+					_response.put("min_semester_credits", min_semester_credits);
 					valid_combination.add(new Response(GeneralUtility.getRedirect(request), _response));
 					System.out.println("added new " + valid_combination.size());
 				}
