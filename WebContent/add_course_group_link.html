@@ -53,7 +53,7 @@
 						Details</a></li>
 			</ul>
 			<ul class="navbar-nav col-2 align-items-end">
-				<li class="nav-item"><a class="nav-link" href="#"><i
+				<li class="nav-item"><a class="nav-link" onclick="logout()"><i
 						class="fa fa-power-off" aria-hidden="true"></i> Logout</a></li>
 			</ul>
 		</div>
@@ -65,24 +65,36 @@
 			<div class="col-lg-6">
 				<center><h2>Add Link Course - Group</h2></center>
 			</div>
-			<div class="col-lg-6">
-				<center><button  class="updateLinkCourseGroup btn btn-primary">Update</button></center>
-			</div>
 		</div>
-		<input type="text" class="form-control" id="myInput"
-			onkeyup="searchCourseNameID()" placeholder="Search for course... ">
+		<div class="form-group border p-3">
+			<form>
+				<div class="form-group row">
+					<div class="col-2"></div>
+					<label for="courseName" class="col-4 col-form-label">
+						Course Name:
+					</label>
+					<div class="col-4">
+						<select required class="form-control" id="courseName">
+						</select>
+					</div>
+					<div class="col-2"></div>
+				</div>
+				<div class="form-group row">
+					<div class="col-2"></div>
+					<label for="groupName" class="col-4 col-form-label">
+						Group Name:
+					</label>
+					<div class="col-4">
+						<select required class="form-control" id="groupName">
+						</select>
+					</div>
+					<div class="col-2"></div>
+				</div>
+				<div><center><button type="button" class="btn btn-primary add_course_group">Add</button></center></div>
+			</form>
+		</div>
 
-		<table class="table table-hover" id="myTable">
-			<thead>
-				<tr class="header">
-					<th>Course ID</th>
-					<th>Name</th>
-					<th>Category</th>
-				</tr>
-			</thead>
-			<tbody class="table_data">
-			</tbody>
-		</table>
+		
 	</div>
 	<!-- Scripts -->
 	<script type="text/javascript"
@@ -101,13 +113,48 @@
 		$(".name").html(userData.first_name + " " + userData.last_name);
 		$(".email_address").html(userData.email);
 
-		getProgramByCordinator(userData.id);
-		getCourseAndGroup();
+		$.ajax({
+			url: 'http://localhost:8080/DegreeAudit/controller?action=getcoursecoursegroupandmapping&search=getcoursecoursegroupandmapping',
+			success: function (result) {
+				if (result.statusCode != 401) {
+					var res = JSON.parse(result);
+					console.log(res);
+					var select_txt="";
+					for(var j = 0;j<Object.keys(res.data.courseGroups.data).length;j++){
+						select_txt+="<option value='"+res.data.courseGroups.data[j].id+"'";
+						select_txt+=">"+res.data.courseGroups.data[j].group_name+"</option>";
+					}
+					$("#groupName").html(select_txt);
+				}
+				else {
+					$(location).attr("href", "index.html");
+				}
+			}
+		});
 		
-		$(".updateLinkCourseGroup").click(function() {
-			alert();
+		$.ajax({
+			url : "http://localhost:8080/DegreeAudit/controller?action=getcourses",
+			success : function(result) {
+				var res = JSON.parse(result);
+				var select_txt = "";
+				for (var i = 0; i < res.data.length; i++) {
+					
+					select_txt+="<option value='"+res.data[i].id+"'";
+					select_txt+=">"+res.data[i].course_name+"</option>";
+				}
+				$("#courseName").html(select_txt);
+			}
+		});
+		$(".add_course_group").click(function() {
+			
+			$.ajax({
+				url: "http://localhost:8080/DegreeAudit/controller?action=addcoursegroupcourse&course_id="+$("#courseName").val()+"&course_group_id="+$("#groupName").val(),
+				success: function(result) {
+					console.log(result);
+					alert("Added Successfully!");
+				}
+			});
 		})
-
 	});
 	</script>
 </body>
