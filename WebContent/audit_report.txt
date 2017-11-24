@@ -7,16 +7,16 @@
           </thead>
           <tbody>
             <tr>
-              <th scope="row">Grades Obtained</th>
+              <th scope="row">Credits Obtained</th>
               <td>{grade_obtain}</td>
             </tr>
             <tr>
               <th scope="row">Degree Completed</th>
-              <td>{degree_completed}</td>
+              <td>{degree_completed}%</td>
             </tr>
             <tr>
               <th scope="row">Present CPI</th>
-              <td>{present_cpi}</td>
+              <td>{present_cpi}/10</td>
             </tr>
             <tr>
               <th scope="row">Present Course no</th>
@@ -24,7 +24,7 @@
             </tr>
             <tr>
               <th scope="row">CPI Required</th>
-              <td>{cpi_required}</td>
+              <td>{cpi_required}/10</td>
             </tr>
             <tr>
               <th scope="row">Credits Required</th>
@@ -36,7 +36,7 @@
             </tr>
             <tr>
               <th scope="row">Time Left For Graduation</th>
-              <td>{time_left_to_graduate}</td>
+              <td>{time_left_to_graduate} year</td>
             </tr>
             
           </tbody>

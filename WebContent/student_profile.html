@@ -20,7 +20,9 @@
           <div class="panel-heading stud_name_1">Student Profile</div>
           <img class="img-circle" src="StudentDfaultProPic.jpeg"></img>
           <div style="position: absolute; width:100%;">
-
+			<div class="btn-group" style="width:100%">
+              <button type="button" class="btn btn-primary" onclick="profile()" style="width:100%">Profile</button>
+            </div>
             <div>
               <a class="btn btn-primary" style="width:100%;" data-toggle="collapse" href="#audits" aria-expanded="false" aria-controls="collapseExample">
                 Audit Reports
@@ -47,6 +49,9 @@
 
             <div class="btn-group" style="width:100%">
               <button type="button" class="btn btn-primary" onclick="generateAudit()" style="width:100%">Generate Audit</button>
+            </div>
+             <div class="btn-group" style="width:100%">
+              <button type="button" class="btn btn-primary" onclick="openChart()" style="width:100%">Charts</button>
             </div>
 
             <div class="btn-group" style="width:100%">
@@ -133,6 +138,12 @@
 		    }
 		});
 	});
+	function openChart(){
+		window.open("http://localhost:8080/DegreeAudit/charts/semesterWiseCourseChoice.jsp");
+	}
+	function profile(){
+		location.reload();
+	}
 </script>
 
 </html>

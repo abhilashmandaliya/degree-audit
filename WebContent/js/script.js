@@ -532,7 +532,7 @@ function generateAudit() {
 
 function getStudentDetails(id) {
 	$.ajax({
-				url : 'http://localhost:8080/DegreeAudit/controller?action=getstudentdetails&student_id='
+				url : 'http://localhost:8080/DegreeAudit/controller?action=studentdetail&student_id='
 						+ id,
 				dataType : 'json',
 				success : function(result) {
