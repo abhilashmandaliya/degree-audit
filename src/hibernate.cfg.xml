@@ -12,13 +12,13 @@
 		</property>
 
 		<property name="hibernate.connection.url">
-			jdbc:mysql://sen1.cedfeptfnkxz.ap-south-1.rds.amazonaws.com/sen1
+			jdbc:mysql://hostname/database
 		</property>
 		<property name="hibernate.connection.username">
-			sen1
+			username
 		</property>
 		<property name="hibernate.connection.password">
-			jamfaadaudi
+			password
 		</property>
 
 		<!-- <property name="hibernate.hbm2ddl.auto"> update </property> -->
